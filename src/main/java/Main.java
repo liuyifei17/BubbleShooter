@@ -1,3 +1,4 @@
+import Controller.GameRunner;
 import Model.GameData;
 import Controller.GameDataLoader;
 import View.View;
@@ -13,6 +14,8 @@ public class Main extends Application {
 
     private final double stageWidth = 600;
     private final double stageHeight = 700;
+    public GameRunner runner;
+    public GameDataLoader loader;
     public GameData data;
     public View view;
 
@@ -21,9 +24,10 @@ public class Main extends Application {
         //Create a pane to hold the game
         Pane gamePane = new Pane();
 
-        //Initialize game elements
+        //Initialize game
         data = new GameData();
-        GameDataLoader.initialize(data, stageWidth / 2, stageHeight / 2);
+        loader = new GameDataLoader();
+        loader.initialize(data, stageWidth / 2, stageHeight / 2);
 
         //Draw elements on pane
         view = new View(gamePane, data);
@@ -35,6 +39,10 @@ public class Main extends Application {
         primaryStage.setScene(scene); // Place the scene in the stage
         primaryStage.setResizable(false);//cannot resize game
         primaryStage.show(); // Display the stage
+
+        //Start running the game
+        runner = new GameRunner();
+        runner.runGame();
     }
 
     /**

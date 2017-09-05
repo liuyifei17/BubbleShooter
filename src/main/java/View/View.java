@@ -1,6 +1,6 @@
 package View;
 
-import Entities.Entity;
+import Elements.HexagonElement;
 import Model.GameData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,7 +18,9 @@ public class View {
     private ImageView topBar;
     private ImageView scoreBar;
 
-    public static final int TOP_BAR_HEIGHT = 70;
+    private final int TOP_BAR_HEIGHT = 70;
+    private final int SCORE_BAR_HEIGHT = 40;
+    private static final int SCORE_BAR_WIDTH = 240;
 
     public View(Pane pane, GameData data){
         this.pane = pane;
@@ -26,9 +28,6 @@ public class View {
     }
 
     public void draw(){
-        System.out.println(data.getCenterPiece().getX());
-        System.out.println(data.getCenterPiece().getY());
-
         //draw background
         background = new Image("images/background1.png");
         pane.setBackground(new Background(new BackgroundImage(background, BackgroundRepeat.NO_REPEAT,
@@ -43,8 +42,8 @@ public class View {
         //draw score bar
         scoreBar = new ImageView("images/scoreBar1.png");
         scoreBar.relocate(8, 15);
-        scoreBar.setFitHeight(40);
-        scoreBar.setFitWidth(240);
+        scoreBar.setFitHeight(SCORE_BAR_HEIGHT);
+        scoreBar.setFitWidth(SCORE_BAR_WIDTH);
 
         //draw game bars & score etc
         //TODO; draw other components
@@ -62,12 +61,12 @@ public class View {
         pane.getChildren().add(centerPieceImage);
     }
 
-    private double getScreenX(Entity entity){
-        return (entity.getX() - (entity.getSprite().getWidth() / 2));
+    private double getScreenX(HexagonElement hexagonElement){
+        return (hexagonElement.getX() - (hexagonElement.getSprite().getWidth() / 2));
     }
 
-    private double getScreenY(Entity entity){
-        return (entity.getY() + TOP_BAR_HEIGHT - (entity.getSprite().getHeight() / 2));
+    private double getScreenY(HexagonElement hexagonElement){
+        return (hexagonElement.getY() + TOP_BAR_HEIGHT - (hexagonElement.getSprite().getHeight() / 2));
     }
 
 }

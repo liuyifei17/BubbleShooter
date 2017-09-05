@@ -1,16 +1,25 @@
 package Controller;
 
 import Model.GameData;
-import Entities.CenterPiece;
+import Elements.CenterPiece;
 
 /**
  * Created by jur on 9/5/2017.
  */
 public class GameDataLoader {
 
-    public static void initialize(GameData data, double centerX, double centerY) {
+    GameData data;
+
+    public void initialize(GameData gameData, double centerX, double centerY) {
+        data = gameData;
         data.setScore(0);
-        data.setCenterPiece(new CenterPiece(centerX, centerY));
+        loadElements(centerX, centerY);
+    }
+
+    private void loadElements(double centerX, double centerY){
+        CenterPiece center = new CenterPiece(centerX, centerY);
+        data.setCenterPiece(center);
+        data.getElementList().add(center);
     }
 
 }

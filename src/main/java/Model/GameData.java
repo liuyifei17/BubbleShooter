@@ -1,11 +1,16 @@
 package Model;
 
-import Entities.CenterPiece;
+import Elements.CenterPiece;
+import Elements.HexagonElement;
+
+import java.util.ArrayList;
 
 /**
  * Created by jur on 9/5/2017.
  */
 public class GameData {
+
+    private ArrayList<HexagonElement> elementList = new ArrayList<HexagonElement>();
 
     private CenterPiece centerPiece;
     private int score;
@@ -26,4 +31,7 @@ public class GameData {
         this.score = score;
     }
 
+    public ArrayList<HexagonElement> getElementList() {
+        return elementList;
+    }
 }
