@@ -26,8 +26,8 @@ public class Main extends Application {
         GameDataLoader.initialize(data, stageWidth / 2, stageHeight / 2);
 
         //Draw elements on pane
-        view = new View(data);
-        view.draw(gamePane);
+        view = new View(gamePane, data);
+        view.draw();
 
         // Create a scene containing the pane and place it in the stage
         Scene scene = new Scene(gamePane, stageWidth, stageHeight);
