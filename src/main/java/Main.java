@@ -12,12 +12,10 @@ import javafx.scene.layout.Pane;
  */
 public class Main extends Application {
 
-    private final double stageWidth = 600;
-    private final double stageHeight = 700;
-    public GameRunner runner;
-    public GameDataLoader loader;
-    public GameData data;
-    public View view;
+    private GameRunner runner;
+    private GameDataLoader loader;
+    private GameData data;
+    private View view;
 
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
@@ -27,14 +25,14 @@ public class Main extends Application {
         //Initialize game
         data = new GameData();
         loader = new GameDataLoader();
-        loader.initialize(data, stageWidth / 2, stageHeight / 2);
+        loader.initialize(data, View.STAGE_WIDTH / 2, (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
 
         //Draw elements on pane
         view = new View(gamePane, data);
         view.draw();
 
         // Create a scene containing the pane and place it in the stage
-        Scene scene = new Scene(gamePane, stageWidth, stageHeight);
+        Scene scene = new Scene(gamePane, View.STAGE_WIDTH, View.STAGE_HEIGHT);
         primaryStage.setTitle("Bubble Shooter"); // Set the stage title
         primaryStage.setScene(scene); // Place the scene in the stage
         primaryStage.setResizable(false);//cannot resize game

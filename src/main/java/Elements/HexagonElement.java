@@ -1,5 +1,6 @@
 package Elements;
 
+import Model.Cell;
 import javafx.scene.image.Image;
 
 /**
@@ -8,49 +9,28 @@ import javafx.scene.image.Image;
 public class HexagonElement {
 
     private int id;
-    private double centerX;
-    private double centerY;
+    private Cell cell;
     private Image img;
 
-    private double[] edgeRotations = { 90, 30, 330, 270, 210, 150 };
-    private HexagonElement[] adjacentElements = { null, null, null, null, null, null };
-
-    public HexagonElement(int id, double x, double y, Image img){
+    public HexagonElement(int id, Cell cell, Image img){
         this.id = id;
-        this.centerX = x;
-        this.centerY = y;
+        this.cell = cell;
         this.img = img;
-    }
-
-    public double getX(){
-        return centerX;
-    }
-
-    public double getY(){
-        return centerY;
     }
 
     public Image getSprite() {
         return img;
     }
 
-    public void setY(double centerY) {
-        this.centerY = centerY;
-    }
-
-    public void setX(double centerX) {
-        this.centerX = centerX;
-    }
-
-    public double[] getEdgeRotations() {
-        return edgeRotations;
-    }
-
-    public HexagonElement[] getAdjacentElements() {
-        return adjacentElements;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public Cell getCell() {
+        return cell;
+    }
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
     }
 }

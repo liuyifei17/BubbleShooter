@@ -13,7 +13,7 @@ public class GameRunner {
         private void initializeGameTimer(){
             timer.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-                   System.out.println("Running game now...");
+                   //System.out.println("Running game now...");
                 }
             });
         }

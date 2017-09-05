@@ -10,18 +10,8 @@ import java.util.ArrayList;
  */
 public class GameData {
 
-    private ArrayList<HexagonElement> elementList = new ArrayList<HexagonElement>();
-
-    private CenterPiece centerPiece;
+    private Grid grid;
     private int score;
-
-    public CenterPiece getCenterPiece() {
-        return centerPiece;
-    }
-
-    public void setCenterPiece(CenterPiece centerPiece) {
-        this.centerPiece = centerPiece;
-    }
 
     public int getScore() {
         return score;
@@ -31,7 +21,11 @@ public class GameData {
         this.score = score;
     }
 
-    public ArrayList<HexagonElement> getElementList() {
-        return elementList;
+    public Grid getGrid() {
+        return grid;
+    }
+
+    public void setGrid(Grid grid) {
+        this.grid = grid;
     }
 }

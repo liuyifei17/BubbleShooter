@@ -1,10 +1,13 @@
 package View;
 
 import Elements.HexagonElement;
+import Model.Cell;
 import Model.GameData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+
+import java.util.ArrayList;
 
 /**
  * Created by jur on 9/5/2017.
@@ -18,8 +21,13 @@ public class View {
     private ImageView topBar;
     private ImageView scoreBar;
 
-    private final int TOP_BAR_HEIGHT = 70;
-    private final int SCORE_BAR_HEIGHT = 40;
+    private ArrayList<Cell> cells;
+    private ArrayList<ImageView> elementSprites;
+
+    public static final double STAGE_WIDTH = 600;
+    public static double STAGE_HEIGHT = 700;
+    public static final int TOP_BAR_HEIGHT = 70;
+    private static final int SCORE_BAR_HEIGHT = 40;
     private static final int SCORE_BAR_WIDTH = 240;
 
     public View(Pane pane, GameData data){
@@ -45,28 +53,35 @@ public class View {
         scoreBar.setFitHeight(SCORE_BAR_HEIGHT);
         scoreBar.setFitWidth(SCORE_BAR_WIDTH);
 
-        //draw game bars & score etc
-        //TODO; draw other components
-
         //draw entities
-        ImageView centerPieceImage = new ImageView(data.getCenterPiece().getSprite());
-        centerPieceImage.relocate(getScreenX(data.getCenterPiece()), getScreenY(data.getCenterPiece()));
-
-        //draw balls
-        //TODO: draw balls
+        cells = new ArrayList<Cell>();
+        elementSprites = new ArrayList<ImageView>();
+        for(Cell c: data.getGrid().getCells()){
+            HexagonElement e = c.getElement();
+            if(e != null){
+                cells.add(c);
+                elementSprites.add(new ImageView(e.getSprite()));
+            }
+        }
+        for(int i = 0; i < elementSprites.size(); i++){
+            Cell c = cells.get(i);
+            elementSprites.get(i).relocate(getScreenX(c), getScreenY(c));
+        }
 
         //add components to game pane
         pane.getChildren().add(topBar);
         pane.getChildren().add(scoreBar);
-        pane.getChildren().add(centerPieceImage);
+        for(ImageView iv: elementSprites){
+            pane.getChildren().add(iv);
+        }
     }
 
-    private double getScreenX(HexagonElement hexagonElement){
-        return (hexagonElement.getX() - (hexagonElement.getSprite().getWidth() / 2));
+    private double getScreenX(Cell cell){
+        return (cell.getX() - (cell.getElement().getSprite().getWidth() / 2));
     }
 
-    private double getScreenY(HexagonElement hexagonElement){
-        return (hexagonElement.getY() + TOP_BAR_HEIGHT - (hexagonElement.getSprite().getHeight() / 2));
+    private double getScreenY(Cell cell){
+        return (cell.getY() - (cell.getElement().getSprite().getHeight() / 2));
     }
 
 }
