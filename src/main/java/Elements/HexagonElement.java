@@ -15,6 +15,13 @@ public class HexagonElement {
     private double[] edgeRotations = { 90, 30, 330, 270, 210, 150 };
     private HexagonElement[] adjacentElements = { null, null, null, null, null, null };
 
+    public HexagonElement(int id, double x, double y, Image img){
+        this.id = id;
+        this.centerX = x;
+        this.centerY = y;
+        this.img = img;
+    }
+
     public double getX(){
         return centerX;
     }
@@ -25,10 +32,6 @@ public class HexagonElement {
 
     public Image getSprite() {
         return img;
-    }
-
-    public void setImg(Image img) {
-        this.img = img;
     }
 
     public void setY(double centerY) {
@@ -49,9 +52,5 @@ public class HexagonElement {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }

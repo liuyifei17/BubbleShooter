@@ -8,10 +8,7 @@ import javafx.scene.image.Image;
 public class CenterPiece extends HexagonElement {
 
     public CenterPiece(double x, double y) {
-        super.setId(0);
-        super.setX(x);
-        super.setY(y);
-        super.setImg(new Image("images/center.png"));
+        super(0, x, y, new Image("images/center.png"));
     }
 
 }
