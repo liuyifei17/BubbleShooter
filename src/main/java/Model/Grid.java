@@ -1,5 +1,6 @@
 package Model;
 
+import Utility.Util;
 import View.View;
 
 import java.util.ArrayList;
@@ -81,6 +82,42 @@ public class Grid {
             }
         }
     }
+
+    public Cell closestCellToLocation(double locX, double locY){
+        Cell closestCell = centerCell;
+        for(Cell c: cells){
+            if(Util.getDistance(c.getX(), c.getY(), locX, locY) <=
+                    Util.getDistance(closestCell.getX(), closestCell.getY(), locX, locY)){
+                closestCell = c;
+            }
+        }
+        return closestCell;
+    }
+
+    /**
+     * @param locX
+     * @param locY
+     * @return null if no empty cell found or an empty cell if found
+     */
+    public Cell closestEmptyCellToLocation(double locX, double locY){
+        Cell closestCell = null;
+        for(Cell c: cells){
+            // if the cell has no element inside it
+            if(c.getElement() == null){
+                //if we haven't found an empty cell yet, we set it
+                if(closestCell == null) closestCell = c;
+                //if we already have found an empty cell, we compare distances
+                else if(Util.getDistance(c.getX(), c.getY(), locX, locY) <=
+                        Util.getDistance(closestCell.getX(), closestCell.getY(), locX, locY)){
+                    closestCell = c;
+                }
+            }
+
+        }
+        return closestCell;
+    }
+
+
 
     public ArrayList<Cell> getCells(){
         return cells;

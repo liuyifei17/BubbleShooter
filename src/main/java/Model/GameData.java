@@ -12,6 +12,7 @@ public class GameData {
 
     private Grid grid;
     private int score;
+    private int initialBallAmount;
 
     public int getScore() {
         return score;
@@ -27,5 +28,13 @@ public class GameData {
 
     public void setGrid(Grid grid) {
         this.grid = grid;
+    }
+
+    public int getInitialBallAmount() {
+        return initialBallAmount;
+    }
+
+    public void setInitialBallAmount(int initialBallAmount) {
+        this.initialBallAmount = initialBallAmount;
     }
 }
