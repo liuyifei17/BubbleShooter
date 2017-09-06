@@ -1,10 +1,5 @@
 package Model;
 
-import Elements.CenterPiece;
-import Elements.HexagonElement;
-
-import java.util.ArrayList;
-
 /**
  * Created by jur on 9/5/2017.
  */
