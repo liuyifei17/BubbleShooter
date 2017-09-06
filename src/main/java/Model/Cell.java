@@ -1,6 +1,6 @@
 package Model;
 
-import Elements.HexagonElement;
+import Elements.Element;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class Cell {
     public static double EDGE_CENTER_DISTANCE = 15.0;
     private double initialX;
     private double initialY;
-    private HexagonElement element;
+    private Element element;
     private ArrayList<Cell> adjacentCells;
 
     public Cell(double x, double y){
@@ -22,11 +22,11 @@ public class Cell {
         adjacentCells = new ArrayList<Cell>();
     }
 
-    public HexagonElement getElement() {
+    public Element getElement() {
         return element;
     }
 
-    public void setElement(HexagonElement element) {
+    public void setElement(Element element) {
         this.element = element;
     }
 

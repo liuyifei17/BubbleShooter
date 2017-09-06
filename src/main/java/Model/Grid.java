@@ -16,6 +16,10 @@ public class Grid {
     private double centerX;
     private double centerY;
 
+    /** Creates a grid based on the center values of the grid and initializes all grid cells
+     * @param x the x coord of the center of the grid
+     * @param y the y coord of the center of the grid
+     */
     public Grid(double x, double y){
         cells = new ArrayList<Cell>();
         rotation = 0;
@@ -24,6 +28,11 @@ public class Grid {
         initializeCells(x, y);
     }
 
+    /** Calculates the cell locations on the entire screen based on the center cell
+     * It initializes all cells based on these calculations
+     * @param x the x coord of the center of the grid
+     * @param y the y coord of the center of the grid
+     */
     private void initializeCells(double x, double y){
         //set center cell
         centerCell = new Cell(x, y);
@@ -57,6 +66,13 @@ public class Grid {
         setAdjacentCells();
     }
 
+    /** Sets the cells in the grid for the respective coordinates
+     * @param cellX x coord of a cell
+     * @param cellY y coord of a cell
+     * @param x the x coord of the center of the grid
+     * @param y the y coord of the center of the grid
+     * @param minimumY the minimum y coord on the screen that can contain a cell
+     */
     private void setCellLines(double cellX, double cellY, double x, double y, double minimumY){
         while(cellX <= View.STAGE_WIDTH) {
             while (cellY <= View.STAGE_HEIGHT) {
@@ -72,6 +88,10 @@ public class Grid {
         }
     }
 
+    /**
+     * calculates the (maximum 6) surrounding cells of every cell in the grid.
+     * These neighbouring cells are saved for every cell
+     */
     private void setAdjacentCells(){
         for(Cell c1: cells){
             for(Cell c2: cells){
@@ -83,6 +103,11 @@ public class Grid {
         }
     }
 
+    /** finds the closest cell to a certain location (x, y)
+     * @param locX coord x of location
+     * @param locY coord y of location
+     * @return null if no empty cell found or an empty cell if found
+     */
     public Cell closestCellToLocation(double locX, double locY){
         Cell closestCell = centerCell;
         for(Cell c: cells){
@@ -94,9 +119,9 @@ public class Grid {
         return closestCell;
     }
 
-    /**
-     * @param locX
-     * @param locY
+    /** finds the closest cell that does not contain an element to a certain location (x, y)
+     * @param locX coord x of location
+     * @param locY coord y of location
      * @return null if no empty cell found or an empty cell if found
      */
     public Cell closestEmptyCellToLocation(double locX, double locY){
@@ -117,12 +142,16 @@ public class Grid {
         return closestCell;
     }
 
-
-
+    /**
+     * @return cells
+     */
     public ArrayList<Cell> getCells(){
         return cells;
     }
 
+    /**
+     * @return centerCell
+     */
     public Cell getCenterCell(){
         return centerCell;
     }
