@@ -12,12 +12,16 @@ public class Cell {
     public static double EDGE_CENTER_DISTANCE = 15.0;
     private double initialX;
     private double initialY;
+    private double currentX;
+    private double currentY;
     private Element element;
     private ArrayList<Cell> adjacentCells;
 
     public Cell(double x, double y){
         initialX = x;
         initialY = y;
+        currentX = x;
+        currentY = y;
         element = null;
         adjacentCells = new ArrayList<Cell>();
     }
@@ -30,23 +34,31 @@ public class Cell {
         this.element = element;
     }
 
-    public double getY() {
-        return initialY;
+    public ArrayList<Cell> getAdjacentCells() {
+        return adjacentCells;
     }
 
-    public void setY(double initialY) {
-        this.initialY = initialY;
-    }
-
-    public double getX() {
+    public double getInitialX() {
         return initialX;
     }
 
-    public void setX(double initialX) {
-        this.initialX = initialX;
+    public double getInitialY() {
+        return initialY;
     }
 
-    public ArrayList<Cell> getAdjacentCells() {
-        return adjacentCells;
+    public double getCurrentX() {
+        return currentX;
+    }
+
+    public void setCurrentX(double currentX) {
+        this.currentX = currentX;
+    }
+
+    public double getCurrentY() {
+        return currentY;
+    }
+
+    public void setCurrentY(double currentY) {
+        this.currentY = currentY;
     }
 }

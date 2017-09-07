@@ -3,7 +3,6 @@ package View;
 import Elements.Element;
 import Model.Cell;
 import Model.GameData;
-import Utility.Util;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -69,15 +68,6 @@ public class View {
             elementSprites.get(i).relocate(getScreenX(c), getScreenY(c));
         }
 
-        // rotate imageview
-        for(int i = 0; i < elementSprites.size(); i++){
-            ImageView iv = elementSprites.get(i);
-            double[] newCoords = Util.calculateRotation(cells.get(i).getX(), cells.get(i).getY(),
-                    data.getGrid().getCenterCell().getX(), data.getGrid().getCenterCell().getY(), 60);
-            iv.relocate(newCoords[0], newCoords[1]);
-            iv.rotateProperty().setValue(60);
-        }
-
         //add components to game pane
         pane.getChildren().add(topBar);
         pane.getChildren().add(scoreBar);
@@ -86,12 +76,23 @@ public class View {
         }
     }
 
+    public void redraw(){
+        //check for changed cells and update children
+
+        //relocate elements
+        for(int i = 0; i < elementSprites.size(); i++){
+            ImageView iv = elementSprites.get(i);
+            iv.relocate(getScreenX(cells.get(i)), getScreenY(cells.get(i)));
+            iv.rotateProperty().setValue(data.getGrid().getRotation());
+        }
+    }
+
     private double getScreenX(Cell cell){
-        return (cell.getX() - (cell.getElement().getSprite().getWidth() / 2));
+        return (cell.getCurrentX() - (cell.getElement().getSprite().getWidth() / 2));
     }
 
     private double getScreenY(Cell cell){
-        return (cell.getY() - (cell.getElement().getSprite().getHeight() / 2));
+        return (cell.getCurrentY() - (cell.getElement().getSprite().getHeight() / 2));
     }
 
 }
