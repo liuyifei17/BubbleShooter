@@ -6,6 +6,24 @@ package Utility;
 public class Util {
 
     /**
+     * @param cellX
+     * @param cellY
+     * @param centerX
+     * @param centerY
+     * @param rotation
+     * @return
+     */
+    public static double[] calculateRotation(double cellX, double cellY, double centerX, double centerY, double rotation){
+        double angleInRadians = Math.toRadians(rotation);
+        double vecX = centerX - cellX;
+        double vecY = centerY - cellY;
+        double rotateX = vecX * Math.cos(angleInRadians) - vecY * Math.sin(angleInRadians);
+        double rotateY = vecX * Math.sin(angleInRadians) + vecY * Math.cos(angleInRadians);
+        double[] coords = {(rotateX + centerX),(rotateY + centerY)};
+        return coords;
+    }
+
+    /**
      * @param min the minimum random value to output
      * @param max the maximum random value to output
      * @return outputs a random integer value between min and max

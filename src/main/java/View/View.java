@@ -3,6 +3,7 @@ package View;
 import Elements.Element;
 import Model.Cell;
 import Model.GameData;
+import Utility.Util;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -66,6 +67,15 @@ public class View {
         for(int i = 0; i < elementSprites.size(); i++){
             Cell c = cells.get(i);
             elementSprites.get(i).relocate(getScreenX(c), getScreenY(c));
+        }
+
+        // rotate imageview
+        for(int i = 0; i < elementSprites.size(); i++){
+            ImageView iv = elementSprites.get(i);
+            double[] newCoords = Util.calculateRotation(cells.get(i).getX(), cells.get(i).getY(),
+                    data.getGrid().getCenterCell().getX(), data.getGrid().getCenterCell().getY(), 60);
+            iv.relocate(newCoords[0], newCoords[1]);
+            iv.rotateProperty().setValue(60);
         }
 
         //add components to game pane

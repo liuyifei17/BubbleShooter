@@ -41,7 +41,7 @@ public class Grid {
         //find minimum x coord of grid
         double minimumX = x;
         while(minimumX >= 0){
-            minimumX -= (Cell.EDGE_CENTER_DISTANCE * 4);
+            minimumX -= (Cell.EDGE_CENTER_DISTANCE * 3.5);
         }
 
         //find minimum y coord of grid
@@ -56,7 +56,7 @@ public class Grid {
         setCellLines(cellX, cellY, x, y, minimumY);
 
         //set second lines of cells
-        minimumX += (Cell.EDGE_CENTER_DISTANCE * 2);
+        minimumX += (Cell.EDGE_CENTER_DISTANCE * 1.75);
         minimumY += (Cell.EDGE_CENTER_DISTANCE);
         cellX = minimumX;
         cellY = minimumY;
@@ -84,7 +84,7 @@ public class Grid {
                 }
             }
             cellY = minimumY;
-            cellX += (Cell.EDGE_CENTER_DISTANCE * 4);
+            cellX += (Cell.EDGE_CENTER_DISTANCE * 3.5);
         }
     }
 
