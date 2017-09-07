@@ -26,7 +26,7 @@ install:
 
 script:
   - if [[ "$CI_TASK" == "unittest" ]]; then mvn test; fi
-  - if [[ "$CI_TASK" == "checkstyle" ]]; then mvn checkstyle:check; fi
+#  - if [[ "$CI_TASK" == "checkstyle" ]]; then mvn checkstyle:check; fi
 
 after_success:
   - if [[ "$CI_TASK" == "unittest" ]]; then mvn clean cobertura:cobertura coveralls:report; fi
