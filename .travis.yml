@@ -3,7 +3,6 @@
 # Execute unit tests and checkstyle checks in parallel
 env:
   - CI_TASK=unittest
-  - CI_TASK=checkstyle
 
 # Use the Java Travis CI environment
 language: java
@@ -18,7 +17,7 @@ addons:
       - oracle-java8-installer
 
 # No root access
-sudo: false
+sudo: true
 
 # sanity check: compile first.
 #  try to compile, skip the tests, skip the javadocs, print the version, and use batch-mode.
