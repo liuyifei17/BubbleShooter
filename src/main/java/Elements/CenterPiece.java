@@ -5,10 +5,10 @@ import javafx.scene.image.Image;
 /**
  * Created by jur on 9/5/2017.
  */
-public class CenterPiece extends HexagonElement {
+public class CenterPiece extends Element {
 
     public CenterPiece() {
-        super(0, null, new Image("images/center.png"));
+        super(null, new Image("images/center.png"));
     }
 
 }

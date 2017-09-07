@@ -1,6 +1,6 @@
 package View;
 
-import Elements.HexagonElement;
+import Elements.Element;
 import Model.Cell;
 import Model.GameData;
 import javafx.scene.image.Image;
@@ -57,7 +57,7 @@ public class View {
         cells = new ArrayList<Cell>();
         elementSprites = new ArrayList<ImageView>();
         for(Cell c: data.getGrid().getCells()){
-            HexagonElement e = c.getElement();
+            Element e = c.getElement();
             if(e != null){
                 cells.add(c);
                 elementSprites.add(new ImageView(e.getSprite()));
