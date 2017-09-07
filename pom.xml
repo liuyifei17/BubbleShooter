@@ -16,6 +16,18 @@
         <scope>test</scope>
     </dependency>
     <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>2.9.0</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>3.8.0</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
         <version>5.0.0-M4</version>
@@ -65,7 +77,18 @@
                     <xmlOutputDirectory>target/site</xmlOutputDirectory>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.8</version>
+                <configuration>
+                    <skipEmptyReport>false</skipEmptyReport>
+                    <includeTests>true</includeTests>
+                    <rulesets>
+                        <ruleset>pmd-rules.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
 
         </plugins>
     </build>
@@ -87,6 +110,18 @@
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
                     <failOnViolation>false</failOnViolation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.8</version>
+                <configuration>
+                    <skipEmptyReport>false</skipEmptyReport>
+                    <includeTests>true</includeTests>
+                    <rulesets>
+                        <ruleset>pmd-rules.xml</ruleset>
+                    </rulesets>
                 </configuration>
             </plugin>
         </plugins>
