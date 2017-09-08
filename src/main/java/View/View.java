@@ -76,12 +76,23 @@ public class View {
         }
     }
 
+    public void redraw(){
+        //check for changed cells and update children
+
+        //relocate elements
+        for(int i = 0; i < elementSprites.size(); i++){
+            ImageView iv = elementSprites.get(i);
+            iv.relocate(getScreenX(cells.get(i)), getScreenY(cells.get(i)));
+            iv.rotateProperty().setValue(data.getGrid().getRotation());
+        }
+    }
+
     private double getScreenX(Cell cell){
-        return (cell.getX() - (cell.getElement().getSprite().getWidth() / 2));
+        return (cell.getCurrentX() - (cell.getElement().getSprite().getWidth() / 2));
     }
 
     private double getScreenY(Cell cell){
-        return (cell.getY() - (cell.getElement().getSprite().getHeight() / 2));
+        return (cell.getCurrentY() - (cell.getElement().getSprite().getHeight() / 2));
     }
 
 }
