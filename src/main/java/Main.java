@@ -1,4 +1,5 @@
 import Controller.GameRunner;
+import Controller.GridController;
 import Model.GameData;
 import Controller.GameDataLoader;
 import View.View;
@@ -12,20 +13,24 @@ import javafx.scene.layout.Pane;
  */
 public class Main extends Application {
 
-    private GameRunner runner;
-    private GameDataLoader loader;
     private GameData data;
+    private GameDataLoader loader;
     private View view;
+    private GameRunner runner;
+    private GridController gridController;
 
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
         //Create a pane to hold the game
         Pane gamePane = new Pane();
 
-        //Initialize game
+        //Initialize data
         data = new GameData();
         loader = new GameDataLoader();
         loader.initialize(data, View.STAGE_WIDTH / 2, (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
+
+        //Initialize controllers
+        gridController = new GridController(data.getGrid());
 
         //Draw elements on pane
         view = new View(gamePane, data);
@@ -39,7 +44,7 @@ public class Main extends Application {
         primaryStage.show(); // Display the stage
 
         //Start running the game
-        runner = new GameRunner();
+        runner = new GameRunner(gridController, view);
         runner.runGame();
     }
 

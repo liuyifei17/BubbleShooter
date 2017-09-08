@@ -5,6 +5,24 @@ package Utility;
  */
 public class Util {
 
+    /** Calculate the rotated coordinates of rotating point (X,Y) around a center point (X,Y).
+     * @param rotatingX
+     * @param rotatingY
+     * @param centerX
+     * @param centerY
+     * @param rotation
+     * @return the new rotated coordinates (X,Y) of the rotated point
+     */
+    public static double[] calculateRotatedCoordinates(double rotatingX, double rotatingY, double centerX, double centerY, double rotation){
+        double angleInRadians = Math.toRadians(rotation);
+        double vecX = centerX - rotatingX;
+        double vecY = centerY - rotatingY;
+        double rotateX = vecX * Math.cos(angleInRadians) - vecY * Math.sin(angleInRadians);
+        double rotateY = vecX * Math.sin(angleInRadians) + vecY * Math.cos(angleInRadians);
+        double[] coords = {(rotateX + centerX),(rotateY + centerY)};
+        return coords;
+    }
+
     /**
      * @param min the minimum random value to output
      * @param max the maximum random value to output
