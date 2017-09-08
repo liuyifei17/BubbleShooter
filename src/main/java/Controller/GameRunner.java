@@ -2,6 +2,7 @@ package Controller;
 
 import java.awt.event.*;
 import javax.swing.Timer;
+import View.View;
 
 /**
  * Created by jur on 9/5/2017.
@@ -9,11 +10,14 @@ import javax.swing.Timer;
 public class GameRunner {
 
         private final Timer timer = new Timer(40,null);
+        private GridController gridController;
+        private View view;
 
         private void initializeGameTimer(){
             timer.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-                   //System.out.println("Running game now...");
+                    gridController.process();
+                    view.redraw();
                 }
             });
         }
@@ -21,5 +25,10 @@ public class GameRunner {
         public void runGame(){
             initializeGameTimer();
             timer.start();
+        }
+
+        public GameRunner(GridController gridController, View view){
+            this.gridController = gridController;
+            this.view = view;
         }
 }

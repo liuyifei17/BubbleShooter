@@ -12,7 +12,9 @@ public class Grid {
 
     private ArrayList<Cell> cells;
     private Cell centerCell;
-    private int rotation;
+    private int rotation;//the current rotation in degrees
+    private int rotationDifference;//the change in rotation for a given ball impact
+    private int rotationSpeed;//turning speed in degrees per frame
     private double centerX;
     private double centerY;
 
@@ -23,6 +25,8 @@ public class Grid {
     public Grid(double x, double y){
         cells = new ArrayList<Cell>();
         rotation = 0;
+        rotationDifference = 10000;
+        rotationSpeed = 4;
         centerX = x;
         centerY = y;
         initializeCells(x, y);
@@ -41,7 +45,7 @@ public class Grid {
         //find minimum x coord of grid
         double minimumX = x;
         while(minimumX >= 0){
-            minimumX -= (Cell.EDGE_CENTER_DISTANCE * 4);
+            minimumX -= (Cell.EDGE_CENTER_DISTANCE * 3.5);
         }
 
         //find minimum y coord of grid
@@ -56,7 +60,7 @@ public class Grid {
         setCellLines(cellX, cellY, x, y, minimumY);
 
         //set second lines of cells
-        minimumX += (Cell.EDGE_CENTER_DISTANCE * 2);
+        minimumX += (Cell.EDGE_CENTER_DISTANCE * 1.75);
         minimumY += (Cell.EDGE_CENTER_DISTANCE);
         cellX = minimumX;
         cellY = minimumY;
@@ -84,7 +88,7 @@ public class Grid {
                 }
             }
             cellY = minimumY;
-            cellX += (Cell.EDGE_CENTER_DISTANCE * 4);
+            cellX += (Cell.EDGE_CENTER_DISTANCE * 3.5);
         }
     }
 
@@ -95,8 +99,8 @@ public class Grid {
     private void setAdjacentCells(){
         for(Cell c1: cells){
             for(Cell c2: cells){
-                if(Math.abs(c1.getX() - c2.getX()) < Cell.EDGE_CENTER_DISTANCE * 3 &&
-                        Math.abs(c1.getY() - c2.getY()) < Cell.EDGE_CENTER_DISTANCE * 3){
+                if(Math.abs(c1.getInitialX() - c2.getInitialX()) < Cell.EDGE_CENTER_DISTANCE * 3 &&
+                        Math.abs(c1.getInitialY() - c2.getInitialY()) < Cell.EDGE_CENTER_DISTANCE * 3){
                     c1.getAdjacentCells().add(c2);
                 }
             }
@@ -111,8 +115,8 @@ public class Grid {
     public Cell closestCellToLocation(double locX, double locY){
         Cell closestCell = centerCell;
         for(Cell c: cells){
-            if(Util.getDistance(c.getX(), c.getY(), locX, locY) <=
-                    Util.getDistance(closestCell.getX(), closestCell.getY(), locX, locY)){
+            if(Util.getDistance(c.getInitialX(), c.getInitialY(), locX, locY) <=
+                    Util.getDistance(closestCell.getInitialX(), closestCell.getInitialY(), locX, locY)){
                 closestCell = c;
             }
         }
@@ -132,8 +136,8 @@ public class Grid {
                 //if we haven't found an empty cell yet, we set it
                 if(closestCell == null) closestCell = c;
                 //if we already have found an empty cell, we compare distances
-                else if(Util.getDistance(c.getX(), c.getY(), locX, locY) <=
-                        Util.getDistance(closestCell.getX(), closestCell.getY(), locX, locY)){
+                else if(Util.getDistance(c.getInitialX(), c.getInitialY(), locX, locY) <=
+                        Util.getDistance(closestCell.getInitialX(), closestCell.getInitialY(), locX, locY)){
                     closestCell = c;
                 }
             }
@@ -156,4 +160,27 @@ public class Grid {
         return centerCell;
     }
 
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
+    }
+
+    public int getRotation() {
+        return rotation;
+    }
+
+    public int getRotationDifference() {
+        return rotationDifference;
+    }
+
+    public void setRotationDifference(int rotationDifference) {
+        this.rotationDifference = rotationDifference;
+    }
+
+    public int getRotationSpeed() {
+        return rotationSpeed;
+    }
+
+    public void setRotationSpeed(int rotationSpeed) {
+        this.rotationSpeed = rotationSpeed;
+    }
 }
