@@ -28,7 +28,7 @@ public class View {
     public static final double STAGE_WIDTH = 600;
     public static double STAGE_HEIGHT = 700;
     public static final int TOP_BAR_HEIGHT = 70;
-    public static final int screenWithDeviation = 12;
+    public static final int SCREEN_WITH_DEVIATION = 12;
     private static final int SCORE_BAR_HEIGHT = 40;
     private static final int SCORE_BAR_WIDTH = 240;
 
