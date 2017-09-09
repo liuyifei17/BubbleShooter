@@ -99,7 +99,7 @@ public class PlayerBallController {
      * @param deltaY the Y direction in whch the ball moves.
      * @return an array with the negative of either or both of the deltaX and deltaY.
      */
-    public double[] reflectBack(double deltaX, double deltaY) {
+    private double[] reflectBack(double deltaX, double deltaY) {
 
         if ((player.getPlayerBall().getX() < ballRadius - View.SCREEN_WITH_DEVIATION)
                 || (player.getPlayerBall().getX() >= View.STAGE_WIDTH - ballRadius)) {
