@@ -94,6 +94,8 @@ public class View {
             iv.rotateProperty().setValue(data.getGrid().getRotation());
         }
 
+        playerBall.setImage(data.getPlayer().getPlayerBall().getImage());
+
         playerBall.relocate(data.getPlayer().getPlayerBall().getX(),
                 data.getPlayer().getPlayerBall().getY());
 

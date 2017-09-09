@@ -6,6 +6,7 @@ import Controller.GameDataLoader;
 import View.View;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -35,11 +36,11 @@ public class Main extends Application {
 
         //Initialize controllers
         gridController = new GridController(data.getGrid());
+        playerBallController = new PlayerBallController(data.getPlayer(), data.getGrid());
 
         //Draw elements on pane
         view = new View(gamePane, data);
         view.draw();
-        playerBallController = new PlayerBallController(data.getPlayer(), data.getGrid());
 
         // Create a scene containing the pane and place it in the stage
         Scene scene = new Scene(gamePane, View.STAGE_WIDTH, View.STAGE_HEIGHT);
@@ -48,19 +49,19 @@ public class Main extends Application {
         primaryStage.setResizable(false); //cannot resize game
         primaryStage.show(); // Display the stage
 
-        // Create a mousebutton event that keeps track on when the mouse has been clicked,
-        // so that the ball will move in that direction.
-        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                    playerBallController.setMouseX(event.getX());
-                    playerBallController.setMouseY(event.getY());
-                    playerBallController.calculateDelta();
-            }
-        });
-
         //Start running the game
         runner = new GameRunner(gridController, view, playerBallController);
         runner.runGame();
+
+        // Create a mousebutton event that keeps track on when the mouse has been clicked,
+        // so that the ball will move in that direction.
+        scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                playerBallController.setMouseX(event.getSceneX());
+                playerBallController.setMouseY(event.getSceneY());
+                playerBallController.calculateDelta();
+            }
+        });
 
     }
 

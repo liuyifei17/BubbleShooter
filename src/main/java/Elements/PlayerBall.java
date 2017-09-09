@@ -26,6 +26,7 @@ public class PlayerBall {
      */
     public PlayerBall(double x, double y) {
         int randomColor =  Util.randomBetween(0,Ball.COLORS.length-1);
+        System.out.println(randomColor);
         image = new Image("images/" + Ball.COLORS[randomColor] + " ball.png");
         counter = 0;
         this.x = x;
@@ -88,7 +89,7 @@ public class PlayerBall {
      * @return true if it hit the wall and false if it didn't.
      */
     public boolean hasCollidedWithWall() {
-        final int radiusBall = 15;
+        final int radiusBall = 17;
         if ((x < radiusBall - View.SCREEN_WITH_DEVIATION)
                 || (x >= View.STAGE_WIDTH - radiusBall)
                 || (y < View.TOP_BAR_HEIGHT)

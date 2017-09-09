@@ -10,7 +10,7 @@ import View.View;
  */
 public class PlayerBallController {
 
-    private final int ballRadius = 15;
+    private final int ballRadius = 17;
     private Player player;
     private Grid grid;
     private double mouseX;
@@ -43,7 +43,7 @@ public class PlayerBallController {
             return;
         }
 
-        final int speedup = 5;
+        final int speedup = 4;
         double vectorX = mouseX - player.getPlayerBall().getX();
         double vectorY = mouseY - player.getPlayerBall().getY();
         double max = Math.max(Math.abs(vectorX), Math.abs(vectorY));
