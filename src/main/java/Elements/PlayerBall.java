@@ -16,6 +16,7 @@ public class PlayerBall {
     private Image image;
     private double x;
     private double y;
+    private int counter;
 
     /**
      * Initiate a ball with a random image.
@@ -26,6 +27,7 @@ public class PlayerBall {
         Random randomNumber = new Random();
         int randomColor =  randomNumber.nextInt(Ball.COLORS.length);
         image = new Image("images/" + Ball.COLORS[randomColor] + " ball.png");
+        counter = 0;
         this.x = x;
         this.y = y;
 
@@ -67,16 +69,31 @@ public class PlayerBall {
     }
 
     /**
+     * @return count the times the ball has hit the wall.
+     */
+    public int getCounter() {
+        return counter;
+    }
+
+    /**
+     * @param counter set the counter to an other number.
+     */
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    /**
      * If the center of the ball is 15 away from the stage's maximum width and
      * height then it hit the wall.
      * @return true if it hit the wall and false if it didn't.
      */
     public boolean hasCollidedWithWall() {
         final int radiusBall = 15;
-        if ((x <= radiusBall)
+        if ((x < radiusBall - View.screenWithDeviation)
                 || (x >= View.STAGE_WIDTH - radiusBall)
-                || (y <= View.TOP_BAR_HEIGHT + radiusBall)
+                || (y < View.TOP_BAR_HEIGHT )
                 || (y >= View.STAGE_HEIGHT - radiusBall)) {
+            counter++;
             return true;
         }
 
@@ -92,9 +109,9 @@ public class PlayerBall {
         ArrayList<Cell> cells = grid.getCells();
         final int radiusBallDouble = 30;
         for (Cell i:cells) {
-            double deltaX = i.getX() - x;
-            double deltaY = i.getY() - y;
-            double distance = Math.sqrt((deltaX * deltaX + deltaY * deltaY));
+            double deltaX = i.getCurrentX() - x;
+            double deltaY = i.getInitialY() - y;
+            double distance = Math.sqrt(-(deltaX * deltaX + deltaY * deltaY));
             if (distance <= radiusBallDouble) {
                 return true;
             }
