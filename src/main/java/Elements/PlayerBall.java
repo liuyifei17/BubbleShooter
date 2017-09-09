@@ -7,8 +7,6 @@ import Utility.Util;
 import View.View;
 import javafx.scene.image.Image;
 
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * PlayerBall is the ball with which the player shoots.
@@ -25,7 +23,7 @@ public class PlayerBall {
      * @param y the y coordinate of the ball.
      */
     public PlayerBall(double x, double y) {
-        int randomColor =  Util.randomBetween(0,Ball.COLORS.length-1);
+        int randomColor =  Util.randomBetween(0, Ball.COLORS.length - 1);
         System.out.println(randomColor);
         image = new Image("images/" + Ball.COLORS[randomColor] + " ball.png");
         counter = 0;
