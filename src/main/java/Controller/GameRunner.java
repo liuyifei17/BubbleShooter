@@ -18,7 +18,7 @@ public class GameRunner {
     private void initializeGameTimer() {
         timer.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-                    gridController.process();
+                   // gridController.process();
                     if (ballController.getMouseY() != 0) {
                         ballController.launchBall();
                     }
