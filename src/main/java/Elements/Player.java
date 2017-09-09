@@ -6,7 +6,6 @@ import View.View;
  * The player class is keeps track of the players attributes.
  */
 public class Player {
-    private int score;
     private PlayerBall playerBall;
     private int missCounter;
 
@@ -15,23 +14,9 @@ public class Player {
      * ball.
      */
     public Player() {
-        playerBall = new PlayerBall(View.STAGE_WIDTH / 2, View.TOP_BAR_HEIGHT);
-        score = 0;
+        playerBall = new PlayerBall(View.STAGE_WIDTH / 2 - View.screenWithDeviation,
+                View.TOP_BAR_HEIGHT);
         missCounter = 0;
-    }
-
-    /**
-     * @return the score.
-     */
-    public int getScore() {
-        return score;
-    }
-
-    /**
-     * @param score increase or decrease the score.
-     */
-    public void setScore(int score) {
-        this.score = score;
     }
 
     /**
