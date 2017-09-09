@@ -1,12 +1,16 @@
 import Controller.GameRunner;
 import Controller.GridController;
+import Controller.PlayerBallController;
 import Model.GameData;
 import Controller.GameDataLoader;
 import View.View;
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Created by jur on 9/5/2017.
@@ -18,6 +22,7 @@ public class Main extends Application {
     private View view;
     private GameRunner runner;
     private GridController gridController;
+    private PlayerBallController playerBallController;
 
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
@@ -31,6 +36,7 @@ public class Main extends Application {
 
         //Initialize controllers
         gridController = new GridController(data.getGrid());
+        playerBallController = new PlayerBallController(data.getPlayer(), data.getGrid());
 
         //Draw elements on pane
         view = new View(gamePane, data);
@@ -40,12 +46,23 @@ public class Main extends Application {
         Scene scene = new Scene(gamePane, View.STAGE_WIDTH, View.STAGE_HEIGHT);
         primaryStage.setTitle("Bubble Shooter"); // Set the stage title
         primaryStage.setScene(scene); // Place the scene in the stage
-        primaryStage.setResizable(false);//cannot resize game
+        primaryStage.setResizable(false); //cannot resize game
         primaryStage.show(); // Display the stage
 
         //Start running the game
-        runner = new GameRunner(gridController, view);
+        runner = new GameRunner(gridController, view, playerBallController);
         runner.runGame();
+
+        // Create a mousebutton event that keeps track on when the mouse has been clicked,
+        // so that the ball will move in that direction.
+        scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                playerBallController.setMouseX(event.getSceneX());
+                playerBallController.setMouseY(event.getSceneY());
+                playerBallController.calculateDelta();
+            }
+        });
+
     }
 
     /**
