@@ -89,9 +89,9 @@ public class PlayerBall {
      */
     public boolean hasCollidedWithWall() {
         final int radiusBall = 15;
-        if ((x < radiusBall - View.screenWithDeviation)
+        if ((x < radiusBall - View.SCREEN_WITH_DEVIATION)
                 || (x >= View.STAGE_WIDTH - radiusBall)
-                || (y < View.TOP_BAR_HEIGHT )
+                || (y < View.TOP_BAR_HEIGHT)
                 || (y >= View.STAGE_HEIGHT - radiusBall)) {
             counter++;
             return true;

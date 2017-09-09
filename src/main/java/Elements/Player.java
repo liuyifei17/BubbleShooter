@@ -14,7 +14,7 @@ public class Player {
      * ball.
      */
     public Player() {
-        playerBall = new PlayerBall(View.STAGE_WIDTH / 2 - View.screenWithDeviation,
+        playerBall = new PlayerBall(View.STAGE_WIDTH / 2 - View.SCREEN_WITH_DEVIATION,
                 View.TOP_BAR_HEIGHT);
         missCounter = 0;
     }
