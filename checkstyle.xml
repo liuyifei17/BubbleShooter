@@ -5,7 +5,7 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: JPacman Coding Standards
+    Checkstyle-Configuration: BubbleShoot Config
     Description: none
 -->
 <module name="Checker">
@@ -31,7 +31,6 @@
     <module name="MethodName">
       <property name="format" value="^[a-z][a-zA-Z0-9_]*$"/>
     </module>
-    <module name="PackageName"/>
     <module name="ParameterName"/>
     <module name="StaticVariableName"/>
     <module name="TypeName"/>
@@ -41,9 +40,6 @@
     <module name="UnusedImports"/>
     <module name="LineLength">
       <property name="max" value="100"/>
-    </module>
-    <module name="MethodLength">
-      <property name="max" value="50"/>
     </module>
     <module name="ParameterNumber"/>
     <module name="EmptyForIteratorPad"/>
@@ -108,7 +104,7 @@
     <module name="UpperEll"/>
     <module name="FallThrough"/>
     <module name="MethodLength">
-      <property name="max" value="30"/>
+      <property name="max" value="40"/>
     </module>
   </module>
   <module name="FileTabCharacter">
