@@ -2,6 +2,7 @@ package Controller;
 
 import Elements.Ball;
 import Elements.CenterPiece;
+import Elements.Player;
 import Model.Cell;
 import Model.GameData;
 import Model.Grid;
@@ -26,6 +27,7 @@ public class GameDataLoader {
         data.setScore(0);
         data.setInitialBallAmount(90);
         data.setGrid(new Grid(centerX, centerY));
+        data.setPlayer(new Player());
         loadElements();
     }
 

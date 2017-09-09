@@ -3,6 +3,7 @@ package Elements;
 
 import Model.Cell;
 import Model.Grid;
+import Utility.Util;
 import View.View;
 import javafx.scene.image.Image;
 
@@ -24,8 +25,7 @@ public class PlayerBall {
      * @param y the y coordinate of the ball.
      */
     public PlayerBall(double x, double y) {
-        Random randomNumber = new Random();
-        int randomColor =  randomNumber.nextInt(Ball.COLORS.length);
+        int randomColor =  Util.randomBetween(0,Ball.COLORS.length-1);
         image = new Image("images/" + Ball.COLORS[randomColor] + " ball.png");
         counter = 0;
         this.x = x;
@@ -106,16 +106,15 @@ public class PlayerBall {
      * @return true if it hits the cell, false if it didn't.
      */
     public boolean hasCollidedWithCell(Grid grid) {
-        ArrayList<Cell> cells = grid.getCells();
-        final int radiusBallDouble = 30;
-        for (Cell i:cells) {
-            double deltaX = i.getCurrentX() - x;
-            double deltaY = i.getInitialY() - y;
-            double distance = Math.sqrt(-(deltaX * deltaX + deltaY * deltaY));
-            if (distance <= radiusBallDouble) {
-                return true;
-            }
+        Cell closestCell = grid.closestCellToLocation(x, y);
+        final double radiusBallDouble = 30;
+
+        double distance = Util.getDistance(x, y, closestCell.getCurrentX(),
+                closestCell.getCurrentY());
+        if (distance <= radiusBallDouble) {
+            return true;
         }
+
         return false;
     }
 }
