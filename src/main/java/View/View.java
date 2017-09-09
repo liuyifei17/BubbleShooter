@@ -23,12 +23,15 @@ public class View {
 
     private ArrayList<Cell> cells;
     private ArrayList<ImageView> elementSprites;
+    private ImageView playerBall;
 
     public static final double STAGE_WIDTH = 600;
     public static double STAGE_HEIGHT = 700;
     public static final int TOP_BAR_HEIGHT = 70;
+    public static final int screenWithDeviation = 12;
     private static final int SCORE_BAR_HEIGHT = 40;
     private static final int SCORE_BAR_WIDTH = 240;
+
 
     public View(Pane pane, GameData data){
         this.pane = pane;
@@ -68,12 +71,17 @@ public class View {
             elementSprites.get(i).relocate(getScreenX(c), getScreenY(c));
         }
 
+        playerBall = new ImageView(data.getPlayer().getPlayerBall().getImage());
+        playerBall.relocate(data.getPlayer().getPlayerBall().getX(),
+                data.getPlayer().getPlayerBall().getY());
+
         //add components to game pane
         pane.getChildren().add(topBar);
         pane.getChildren().add(scoreBar);
         for(ImageView iv: elementSprites){
             pane.getChildren().add(iv);
         }
+        pane.getChildren().add(playerBall);
     }
 
     public void redraw(){
@@ -85,6 +93,10 @@ public class View {
             iv.relocate(getScreenX(cells.get(i)), getScreenY(cells.get(i)));
             iv.rotateProperty().setValue(data.getGrid().getRotation());
         }
+
+        playerBall.relocate(data.getPlayer().getPlayerBall().getX(),
+                data.getPlayer().getPlayerBall().getY());
+
     }
 
     private double getScreenX(Cell cell){
