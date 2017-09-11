@@ -15,8 +15,8 @@ import View.View;
 public class PlayerBallController {
 
     public final static int BALL_RADIUS = 17;
+    public final static int SPEEDUP = 3;
     private final int  maximumTimesBallHit = 5;
-    private final int speedup = 15;
     private Player player;
     private Grid grid;
     private double mouseX;
@@ -56,8 +56,8 @@ public class PlayerBallController {
         double max = Math.max(Math.abs(vectorX), Math.abs(vectorY));
 
         if (max > 0) {
-            deltaX = speedup * vectorX / max;
-            deltaY = speedup * vectorY / max;
+            deltaX = SPEEDUP * vectorX / max;
+            deltaY = SPEEDUP * vectorY / max;
             counter++;
         }
 
@@ -66,6 +66,8 @@ public class PlayerBallController {
     private void ballCollisionHandler(Cell c) {
         mouseY = 0;
         mouseX = 0;
+        nextBall();
+        collidedCell = null;
     }
 
     private void nextBall() {
@@ -86,6 +88,7 @@ public class PlayerBallController {
     public void launchBall() {
         if (getMouseY() == 0) return;
 
+        //checks for collisions with cells
         if(collidedCell == null){
             collidedCell = player.getPlayerBall().getCellCollision(grid, deltaX, deltaY);
         }

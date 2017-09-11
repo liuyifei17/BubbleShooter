@@ -10,23 +10,29 @@ import Main.Main;
  */
 public class GameRunner {
 
-    private final Timer timer = new Timer(30,null);
+    private final Timer slowTimer = new Timer(30,null);
+    private final Timer fastTimer = new Timer(5,null);
     private GridController gridController;
     private PlayerBallController ballController;
 
     private void initializeGameTimer() {
-        timer.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    ballController.launchBall();
-                    gridController.process();
-                    Main.getView().redraw();
-                }
-            });
+        fastTimer.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                ballController.launchBall();
+            }
+        });
+        slowTimer.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                gridController.process();
+                Main.getView().redraw();
+            }
+        });
     }
 
     public void runGame() {
         initializeGameTimer();
-        timer.start();
+        fastTimer.start();
+        slowTimer.start();
     }
 
     public GameRunner(GridController gridController, PlayerBallController ballController) {
