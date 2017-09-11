@@ -1,6 +1,7 @@
 package Elements;
 
 
+import Controller.PlayerBallController;
 import Model.Cell;
 import Model.Grid;
 import Utility.Util;
@@ -95,11 +96,10 @@ public class PlayerBall {
      * @return true if it hit the wall and false if it didn't.
      */
     public boolean hasCollidedWithWall() {
-        final int radiusBall = 17;
-        if ((x < radiusBall - View.SCREEN_WITH_DEVIATION)
-                || (x >= View.STAGE_WIDTH - radiusBall)
+        if ((x < PlayerBallController.BALL_RADIUS - View.SCREEN_WITH_DEVIATION)
+                || (x >= View.STAGE_WIDTH - PlayerBallController.BALL_RADIUS)
                 || (y < View.TOP_BAR_HEIGHT)
-                || (y >= View.STAGE_HEIGHT - radiusBall)) {
+                || (y >= View.STAGE_HEIGHT - PlayerBallController.BALL_RADIUS)) {
             counter++;
             return true;
         }
@@ -107,25 +107,16 @@ public class PlayerBall {
         return false;
     }
 
-    /**
-     * Checks whether the distance from the ball is lower or equal to 30 from the cell.
-     * @param grid Grid that contains all the cells.
-     * @return true if it hits the cell, false if it didn't.
+    /** Checks if there is a full cell in collision range
+     * @param grid
+     * @return null if not in range else return cell
      */
-    public Cell hasCollidedWithCell(Grid grid) {
-        Cell closestCell = grid.closestCellToLocation(x, y);
-
-        if(closestCell.getElement() == null) {
-            final double radiusBallDouble = 30;
-
-            double distance = Util.getDistance(x, y, closestCell.getCurrentX(),
-                    closestCell.getCurrentY());
-            if (distance <= radiusBallDouble) {
-                for (Cell c: closestCell.getAdjacentCells()){
-                    if (c.getElement() != null) return closestCell;
-                }
-            }
-        }
+    /** Checks if there is a full cell in collision range
+     * @param grid
+     * @return null if not in range else return cell
+     */
+    public Cell getCellCollision(Grid grid, double deltaX, double deltaY) {
+        Cell c = grid.closestFullCellToLocation(x,y);
         return null;
     }
 

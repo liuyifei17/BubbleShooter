@@ -27,7 +27,7 @@ public class Grid {
         cells = new ArrayList<Cell>();
         occupiedCells = new ArrayList<Cell>();
         rotation = 0;
-        rotationDifference = 10000;
+        rotationDifference = 0;
         rotationSpeed = 4;
         centerX = x;
         centerY = y;
@@ -103,7 +103,7 @@ public class Grid {
             for(Cell c2: cells){
                 if(Math.abs(c1.getInitialX() - c2.getInitialX()) < Cell.EDGE_CENTER_DISTANCE * 3 &&
                         Math.abs(c1.getInitialY() - c2.getInitialY()) < Cell.EDGE_CENTER_DISTANCE * 3){
-                    c1.getAdjacentCells().add(c2);
+                    if(!c1.equals(c2)) c1.getAdjacentCells().add(c2);
                 }
             }
         }
@@ -138,6 +138,29 @@ public class Grid {
                 //if we haven't found an empty cell yet, we set it
                 if(closestCell == null) closestCell = c;
                 //if we already have found an empty cell, we compare distances
+                else if(Util.getDistance(c.getInitialX(), c.getInitialY(), locX, locY) <=
+                        Util.getDistance(closestCell.getInitialX(), closestCell.getInitialY(), locX, locY)){
+                    closestCell = c;
+                }
+            }
+
+        }
+        return closestCell;
+    }
+
+    /** finds the closest cell that does contain an element to a certain location (x, y)
+     * @param locX coord x of location
+     * @param locY coord y of location
+     * @return null if no full cell found else return the cell
+     */
+    public Cell closestFullCellToLocation(double locX, double locY){
+        Cell closestCell = null;
+        for(Cell c: cells){
+            // if the cell has an element inside it
+            if(c.getElement() != null){
+                //if we haven't found a full cell yet, we set it
+                if(closestCell == null) closestCell = c;
+                    //if we already have found a full cell, we compare distances
                 else if(Util.getDistance(c.getInitialX(), c.getInitialY(), locX, locY) <=
                         Util.getDistance(closestCell.getInitialX(), closestCell.getInitialY(), locX, locY)){
                     closestCell = c;

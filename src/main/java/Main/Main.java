@@ -51,7 +51,7 @@ public class Main extends Application {
         primaryStage.show(); // Display the stage
 
         //Start running the game
-        runner = new GameRunner(gridController, view, playerBallController);
+        runner = new GameRunner(gridController, playerBallController);
         runner.runGame();
 
         // Create a mousebutton event that keeps track on when the mouse has been clicked,

@@ -14,8 +14,9 @@ import View.View;
  */
 public class PlayerBallController {
 
-    private final int ballRadius = 17;
-    private final int  maximumTimesBallHit = 4;
+    public final static int BALL_RADIUS = 17;
+    private final int  maximumTimesBallHit = 5;
+    private final int speedup = 15;
     private Player player;
     private Grid grid;
     private double mouseX;
@@ -23,6 +24,7 @@ public class PlayerBallController {
     private double deltaX;
     private double deltaY;
     private int counter;
+    private Cell collidedCell;
 
 
     /**
@@ -34,6 +36,7 @@ public class PlayerBallController {
     public PlayerBallController(Player player, Grid grid) {
         this.player = player;
         this.grid = grid;
+        collidedCell = null;
         counter = 0;
     }
 
@@ -48,7 +51,6 @@ public class PlayerBallController {
             return;
         }
 
-        final int speedup = 10;
         double vectorX = mouseX - player.getPlayerBall().getX();
         double vectorY = mouseY - player.getPlayerBall().getY();
         double max = Math.max(Math.abs(vectorX), Math.abs(vectorY));
@@ -61,8 +63,9 @@ public class PlayerBallController {
 
     }
 
-    private void collisionBallHandler(Cell c) {
-
+    private void ballCollisionHandler(Cell c) {
+        mouseY = 0;
+        mouseX = 0;
     }
 
     private void nextBall() {
@@ -81,14 +84,16 @@ public class PlayerBallController {
      * Launches the ball in the direction of the mouse.
      */
     public void launchBall() {
+        if (getMouseY() == 0) return;
 
-        Cell collidedCell = player.getPlayerBall().hasCollidedWithCell(grid);
-        if(collidedCell != null) {
-            this.mouseY = 0;
-            this.mouseX = 0;
-            collisionBallHandler(collidedCell);
-            nextBall();
+        if(collidedCell == null){
+            collidedCell = player.getPlayerBall().getCellCollision(grid, deltaX, deltaY);
         }
+        if(collidedCell != null) {
+            ballCollisionHandler(collidedCell);
+            return;
+        }
+
         // if the wall has collided with the wall for a maximum of 4 times then it will reset
         // the ball
         else if(player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
@@ -120,12 +125,12 @@ public class PlayerBallController {
      */
     private double[] reflectBack(double deltaX, double deltaY) {
 
-        if ((player.getPlayerBall().getX() < ballRadius - View.SCREEN_WITH_DEVIATION)
-                || (player.getPlayerBall().getX() >= View.STAGE_WIDTH - ballRadius)) {
+        if ((player.getPlayerBall().getX() < BALL_RADIUS - View.SCREEN_WITH_DEVIATION)
+                || (player.getPlayerBall().getX() >= View.STAGE_WIDTH - BALL_RADIUS)) {
             deltaX = deltaX * -1;
         }
         if ((player.getPlayerBall().getY() < View.TOP_BAR_HEIGHT)
-                || (player.getPlayerBall().getY() >= View.STAGE_HEIGHT - ballRadius)) {
+                || (player.getPlayerBall().getY() >= View.STAGE_HEIGHT - BALL_RADIUS)) {
             deltaY = deltaY * -1;
         }
         return new double [] {deltaX, deltaY};
