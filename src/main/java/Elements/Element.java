@@ -31,6 +31,11 @@ public class Element {
         return this.imageView;
     }
 
+    public void setImage(Image im) {
+        this.img = im;
+        this.imageView.setImage(im);
+    }
+
     public Cell getCell() {
         return cell;
     }

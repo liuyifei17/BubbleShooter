@@ -115,14 +115,14 @@ public class PlayerBall {
     public Cell hasCollidedWithCell(Grid grid) {
         Cell closestCell = grid.closestCellToLocation(x, y);
 
-        if(closestCell.getElement() == null) {
+        if(closestCell.getElement().getSprite()  == null) {
             final double radiusBallDouble = 30;
 
             double distance = Util.getDistance(x, y, closestCell.getCurrentX(),
                     closestCell.getCurrentY());
             if (distance <= radiusBallDouble) {
                 for (Cell c: closestCell.getAdjacentCells()){
-                    if (c.getElement() != null) return closestCell;
+                    if (c.getElement().getSprite()  != null) return closestCell;
                 }
             }
         }

@@ -11,7 +11,6 @@ public class Ball extends Element {
 
     public static final String[] COLORS = {"blue","green","orange","purple","red","yellow"};
     private String color;
-    private ImageView imageView;
 
     /** creates a ball that is located inside a cell
      * @param color the color of the ball

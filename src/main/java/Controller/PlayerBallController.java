@@ -4,10 +4,14 @@ package Controller;
 import Elements.Ball;
 import Elements.Player;
 import Elements.PlayerBall;
+import Main.Main;
 import Model.Cell;
 import Model.Grid;
 import Utility.Util;
 import View.View;
+import javafx.scene.image.ImageView;
+
+import static Main.Main.getView;
 
 /**
  * The playerballController keeps track of the movement of the ball.
@@ -62,7 +66,8 @@ public class PlayerBallController {
     }
 
     private void collisionBallHandler(Cell c) {
-
+        grid.getOccupiedCells().add(c);
+        c.getElement().setImage(player.getPlayerBall().getImage());
     }
 
     private void nextBall() {
