@@ -22,7 +22,7 @@ public class Cell {
         initialY = y;
         currentX = x;
         currentY = y;
-        element = null;
+        element = new Element(null, null);
         adjacentCells = new ArrayList<Cell>();
     }
 

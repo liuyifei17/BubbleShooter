@@ -25,6 +25,7 @@ public class View {
 
     private ImageView playerBall;
     private ImageView nextBall;
+    private ImageView fake;
 
     public static final double STAGE_WIDTH = 600;
     public static double STAGE_HEIGHT = 700;
@@ -74,18 +75,19 @@ public class View {
         //add components to game pane
         pane.getChildren().add(topBar);
         pane.getChildren().add(scoreBar);
-        for(Cell c: data.getGrid().getOccupiedCells()){
+        for(Cell c: data.getGrid().getCells()){
             pane.getChildren().add(c.getElement().getImageView());
         }
         pane.getChildren().add(playerBall);
         pane.getChildren().add(nextBall);
+
     }
 
     public void redraw(){
         //check for changed cells and update children
         ArrayList<Cell> cells = data.getGrid().getOccupiedCells();
 
-        pane.getChildren().add(cells.get(0).getElement().getImageView());
+
         //relocate elements
         for(Cell c:cells){
             c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
