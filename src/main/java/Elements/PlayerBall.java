@@ -1,14 +1,11 @@
 package Elements;
 
-
 import Controller.PlayerBallController;
 import Model.Cell;
 import Model.Grid;
 import Utility.Util;
 import View.View;
 import javafx.scene.image.Image;
-
-
 
 /**
  * PlayerBall is the ball with which the player shoots.
@@ -115,7 +112,7 @@ public class PlayerBall {
      * @param grid
      * @return null if not in range else return cell
      */
-    public Cell getCellCollision(Grid grid, double deltaX, double deltaY) {
+    public Cell getCellCollision(Grid grid, double dx, double dy) {
         Cell c = grid.closestFullCellToLocation(x,y);
         return null;
     }
