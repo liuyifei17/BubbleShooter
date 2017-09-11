@@ -74,6 +74,9 @@ public class PlayerBallController {
 
         //nextBall
         nextBall();
+
+        //set a rotation
+        grid.setRotationDifference(0);
     }
 
     private void nextBall() {
