@@ -1,5 +1,6 @@
 package Model;
 
+import Elements.Ball;
 import Elements.Element;
 
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ public class Cell {
         initialY = y;
         currentX = x;
         currentY = y;
-        element = new Element(null, null);
+        element = new Ball(null, null);
+        element.setCell(this);
         adjacentCells = new ArrayList<Cell>();
     }
 
