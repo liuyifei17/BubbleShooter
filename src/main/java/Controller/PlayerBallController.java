@@ -14,9 +14,9 @@ import View.View;
  */
 public class PlayerBallController {
 
-    public final static int BALL_RADIUS = 17;
+    public final static int BALL_RADIUS = 15;
     public final static int SPEEDUP = 3;
-    private final int  maximumTimesBallHit = 5;
+    private final int  maximumTimesBallHit = 4;
     private Player player;
     private Grid grid;
     private double mouseX;
@@ -63,16 +63,22 @@ public class PlayerBallController {
 
     }
 
-    private void ballCollisionHandler(Cell c) {
+    private void ballCollisionHandler() {
+        //put ball in cell
+        collidedCell.setElement(new Ball(player.getPlayerBall().getColor(), collidedCell));
+
+        //reset variables
         mouseY = 0;
         mouseX = 0;
-        nextBall();
         collidedCell = null;
+
+        //nextBall
+        nextBall();
     }
 
     private void nextBall() {
 
-        player.setPlayerBall(new PlayerBall(View.STAGE_WIDTH / 2 - View.SCREEN_WITH_DEVIATION,
+        player.setPlayerBall(new PlayerBall(View.STAGE_WIDTH / 2,
                 View.TOP_BAR_HEIGHT, player.getNextBall().getColor()));
         player.setNextBall(new Ball(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)], null));
         this.setMouseY(0);
@@ -90,10 +96,10 @@ public class PlayerBallController {
 
         //checks for collisions with cells
         if(collidedCell == null){
-            collidedCell = player.getPlayerBall().getCellCollision(grid, deltaX, deltaY);
+            collidedCell = player.getPlayerBall().getCellCollision(grid);
         }
         if(collidedCell != null) {
-            ballCollisionHandler(collidedCell);
+            ballCollisionHandler();
             return;
         }
 
@@ -128,12 +134,12 @@ public class PlayerBallController {
      */
     private double[] reflectBack(double deltaX, double deltaY) {
 
-        if ((player.getPlayerBall().getX() < BALL_RADIUS - View.SCREEN_WITH_DEVIATION)
-                || (player.getPlayerBall().getX() >= View.STAGE_WIDTH - BALL_RADIUS)) {
+        if ((player.getPlayerBall().getX() < BALL_RADIUS)
+                || (player.getPlayerBall().getX() >= View.STAGE_WIDTH)) {
             deltaX = deltaX * -1;
         }
         if ((player.getPlayerBall().getY() < View.TOP_BAR_HEIGHT)
-                || (player.getPlayerBall().getY() >= View.STAGE_HEIGHT - BALL_RADIUS)) {
+                || (player.getPlayerBall().getY() >= View.STAGE_HEIGHT)) {
             deltaY = deltaY * -1;
         }
         return new double [] {deltaX, deltaY};
