@@ -85,7 +85,6 @@ public class View {
         //check for changed cells and update children
         ArrayList<Cell> cells = data.getGrid().getOccupiedCells();
 
-        pane.getChildren().add(cells.get(0).getElement().getImageView());
         //relocate elements
         for(Cell c:cells){
             c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
