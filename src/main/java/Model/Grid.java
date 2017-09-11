@@ -25,7 +25,7 @@ public class Grid {
     public Grid(double x, double y){
         cells = new ArrayList<Cell>();
         rotation = 0;
-        rotationDifference = 10000;
+        rotationDifference = 0;
         rotationSpeed = 4;
         centerX = x;
         centerY = y;

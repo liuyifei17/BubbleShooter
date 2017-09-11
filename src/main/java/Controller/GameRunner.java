@@ -10,7 +10,7 @@ import View.View;
  */
 public class GameRunner {
 
-    private final Timer timer = new Timer(40,null);
+    private final Timer timer = new Timer(30,null);
     private GridController gridController;
     private PlayerBallController ballController;
     private View view;
@@ -18,10 +18,8 @@ public class GameRunner {
     private void initializeGameTimer() {
         timer.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-                   // gridController.process();
-                    if (ballController.getMouseY() != 0) {
-                        ballController.launchBall();
-                    }
+                    ballController.launchBall();
+                    gridController.process();
                     view.redraw();
                 }
             });

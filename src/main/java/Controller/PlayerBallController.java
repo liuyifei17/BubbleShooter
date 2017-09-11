@@ -10,6 +10,8 @@ import View.View;
  */
 public class PlayerBallController {
 
+    private final int  maximumTimesBallHit = 5;
+    private final int speedup = 15;
     private final int ballRadius = 17;
     private Player player;
     private Grid grid;
@@ -43,7 +45,6 @@ public class PlayerBallController {
             return;
         }
 
-        final int speedup = 4;
         double vectorX = mouseX - player.getPlayerBall().getX();
         double vectorY = mouseY - player.getPlayerBall().getY();
         double max = Math.max(Math.abs(vectorX), Math.abs(vectorY));
@@ -60,6 +61,8 @@ public class PlayerBallController {
      * Launches the ball in the direction of the mouse.
      */
     public void launchBall() {
+        if(getMouseY() == 0) return;
+
         // if the ball has collided with the wall the deltaX or deltaY will become negative.
         if (player.getPlayerBall().hasCollidedWithWall()) {
             double[] newDelta = reflectBack(deltaX, deltaY);
@@ -76,9 +79,8 @@ public class PlayerBallController {
         player.getPlayerBall().setY(newYCoord);
 
 
-        // if the wall has collided with the wall for a maximum of 3 times then it will reset
+        // if the wall has collided with the wall for a maximum of x times then it will reset
         // the ball
-        final int  maximumTimesBallHit = 3;
         if (player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
             player.setPlayerBall(new PlayerBall(View.STAGE_WIDTH / 2 - View.SCREEN_WITH_DEVIATION,
                     View.TOP_BAR_HEIGHT));
