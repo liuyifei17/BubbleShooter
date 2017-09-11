@@ -8,11 +8,13 @@ import View.View;
 import javafx.scene.image.Image;
 
 
+
 /**
  * PlayerBall is the ball with which the player shoots.
  */
 public class PlayerBall {
     private Image image;
+    private String color;
     private double x;
     private double y;
     private int counter;
@@ -22,15 +24,14 @@ public class PlayerBall {
      * @param x the x coordinate of the ball.
      * @param y the y coordinate of the ball.
      */
-    public PlayerBall(double x, double y) {
-        int randomColor =  Util.randomBetween(0, Ball.COLORS.length - 1);
-        System.out.println(randomColor);
-        image = new Image("images/" + Ball.COLORS[randomColor] + " ball.png");
+    public PlayerBall(double x, double y, String color) {
+        this.color =  color;
+        image = new Image("images/" + this.color + " ball.png");
         counter = 0;
         this.x = x;
         this.y = y;
-
     }
+
 
     /**
      * @return the current x coordinate.
@@ -82,6 +83,13 @@ public class PlayerBall {
     }
 
     /**
+     * @return the color of the ball
+     */
+    public String getColor() {
+        return this.color;
+    }
+
+    /**
      * If the center of the ball is 15 away from the stage's maximum width and
      * height then it hit the wall.
      * @return true if it hit the wall and false if it didn't.
@@ -104,16 +112,22 @@ public class PlayerBall {
      * @param grid Grid that contains all the cells.
      * @return true if it hits the cell, false if it didn't.
      */
-    public boolean hasCollidedWithCell(Grid grid) {
+    public Cell hasCollidedWithCell(Grid grid) {
         Cell closestCell = grid.closestCellToLocation(x, y);
-        final double radiusBallDouble = 30;
 
-        double distance = Util.getDistance(x, y, closestCell.getCurrentX(),
-                closestCell.getCurrentY());
-        if (distance <= radiusBallDouble) {
-            return true;
+        if(closestCell.getElement() == null) {
+            final double radiusBallDouble = 30;
+
+            double distance = Util.getDistance(x, y, closestCell.getCurrentX(),
+                    closestCell.getCurrentY());
+            if (distance <= radiusBallDouble) {
+                for (Cell c: closestCell.getAdjacentCells()){
+                    if (c.getElement() != null) return closestCell;
+                }
+            }
         }
-
-        return false;
+        return null;
     }
+
+
 }

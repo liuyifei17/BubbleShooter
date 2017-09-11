@@ -4,13 +4,12 @@ import java.awt.event.*;
 import javax.swing.Timer;
 import View.View;
 
-
 /**
  * Created by jur on 9/5/2017.
  */
 public class GameRunner {
 
-    private final Timer timer = new Timer(40,null);
+    private final Timer timer = new Timer(10,null);
     private GridController gridController;
     private PlayerBallController ballController;
     private View view;

@@ -21,9 +21,10 @@ public class View {
     private ImageView topBar;
     private ImageView scoreBar;
 
-    private ArrayList<Cell> cells;
-    private ArrayList<ImageView> elementSprites;
+
+
     private ImageView playerBall;
+    private ImageView nextBall;
 
     public static final double STAGE_WIDTH = 600;
     public static double STAGE_HEIGHT = 700;
@@ -57,19 +58,14 @@ public class View {
         scoreBar.setFitWidth(SCORE_BAR_WIDTH);
 
         //draw entities
-        cells = new ArrayList<Cell>();
-        elementSprites = new ArrayList<ImageView>();
-        for(Cell c: data.getGrid().getCells()){
-            Element e = c.getElement();
-            if(e != null){
-                cells.add(c);
-                elementSprites.add(new ImageView(e.getSprite()));
-            }
+
+        for(Cell c: data.getGrid().getOccupiedCells()){
+            c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
         }
-        for(int i = 0; i < elementSprites.size(); i++){
-            Cell c = cells.get(i);
-            elementSprites.get(i).relocate(getScreenX(c), getScreenY(c));
-        }
+
+        nextBall = new ImageView(data.getPlayer().getNextBall().getSprite());
+        nextBall.relocate(View.STAGE_WIDTH / 2 - View.SCREEN_WITH_DEVIATION,
+                View.TOP_BAR_HEIGHT - 40);
 
         playerBall = new ImageView(data.getPlayer().getPlayerBall().getImage());
         playerBall.relocate(data.getPlayer().getPlayerBall().getX(),
@@ -78,23 +74,26 @@ public class View {
         //add components to game pane
         pane.getChildren().add(topBar);
         pane.getChildren().add(scoreBar);
-        for(ImageView iv: elementSprites){
-            pane.getChildren().add(iv);
+        for(Cell c: data.getGrid().getOccupiedCells()){
+            pane.getChildren().add(c.getElement().getImageView());
         }
         pane.getChildren().add(playerBall);
+        pane.getChildren().add(nextBall);
     }
 
     public void redraw(){
         //check for changed cells and update children
+        ArrayList<Cell> cells = data.getGrid().getOccupiedCells();
 
+        pane.getChildren().add(cells.get(0).getElement().getImageView());
         //relocate elements
-        for(int i = 0; i < elementSprites.size(); i++){
-            ImageView iv = elementSprites.get(i);
-            iv.relocate(getScreenX(cells.get(i)), getScreenY(cells.get(i)));
-            iv.rotateProperty().setValue(data.getGrid().getRotation());
+        for(Cell c:cells){
+            c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
+            c.getElement().getImageView().rotateProperty().setValue(data.getGrid().getRotation());
         }
 
         playerBall.setImage(data.getPlayer().getPlayerBall().getImage());
+        nextBall.setImage(data.getPlayer().getNextBall().getSprite());
 
         playerBall.relocate(data.getPlayer().getPlayerBall().getX(),
                 data.getPlayer().getPlayerBall().getY());

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Grid {
 
     private ArrayList<Cell> cells;
+    private ArrayList<Cell> occupiedCells;
     private Cell centerCell;
     private int rotation;//the current rotation in degrees
     private int rotationDifference;//the change in rotation for a given ball impact
@@ -24,6 +25,7 @@ public class Grid {
      */
     public Grid(double x, double y){
         cells = new ArrayList<Cell>();
+        occupiedCells = new ArrayList<Cell>();
         rotation = 0;
         rotationDifference = 10000;
         rotationSpeed = 4;
@@ -183,4 +185,6 @@ public class Grid {
     public void setRotationSpeed(int rotationSpeed) {
         this.rotationSpeed = rotationSpeed;
     }
+
+    public ArrayList<Cell> getOccupiedCells() { return this.occupiedCells; }
 }

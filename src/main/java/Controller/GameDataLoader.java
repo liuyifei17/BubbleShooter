@@ -60,6 +60,9 @@ public class GameDataLoader {
             c.setElement(b);
             b.setCell(c);
         }
+
+        data.getGrid().getOccupiedCells().add(data.getGrid().getCenterCell());
+        data.getGrid().getOccupiedCells().addAll(emptyCells);
     }
 
 }
