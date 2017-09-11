@@ -93,10 +93,10 @@ public class PlayerBall {
      * @return true if it hit the wall and false if it didn't.
      */
     public boolean hasCollidedWithWall() {
-        if ((x < PlayerBallController.BALL_RADIUS - View.SCREEN_WITH_DEVIATION)
-                || (x >= View.STAGE_WIDTH - PlayerBallController.BALL_RADIUS)
+        if ((x < PlayerBallController.BALL_RADIUS)
+                || (x >= View.STAGE_WIDTH)
                 || (y < View.TOP_BAR_HEIGHT)
-                || (y >= View.STAGE_HEIGHT - PlayerBallController.BALL_RADIUS)) {
+                || (y >= View.STAGE_HEIGHT)) {
             counter++;
             return true;
         }
@@ -112,8 +112,15 @@ public class PlayerBall {
      * @param grid
      * @return null if not in range else return cell
      */
-    public Cell getCellCollision(Grid grid, double dx, double dy) {
+    public Cell getCellCollision(Grid grid) {
         Cell c = grid.closestFullCellToLocation(x,y);
+        for(Cell c2: c.getAdjacentCells()){
+            if(c2.getElement() == null){
+                if(Util.getDistance(x,y,c2.getCurrentX(),c2.getCurrentY()) <= Cell.EDGE_CENTER_DISTANCE / 1.3){
+                    return c2;
+                }
+            }
+        }
         return null;
     }
 
