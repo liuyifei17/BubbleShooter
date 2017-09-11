@@ -30,7 +30,6 @@ public class View {
     public static final double STAGE_WIDTH = 600;
     public static double STAGE_HEIGHT = 700;
     public static final int TOP_BAR_HEIGHT = 70;
-    public static final int SCREEN_WITH_DEVIATION = 12;
     private static final int SCORE_BAR_HEIGHT = 40;
     private static final int SCORE_BAR_WIDTH = 240;
 
@@ -65,12 +64,16 @@ public class View {
         }
 
         nextBall = new ImageView(data.getPlayer().getNextBall().getSprite());
-        nextBall.relocate(View.STAGE_WIDTH / 2 - View.SCREEN_WITH_DEVIATION,
-                View.TOP_BAR_HEIGHT - 40);
+        nextBall.relocate(View.STAGE_WIDTH / 2 - data.getPlayer().getNextBall().getSprite().getWidth()/4,
+                View.TOP_BAR_HEIGHT - 30);
+        nextBall.setFitWidth(data.getPlayer().getNextBall().getSprite().getWidth()/2);
+        nextBall.setFitHeight(data.getPlayer().getNextBall().getSprite().getHeight()/2);
+
 
         playerBall = new ImageView(data.getPlayer().getPlayerBall().getImage());
-        playerBall.relocate(data.getPlayer().getPlayerBall().getX(),
-                data.getPlayer().getPlayerBall().getY());
+        playerBall.relocate(data.getPlayer().getPlayerBall().getX() - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
+                data.getPlayer().getPlayerBall().getY() - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
+
 
         //add components to game pane
         pane.getChildren().add(topBar);
@@ -97,9 +100,16 @@ public class View {
         playerBall.setImage(data.getPlayer().getPlayerBall().getImage());
         nextBall.setImage(data.getPlayer().getNextBall().getSprite());
 
-        playerBall.relocate(data.getPlayer().getPlayerBall().getX(),
-                data.getPlayer().getPlayerBall().getY());
+        playerBall.relocate(data.getPlayer().getPlayerBall().getX() - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
+                data.getPlayer().getPlayerBall().getY() - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
 
+
+    }
+
+    // This method displays a ball when it has hit the hexagon
+    // Without this function you get a 1sec in which the ball is at (0,0)
+    public void display(Cell c) {
+        c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
     }
 
     private double getScreenX(Cell cell){

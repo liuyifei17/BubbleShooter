@@ -1,13 +1,11 @@
 package Elements;
 
-
+import Controller.PlayerBallController;
 import Model.Cell;
 import Model.Grid;
 import Utility.Util;
 import View.View;
 import javafx.scene.image.Image;
-
-
 
 /**
  * PlayerBall is the ball with which the player shoots.
@@ -21,11 +19,12 @@ public class PlayerBall {
 
     /**
      * Initiate a ball with a random image.
+     *
      * @param x the x coordinate of the ball.
      * @param y the y coordinate of the ball.
      */
     public PlayerBall(double x, double y, String color) {
-        this.color =  color;
+        this.color = color;
         image = new Image("images/" + this.color + " ball.png");
         counter = 0;
         this.x = x;
@@ -92,14 +91,14 @@ public class PlayerBall {
     /**
      * If the center of the ball is 15 away from the stage's maximum width and
      * height then it hit the wall.
+     *
      * @return true if it hit the wall and false if it didn't.
      */
     public boolean hasCollidedWithWall() {
-        final int radiusBall = 17;
-        if ((x < radiusBall - View.SCREEN_WITH_DEVIATION)
-                || (x >= View.STAGE_WIDTH - radiusBall)
+        if ((x < PlayerBallController.BALL_RADIUS)
+                || (x >= View.STAGE_WIDTH)
                 || (y < View.TOP_BAR_HEIGHT)
-                || (y >= View.STAGE_HEIGHT - radiusBall)) {
+                || (y >= View.STAGE_HEIGHT)) {
             counter++;
             return true;
         }
@@ -108,26 +107,44 @@ public class PlayerBall {
     }
 
     /**
-     * Checks whether the distance from the ball is lower or equal to 30 from the cell.
-     * @param grid Grid that contains all the cells.
-     * @return true if it hits the cell, false if it didn't.
+     * Checks if there is a full cell in collision range
+     *
+     * @param grid
+     * @return null if not in range else return cell
      */
     public Cell hasCollidedWithCell(Grid grid) {
         Cell closestCell = grid.closestCellToLocation(x, y);
 
-        if(closestCell.getElement().getSprite()  == null) {
+        if (closestCell.getElement().getSprite() == null) {
             final double radiusBallDouble = 30;
 
             double distance = Util.getDistance(x, y, closestCell.getCurrentX(),
                     closestCell.getCurrentY());
             if (distance <= radiusBallDouble) {
-                for (Cell c: closestCell.getAdjacentCells()){
-                    if (c.getElement().getSprite()  != null) return closestCell;
+                for (Cell c : closestCell.getAdjacentCells()) {
+                    if (c.getElement().getSprite() != null) return closestCell;
                 }
             }
         }
         return null;
     }
 
-
+    /**
+     * Checks if there is a full cell in collision range
+     *
+     * @param grid
+     * @return null if not in range else return cell
+     */
+    public Cell getCellCollision(Grid grid) {
+        Cell c = grid.closestFullCellToLocation(x, y);
+        for (Cell c2 : c.getAdjacentCells()) {
+            if (c2.getElement().getSprite() == null) {
+                if (Util.getDistance(x, y, c2.getCurrentX(), c2.getCurrentY()) <= Cell.EDGE_CENTER_DISTANCE / 1.3) {
+                    return c2;
+                }
+            }
+        }
+        return null;
+    }
 }
+

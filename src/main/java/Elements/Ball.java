@@ -17,8 +17,9 @@ public class Ball extends Element {
      * @param cell the cell in which the ball is currently located
      */
     public Ball(String color, Cell cell) {
-        super(cell, new Image("images/" + color + " ball.png"));
+        super(cell, null);
         this.color = color;
+        if(color != null) super.setImage(new Image("images/" + color + " ball.png"));
     }
 
     public String getColor() {
