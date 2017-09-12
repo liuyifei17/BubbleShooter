@@ -11,6 +11,8 @@ import Utility.Util;
 import View.View;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
+
 import static Main.Main.getView;
 
 /**
@@ -67,7 +69,23 @@ public class PlayerBallController {
 
     }
 
+    // this method checks after the shot ball has reached the hexagon if any balls should be removed
+    private ArrayList<Cell> checkRemovalBalls() {
+        return null;
+    }
 
+    // this method removes the balls that the method checkRemovalBalls returns and adds the points
+    // to the score
+    private void removeBalls(ArrayList<Cell> toRemove) {
+        return;
+    }
+
+    // this method adds balls to the hexagon every time the player misses more than 6 times
+    private void appendAdditionalBalls() {
+        return;
+    }
+
+    // this method takes care of the situation in which the shot ball hits the hexagon
     private void ballCollisionHandler() {
         //put ball in cell
         //collidedCell.setElement(new Ball(player.getPlayerBall().getColor(), collidedCell));
@@ -76,6 +94,19 @@ public class PlayerBallController {
         grid.getOccupiedCells().add(collidedCell);
         collidedCell.getElement().setImage(player.getPlayerBall().getImage());
         Main.getView().display(collidedCell);
+
+        // check whether the shot ball has hit at least 2 other balls of the same color
+
+        ArrayList<Cell> ballsToBeRemoved = checkRemovalBalls();
+        if(ballsToBeRemoved != null) {
+            removeBalls(ballsToBeRemoved);
+        } else if(player.getMissCounter() >= 5) {
+            player.setMissCounter(0);
+            appendAdditionalBalls();
+        }
+        else {
+            player.setMissCounter(player.getMissCounter()+1);
+        }
 
         //reset variables
         mouseY = 0;
@@ -115,11 +146,6 @@ public class PlayerBallController {
             ballCollisionHandler();
             return;
         }
-
-        /*collidedCell = player.getPlayerBall().hasCollidedWithCell(grid);
-        if(collidedCell != null ) {
-            ballCollisionHandler();
-        }*/
 
         // if the wall has collided with the wall for a maximum of 4 times then it will reset
         // the ball

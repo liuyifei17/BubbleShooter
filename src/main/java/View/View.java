@@ -106,6 +106,11 @@ public class View {
 
     }
 
+    // this method removes a ball and displays a '+1' icon for 1 second
+    public void removeBall(Cell c){
+        c.getElement().setImage(new Image("images/plus1.png"));
+    }
+
     // This method displays a ball when it has hit the hexagon
     // Without this function you get a 1sec in which the ball is at (0,0)
     public void display(Cell c) {
