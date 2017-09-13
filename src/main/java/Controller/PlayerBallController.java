@@ -1,16 +1,28 @@
 package Controller;
 
+
+import Elements.Ball;
 import Elements.Player;
 import Elements.PlayerBall;
+import Main.Main;
+import Model.Cell;
 import Model.Grid;
+import Utility.Util;
 import View.View;
+import javafx.scene.image.ImageView;
+
+import java.util.ArrayList;
+
+import static Main.Main.getView;
 
 /**
  * The playerballController keeps track of the movement of the ball.
  */
 public class PlayerBallController {
 
-    private final int ballRadius = 17;
+    public final static int BALL_RADIUS = 15;
+    public final static int SPEEDUP = 3;
+    private final int  maximumTimesBallHit = 4;
     private Player player;
     private Grid grid;
     private double mouseX;
@@ -18,10 +30,11 @@ public class PlayerBallController {
     private double deltaX;
     private double deltaY;
     private int counter;
+    private Cell collidedCell;
 
 
     /**
-     * The playerballController consists of the player and the grid of the game and an counter
+     * The playerballController consists of the player and the grid of the game and a counter
      *  which keeps track of the times the mouse has been clicked.
      * @param player the player object of the game.
      * @param grid the grid of the game.
@@ -29,6 +42,7 @@ public class PlayerBallController {
     public PlayerBallController(Player player, Grid grid) {
         this.player = player;
         this.grid = grid;
+        collidedCell = null;
         counter = 0;
     }
 
@@ -43,23 +57,102 @@ public class PlayerBallController {
             return;
         }
 
-        final int speedup = 4;
         double vectorX = mouseX - player.getPlayerBall().getX();
         double vectorY = mouseY - player.getPlayerBall().getY();
         double max = Math.max(Math.abs(vectorX), Math.abs(vectorY));
 
         if (max > 0) {
-            deltaX = speedup * vectorX / max;
-            deltaY = speedup * vectorY / max;
+            deltaX = SPEEDUP * vectorX / max;
+            deltaY = SPEEDUP * vectorY / max;
             counter++;
         }
 
+    }
+
+    // this method checks after the shot ball has reached the hexagon if any balls should be removed
+    private ArrayList<Cell> checkRemovalBalls() {
+        return null;
+    }
+
+    // this method removes the balls that the method checkRemovalBalls returns and adds the points
+    // to the score
+    private void removeBalls(ArrayList<Cell> toRemove) {
+        return;
+    }
+
+    // this method adds balls to the hexagon every time the player misses more than 6 times
+    private void appendAdditionalBalls() {
+        return;
+    }
+
+    // this method takes care of the situation in which the shot ball hits the hexagon
+    private void ballCollisionHandler() {
+        //put ball in cell
+        //collidedCell.setElement(new Ball(player.getPlayerBall().getColor(), collidedCell));
+
+        // display the ball that has collided with the hexagon
+        grid.getOccupiedCells().add(collidedCell);
+        collidedCell.getElement().setImage(player.getPlayerBall().getImage());
+        Main.getView().display(collidedCell);
+
+        // check whether the shot ball has hit at least 2 other balls of the same color
+
+        ArrayList<Cell> ballsToBeRemoved = checkRemovalBalls();
+        if(ballsToBeRemoved != null) {
+            removeBalls(ballsToBeRemoved);
+        } else if(player.getMissCounter() >= 5) {
+            player.setMissCounter(0);
+            appendAdditionalBalls();
+        }
+        else {
+            player.setMissCounter(player.getMissCounter()+1);
+        }
+
+        //reset variables
+        mouseY = 0;
+        mouseX = 0;
+        collidedCell = null;
+
+        //nextBall
+        nextBall();
+
+        //set a rotation
+        grid.setRotationDifference(0);
+    }
+
+    private void nextBall() {
+
+        player.setPlayerBall(new PlayerBall(View.STAGE_WIDTH / 2,
+                View.TOP_BAR_HEIGHT, player.getNextBall().getColor()));
+        player.setNextBall(new Ball(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)], null));
+        this.setMouseY(0);
+        this.setMouseX(0);
+        this.setDeltaX(0);
+        this.setDeltaY(0);
+        counter = 0;
     }
 
     /**
      * Launches the ball in the direction of the mouse.
      */
     public void launchBall() {
+        if (getMouseY() == 0) return;
+
+        //checks for collisions with cells
+        if(collidedCell == null){
+            collidedCell = player.getPlayerBall().getCellCollision(grid);
+        }
+        if(collidedCell != null) {
+            ballCollisionHandler();
+            return;
+        }
+
+        // if the wall has collided with the wall for a maximum of 4 times then it will reset
+        // the ball
+        else if(player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
+            nextBall();
+        }
+
         // if the ball has collided with the wall the deltaX or deltaY will become negative.
         if (player.getPlayerBall().hasCollidedWithWall()) {
             double[] newDelta = reflectBack(deltaX, deltaY);
@@ -74,22 +167,6 @@ public class PlayerBallController {
         // set the new coordinate for the playerball.
         player.getPlayerBall().setX(newXCoord);
         player.getPlayerBall().setY(newYCoord);
-
-
-        // if the wall has collided with the wall for a maximum of 3 times then it will reset
-        // the ball
-        final int  maximumTimesBallHit = 3;
-        if (player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
-            player.setPlayerBall(new PlayerBall(View.STAGE_WIDTH / 2 - View.SCREEN_WITH_DEVIATION,
-                    View.TOP_BAR_HEIGHT));
-            this.setMouseY(0);
-            this.setMouseX(0);
-            this.setDeltaX(0);
-            this.setDeltaY(0);
-            counter = 0;
-        }
-
-
     }
 
     /**
@@ -101,12 +178,12 @@ public class PlayerBallController {
      */
     private double[] reflectBack(double deltaX, double deltaY) {
 
-        if ((player.getPlayerBall().getX() < ballRadius - View.SCREEN_WITH_DEVIATION)
-                || (player.getPlayerBall().getX() >= View.STAGE_WIDTH - ballRadius)) {
+        if ((player.getPlayerBall().getX() < BALL_RADIUS)
+                || (player.getPlayerBall().getX() >= View.STAGE_WIDTH)) {
             deltaX = deltaX * -1;
         }
         if ((player.getPlayerBall().getY() < View.TOP_BAR_HEIGHT)
-                || (player.getPlayerBall().getY() >= View.STAGE_HEIGHT - ballRadius)) {
+                || (player.getPlayerBall().getY() >= View.STAGE_HEIGHT)) {
             deltaY = deltaY * -1;
         }
         return new double [] {deltaX, deltaY};

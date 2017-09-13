@@ -2,6 +2,7 @@ package Elements;
 
 import Model.Cell;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Created by jur on 9/5/2017.
@@ -16,8 +17,13 @@ public class Ball extends Element {
      * @param cell the cell in which the ball is currently located
      */
     public Ball(String color, Cell cell) {
-        super(cell, new Image("images/" + color + " ball.png"));
+        super(cell, null);
         this.color = color;
+        if(color != null) super.setImage(new Image("images/" + color + " ball.png"));
+    }
+
+    public String getColor() {
+        return this.color;
     }
 
     /** Checks if a ball with a certain color exists

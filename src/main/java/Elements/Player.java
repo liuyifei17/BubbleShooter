@@ -1,11 +1,13 @@
 package Elements;
 
+import Utility.Util;
 import View.View;
 
 /**
  * The player class is keeps track of the players attributes.
  */
 public class Player {
+    private Ball nextBall;
     private PlayerBall playerBall;
     private int missCounter;
 
@@ -14,8 +16,9 @@ public class Player {
      * ball.
      */
     public Player() {
-        playerBall = new PlayerBall(View.STAGE_WIDTH / 2 - View.SCREEN_WITH_DEVIATION,
-                View.TOP_BAR_HEIGHT);
+        nextBall = new Ball(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)], null);
+        playerBall = new PlayerBall(View.STAGE_WIDTH / 2, View.TOP_BAR_HEIGHT,
+                Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)]);
         missCounter = 0;
     }
 
@@ -32,6 +35,22 @@ public class Player {
     public void setPlayerBall(PlayerBall playerBall) {
         this.playerBall = playerBall;
     }
+
+    /**
+     * @return get the next ball.
+     */
+    public Ball getNextBall() {
+        return nextBall;
+    }
+
+    /**
+     * @param n set next ball.
+     */
+    public void setNextBall(Ball n) {
+        this.nextBall = n;
+    }
+
+
 
     /**
      * @return get the amount of times u missed a ball.
