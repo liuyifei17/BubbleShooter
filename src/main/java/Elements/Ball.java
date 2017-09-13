@@ -26,6 +26,8 @@ public class Ball extends Element {
         return this.color;
     }
 
+    public void setColor(String color) { this.color = color; }
+
     /** Checks if a ball with a certain color exists
      * @param color the color to check for
      * @return true if color exists and false if it does not

@@ -1,8 +1,8 @@
 package View;
 
-import Elements.Element;
 import Model.Cell;
 import Model.GameData;
+import Utility.setTimeout;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -106,9 +106,29 @@ public class View {
 
     }
 
+    class removePlusOneIcon implements Runnable{
+
+        private Cell cell;
+
+        public removePlusOneIcon(Cell c) {
+            this.cell = c;
+        }
+
+        public void run() {
+            this.cell.getElement().setImage(null);
+            data.getGrid().getOccupiedCells().remove(this.cell);
+        }
+    }
+
     // this method removes a ball and displays a '+1' icon for 1 second
-    public void removeBall(Cell c){
+    public void removeBall(Cell c) {
         c.getElement().setImage(new Image("images/plus1.png"));
+
+        removePlusOneIcon r = new removePlusOneIcon(c);
+
+        setTimeout t = new setTimeout("Timeout Thread", 1000, r);
+        t.start();
+
     }
 
     // This method displays a ball when it has hit the hexagon

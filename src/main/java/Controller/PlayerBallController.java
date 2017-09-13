@@ -9,11 +9,9 @@ import Model.Cell;
 import Model.Grid;
 import Utility.Util;
 import View.View;
-import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
-import static Main.Main.getView;
 
 /**
  * The playerballController keeps track of the movement of the ball.
@@ -82,7 +80,9 @@ public class PlayerBallController {
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
     private void appendAdditionalBalls() {
-        return;
+        int numerBalls = Util.randomBetween(2,10);
+
+
     }
 
     // this method takes care of the situation in which the shot ball hits the hexagon
@@ -93,6 +93,8 @@ public class PlayerBallController {
         // display the ball that has collided with the hexagon
         grid.getOccupiedCells().add(collidedCell);
         collidedCell.getElement().setImage(player.getPlayerBall().getImage());
+        if(collidedCell.getElement() instanceof Ball)
+            ((Ball) collidedCell.getElement()).setColor(player.getPlayerBall().getColor());
         Main.getView().display(collidedCell);
 
         // check whether the shot ball has hit at least 2 other balls of the same color
