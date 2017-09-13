@@ -110,7 +110,6 @@ public class PlayerBallController {
 
                 //this adjacentCell is visited
                 visited.add(adjacentCell);
-
             }
         }
 
@@ -118,7 +117,6 @@ public class PlayerBallController {
             Ball ball = (Ball) cell.getElement();
             System.out.println(ball.getColor());
         }
-
         return removalBalls;
     }
 
@@ -128,24 +126,16 @@ public class PlayerBallController {
         if (toRemove.size() > 2) {
 
             for (Cell cell : toRemove) {
-
+                Main.getView().removeBall(cell);
             }
 
-/*            for(Cell cell: grid.getCells()){
+            //check if all the cells are connected to the centre cell,
+            // if not, remove the ball in that cell.
+            for(Cell cell: grid.getOccupiedCells()){
 
-                boolean noAdjacent =  true;
-
-                for( Cell adjacent : cell.getAdjacentCells()){
-                    if (adjacent.getElement() != null){
-                        noAdjacent = false;
-                    }
-                }
-
-                if(noAdjacent){
-                    cell.setElement(null);
-                }
-            }*/
+            }
         }
+        System.out.println("removed Balls");
     }
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
