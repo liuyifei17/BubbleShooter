@@ -139,7 +139,7 @@ public class PlayerBall {
         Cell c = grid.closestFullCellToLocation(x, y);
         for (Cell c2 : c.getAdjacentCells()) {
             if (c2.getElement().getSprite() == null) {
-                if (Util.getDistance(x, y, c2.getCurrentX(), c2.getCurrentY()) <= Cell.EDGE_CENTER_DISTANCE / 1.3) {
+                if (Util.getDistance(x, y, c2.getCurrentX(), c2.getCurrentY()) <= Cell.EDGE_CENTER_DISTANCE /1.1) {
                     return c2;
                 }
             }
