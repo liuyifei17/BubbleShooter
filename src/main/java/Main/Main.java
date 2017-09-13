@@ -1,16 +1,17 @@
+package Main;
+
+import Controller.GameDataLoader;
 import Controller.GameRunner;
 import Controller.GridController;
 import Controller.PlayerBallController;
 import Model.GameData;
-import Controller.GameDataLoader;
 import View.View;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  * Created by jur on 9/5/2017.
@@ -19,7 +20,7 @@ public class Main extends Application {
 
     private GameData data;
     private GameDataLoader loader;
-    private View view;
+    private static View view;
     private GameRunner runner;
     private GridController gridController;
     private PlayerBallController playerBallController;
@@ -50,7 +51,7 @@ public class Main extends Application {
         primaryStage.show(); // Display the stage
 
         //Start running the game
-        runner = new GameRunner(gridController, view, playerBallController);
+        runner = new GameRunner(gridController, playerBallController);
         runner.runGame();
 
         // Create a mousebutton event that keeps track on when the mouse has been clicked,
@@ -65,6 +66,9 @@ public class Main extends Application {
 
     }
 
+    public static View getView() {
+        return view;
+    }
     /**
      * The main method is only needed for the IDE with limited
      * JavaFX support. Not needed for running from the command line.

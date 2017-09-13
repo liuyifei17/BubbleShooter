@@ -46,7 +46,7 @@ public class GameDataLoader {
         int index = 0;
         while(emptyCells.size() < data.getInitialBallAmount() + 1){
             for(Cell c : emptyCells.get(index).getAdjacentCells()){
-                if(c.getElement() == null && !emptyCells.contains(c)){
+                if(!emptyCells.contains(c)){
                     emptyCells.add(c);
                 }
             }
@@ -60,6 +60,9 @@ public class GameDataLoader {
             c.setElement(b);
             b.setCell(c);
         }
+
+        data.getGrid().getOccupiedCells().add(data.getGrid().getCenterCell());
+        data.getGrid().getOccupiedCells().addAll(emptyCells);
     }
 
 }
