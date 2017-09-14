@@ -202,6 +202,9 @@ public class PlayerBallController {
         return new double [] {deltaX, deltaY};
     }
 
+    /**
+     *
+     */
     public void calculateRotation() {
         System.out.println(stopWatch);
         if (directionDeltaX > 0 && directionDeltaY > 0) {
