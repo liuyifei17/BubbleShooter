@@ -35,4 +35,8 @@ public class GridController {
         this.grid = grid;
     }
 
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
+
 }

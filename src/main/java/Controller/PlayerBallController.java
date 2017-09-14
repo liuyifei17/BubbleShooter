@@ -277,4 +277,13 @@ public class PlayerBallController {
         this.deltaY = deltaY;
     }
 
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
+
 }
