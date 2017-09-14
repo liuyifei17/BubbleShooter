@@ -148,6 +148,8 @@ public class PlayerBallController {
     public void launchBall() {
         if (getMouseY() == 0) return;
 
+        stopWatch++;
+
         //checks for collisions with cells
         if (collidedCell == null) {
             collidedCell = player.getPlayerBall().getCellCollision(grid, deltaX, deltaY);
@@ -160,6 +162,7 @@ public class PlayerBallController {
         // if the wall has collided with the wall for a maximum of 4 times then it will reset
         // the ball
         else if (player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
+            stopWatch = 0;
             nextBall();
         }
 
@@ -198,6 +201,7 @@ public class PlayerBallController {
         }
         return new double [] {deltaX, deltaY};
     }
+
     public void calculateRotation() {
         System.out.println(stopWatch);
         if (directionDeltaX > 0 && directionDeltaY > 0) {
