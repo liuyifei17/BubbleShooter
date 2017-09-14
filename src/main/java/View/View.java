@@ -7,6 +7,10 @@ import Utility.setTimeout;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 
@@ -33,6 +37,12 @@ public class View {
     private Image gameBg;
     private ImageView topBar;
     private ImageView scoreBar;
+    private Text scoreBarScore;
+
+    private Pane gameOverPopup;
+    private Text popupScore;
+    private ImageView popupRestartButton;
+    private ImageView popupHomeButton;
 
     private ImageView playerBall;
     private ImageView nextBall;
@@ -42,6 +52,11 @@ public class View {
     public static final int TOP_BAR_HEIGHT = 70;
     public static final int SCORE_BAR_HEIGHT = 40;
     public static final int SCORE_BAR_WIDTH = 240;
+
+    public static final int POPUP_WIDTH = 300;
+    public static final int POPUP_HEIGHT = 360;
+    public static final int POPUP_X = 150;
+    public static final int POPUP_Y = 200;
 
     public View(Pane mainMenuPane, Pane gamePane, GameData data){
         this.mainMenuPane = mainMenuPane;
@@ -110,8 +125,13 @@ public class View {
         scoreBar.setFitHeight(SCORE_BAR_HEIGHT);
         scoreBar.setFitWidth(SCORE_BAR_WIDTH);
 
-        //draw entities
+        //draw score text
+        scoreBarScore = new Text("Score: 0");
+        scoreBarScore.setFont(Font.font("Arial",25));
+        scoreBarScore.relocate(15,22);
+        scoreBarScore.setFill(Color.YELLOW);
 
+        //draw entities
         for(Cell c: data.getGrid().getOccupiedCells()){
             c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
         }
@@ -122,27 +142,27 @@ public class View {
         nextBall.setFitWidth(data.getPlayer().getNextBall().getSprite().getWidth()/2);
         nextBall.setFitHeight(data.getPlayer().getNextBall().getSprite().getHeight()/2);
 
-
         playerBall = new ImageView(data.getPlayer().getPlayerBall().getImage());
         playerBall.relocate(data.getPlayer().getPlayerBall().getX() - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
                 data.getPlayer().getPlayerBall().getY() - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
 
+        //create popup on game over
+        createGameOverPopup();
 
         //add components to game pane
         gamePane.getChildren().add(topBar);
-        gamePane.getChildren().add(scoreBar);
+        //gamePane.getChildren().add(scoreBar);
         for(Cell c: data.getGrid().getCells()){
             gamePane.getChildren().add(c.getElement().getImageView());
         }
         gamePane.getChildren().add(playerBall);
         gamePane.getChildren().add(nextBall);
-
+        gamePane.getChildren().add(scoreBarScore);
     }
 
     public void redraw(){
         //check for changed cells and update children
         ArrayList<Cell> cells = data.getGrid().getOccupiedCells();
-
 
         //relocate elements
         for(Cell c:cells){
@@ -155,12 +175,9 @@ public class View {
 
         playerBall.relocate(data.getPlayer().getPlayerBall().getX() - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
                 data.getPlayer().getPlayerBall().getY() - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
-
-
     }
 
     class removePlusOneIcon implements Runnable{
-
         private Cell cell;
 
         public removePlusOneIcon(Cell c) {
@@ -184,11 +201,61 @@ public class View {
 
         setTimeout t = new setTimeout("Timeout Thread", 1000, r);
         t.start();
-
     }
 
     public void display(Cell c) {
         c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
+    }
+
+    public void changeMusicButton(int amount) {
+        if(amount == 100) musicIcon.setImage(musicIconMin);
+        else if(amount == 0) musicIcon.setImage(musicIconMax);
+        musicIcon.relocate(510, 620);
+        musicIcon.fitWidthProperty().setValue(60);
+        musicIcon.fitHeightProperty().setValue(60);
+    }
+
+    private void createGameOverPopup() {
+        //create popup container
+        gameOverPopup = new Pane();
+        gameOverPopup.setPrefSize(POPUP_WIDTH, POPUP_HEIGHT);
+        gameOverPopup.relocate(POPUP_X,POPUP_Y);
+        gameOverPopup.setBackground(new Background(new BackgroundImage(new Image("images/gameOverPopupBg.png",
+                POPUP_WIDTH,POPUP_HEIGHT,false,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
+
+        //create graphical elements
+        ImageView gameOverMessage = new ImageView("images/gameOverMessage.png");
+        gameOverMessage.relocate(0,20);
+        popupScore = new Text("Score: 0");
+        popupScore.setFont(Font.font("Arial",35));
+        popupScore.setWrappingWidth(POPUP_WIDTH);
+        popupScore.setTextAlignment(TextAlignment.CENTER);
+        popupScore.setUnderline(true);
+        popupScore.relocate(0,130);
+        popupRestartButton = new ImageView("images/restart-icon.png");
+        popupRestartButton.relocate(5,260);
+        popupHomeButton = new ImageView("images/home-icon.png");
+        popupHomeButton.relocate(198,260);
+
+        //add graphical elements to popup container
+        gameOverPopup.getChildren().add(gameOverMessage);
+        gameOverPopup.getChildren().add(popupScore);
+        gameOverPopup.getChildren().add(popupRestartButton);
+        gameOverPopup.getChildren().add(popupHomeButton);
+    }
+
+    public void clear(){
+
+    }
+
+    public void showGameOverPopup() {
+        gamePane.getChildren().add(gameOverPopup);
+    }
+
+    public void closeGameOverPopup() {
+        gamePane.getChildren().remove(gameOverPopup);
     }
 
     private double getScreenX(Cell cell){
@@ -207,10 +274,6 @@ public class View {
         return exitButton;
     }
 
-    public ImageView getSettingsButton() {
-        return settingsButton;
-    }
-
     public ImageView getMusicButton() {
         return musicButton;
     }
@@ -219,12 +282,20 @@ public class View {
         return musicIcon;
     }
 
-    public void changeMusicButton(int amount) {
-        if(amount == 100) musicIcon.setImage(musicIconMin);
-        if(amount == 0) musicIcon.setImage(musicIconMax);
-        musicIcon.relocate(510, 620);
-        musicIcon.fitWidthProperty().setValue(60);
-        musicIcon.fitHeightProperty().setValue(60);
+    public ImageView getPopupRestartButton() {
+        return popupRestartButton;
+    }
+
+    public ImageView getPopupHomeButton() {
+        return popupHomeButton;
+    }
+
+    public void setData(GameData data) {
+        this.data = data;
+    }
+
+    public void setGamePane(Pane gamePane) {
+        this.gamePane = gamePane;
     }
 
 }

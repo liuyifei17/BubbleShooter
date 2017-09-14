@@ -4,8 +4,8 @@ import Model.GameData;
 import View.View;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -35,9 +35,15 @@ public class GameController {
     private MediaPlayer mediaPlayer;
     private int backgroundMusicVolume;
 
+    private boolean gamePaused;
 
     public GameController(Stage primaryStage){
         this.primaryStage = primaryStage;
+        gamePaused = false;
+    }
+
+    public static View getView() {
+        return view;
     }
 
     public void setup(){
@@ -58,52 +64,14 @@ public class GameController {
         runner.runGame();
 
         setMouseControllers();
-    }
-
-    private void setMouseControllers(){
-        // play button event
-        view.getPlayButton().setOnMouseReleased(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                primaryStage.setScene(gameScreen);
-            }
-        });
-
-        //exit button event
-        view.getExitButton().setOnMouseReleased(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                primaryStage.close();
-                System.exit(0);
-            }
-        });
-
-        //sound button event
-        view.getMusicButton().setOnMouseReleased(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                handleMusicButtonClick();
-            }
-        });
-
-        //sound button event
-        view.getMusicIcon().setOnMouseReleased(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                handleMusicButtonClick();
-            }
-        });
-
-        // ball firing event
-        gameScreen.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                playerBallController.setMouseX(event.getSceneX());
-                playerBallController.setMouseY(event.getSceneY());
-                playerBallController.calculateDelta();
-            }
-        });
+        setKeyboardControllers();
     }
 
     private void setupSound(){
         backgroundMusicVolume = 100;
         backgroundMusic = new Media(new File("src/main/resources/sounds/bgm1.mp3").toURI().toString());
         mediaPlayer = new MediaPlayer(backgroundMusic);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
     }
 
@@ -125,7 +93,49 @@ public class GameController {
         primaryStage.setTitle("Bubble Shooter"); // Set the stage title
         primaryStage.setScene(mainMenu); // Place the scene in the stage
         primaryStage.setResizable(false); //cannot resize game
+        primaryStage.setOnCloseRequest(e -> System.exit(0));
         primaryStage.show(); // Display the stage
+    }
+
+    private void setMouseControllers(){
+        // ball firing event
+        gameScreen.setOnMouseReleased(event -> {
+            if(!gamePaused) {
+                playerBallController.setMouseX(event.getSceneX());
+                playerBallController.setMouseY(event.getSceneY());
+                playerBallController.calculateDelta();
+            }
+        });
+
+        // play button event
+        view.getPlayButton().setOnMouseReleased(event -> {
+            primaryStage.setScene(gameScreen);
+        });
+
+        //exit button event
+        view.getExitButton().setOnMouseReleased(event -> {
+            primaryStage.close();
+            System.exit(0);
+        });
+
+        //sound button event
+        view.getMusicButton().setOnMouseReleased(event -> {
+            handleMusicButtonClick();
+        });
+
+        //sound button event
+        view.getMusicIcon().setOnMouseReleased(event -> {
+            handleMusicButtonClick();
+        });
+
+        view.getPopupHomeButton().setOnMouseReleased(event -> {
+            primaryStage.setScene(mainMenu);
+            resetGame();
+        });
+
+        view.getPopupRestartButton().setOnMouseReleased(event ->{
+            resetGame();
+        });
     }
 
     private void handleMusicButtonClick(){
@@ -140,8 +150,25 @@ public class GameController {
         }
     }
 
-    public static View getView() {
-        return view;
+    private void setKeyboardControllers(){
+        //pause the game
+        gameScreen.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                if(gamePaused){
+                    gamePaused = false;
+                    view.closeGameOverPopup();
+                }
+                else {
+                    gamePaused = true;
+                    view.showGameOverPopup();
+                }
+            }
+        });
+    }
+
+    private void resetGame(){
+        view.closeGameOverPopup();
+        gamePaused = false;
     }
 
 }
