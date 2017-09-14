@@ -2,9 +2,7 @@ package Controller;
 
 import Model.GameData;
 import View.View;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
@@ -14,7 +12,7 @@ import javafx.stage.Stage;
 import java.io.File;
 
 /**
- * Created by jur on 9/14/2017.
+ * This class is responsible for setup of the game.
  */
 public class GameController {
 
@@ -37,7 +35,7 @@ public class GameController {
 
     private boolean gamePaused;
 
-    public GameController(Stage primaryStage){
+    public GameController(Stage primaryStage) {
         this.primaryStage = primaryStage;
         gamePaused = false;
     }
@@ -46,7 +44,7 @@ public class GameController {
         return view;
     }
 
-    public void setup(){
+    public void setup() {
         //Initialize data
         data = new GameData();
         loader = new GameDataLoader();
@@ -56,7 +54,15 @@ public class GameController {
         gridController = new GridController(data.getGrid());
         playerBallController = new PlayerBallController(data.getPlayer(), data.getGrid());
 
-        setupSound();
+        // set up the sound
+        // if the route is not correct start the game without sound
+        try {
+            setupSound();
+        }
+        catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
+
         setupView();
 
         //Start running the game
@@ -67,7 +73,7 @@ public class GameController {
         setKeyboardControllers();
     }
 
-    private void setupSound(){
+    private void setupSound() {
         backgroundMusicVolume = 100;
         backgroundMusic = new Media(new File("src/main/resources/sounds/bgm1.mp3").toURI().toString());
         mediaPlayer = new MediaPlayer(backgroundMusic);
@@ -75,7 +81,7 @@ public class GameController {
         mediaPlayer.play();
     }
 
-    private void setupView(){
+    private void setupView() {
         //Create the panes to hold game elements
         mainMenuPane = new Pane();
         gamePane = new Pane();
@@ -97,10 +103,10 @@ public class GameController {
         primaryStage.show(); // Display the stage
     }
 
-    private void setMouseControllers(){
+    private void setMouseControllers() {
         // ball firing event
         gameScreen.setOnMouseReleased(event -> {
-            if(!gamePaused) {
+            if (!gamePaused) {
                 playerBallController.setMouseX(event.getSceneX());
                 playerBallController.setMouseY(event.getSceneY());
                 playerBallController.calculateDelta();
@@ -133,32 +139,30 @@ public class GameController {
             resetGame();
         });
 
-        view.getPopupRestartButton().setOnMouseReleased(event ->{
+        view.getPopupRestartButton().setOnMouseReleased(event -> {
             resetGame();
         });
     }
 
-    private void handleMusicButtonClick(){
+    private void handleMusicButtonClick() {
         view.changeMusicButton(backgroundMusicVolume);
-        if(backgroundMusicVolume == 100){
+        if (backgroundMusicVolume == 100) {
             backgroundMusicVolume = 0;
             mediaPlayer.pause();
-        }
-        else {
+        } else {
             backgroundMusicVolume = 100;
             mediaPlayer.play();
         }
     }
 
-    private void setKeyboardControllers(){
+    private void setKeyboardControllers() {
         //pause the game
         gameScreen.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
-                if(gamePaused){
+                if (gamePaused) {
                     gamePaused = false;
                     view.closeGameOverPopup();
-                }
-                else {
+                } else {
                     gamePaused = true;
                     view.showGameOverPopup();
                 }
@@ -166,8 +170,9 @@ public class GameController {
         });
     }
 
-    private void resetGame(){
+    private void resetGame() {
         view.closeGameOverPopup();
+
         gamePaused = false;
     }
 

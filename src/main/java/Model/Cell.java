@@ -3,7 +3,7 @@ package Model;
 import java.util.ArrayList;
 
 /**
- * Created by jur on 9/5/2017.
+ * This class stores
  */
 public class Cell {
 
@@ -15,7 +15,7 @@ public class Cell {
     private Element element;
     private ArrayList<Cell> adjacentCells;
 
-    public Cell(double x, double y){
+    public Cell(double x, double y) {
         initialX = x;
         initialY = y;
         currentX = x;
@@ -25,6 +25,11 @@ public class Cell {
         adjacentCells = new ArrayList<Cell>();
     }
 
+    /**
+     * Getter for the element field.
+     *
+     * @return the element that is associated with this cell
+     */
     public Element getElement() {
         return element;
     }
@@ -37,10 +42,20 @@ public class Cell {
         return adjacentCells;
     }
 
+    /**
+     * Getter for the x field.
+     *
+     * @return the initial x coordinate of the Cell
+     */
     public double getInitialX() {
         return initialX;
     }
 
+    /**
+     * Getter for the y field.
+     *
+     * @return the initial y coordinate of the Cell
+     */
     public double getInitialY() {
         return initialY;
     }
