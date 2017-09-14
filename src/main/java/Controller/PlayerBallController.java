@@ -56,13 +56,14 @@ public class PlayerBallController {
 
         double vectorX = mouseX - player.getPlayerBall().getX();
         double vectorY = mouseY - player.getPlayerBall().getY();
-        double max = Math.max(Math.abs(vectorX), Math.abs(vectorY));
 
-        if (max > 0) {
-            deltaX = SPEEDUP * vectorX / max;
-            deltaY = SPEEDUP * vectorY / max;
-            counter++;
-        }
+        double dotProd = Math.sqrt(vectorX*vectorX + vectorY*vectorY);
+
+
+        deltaX = SPEEDUP * vectorX / dotProd;
+        deltaY = SPEEDUP * vectorY / dotProd;
+        counter++;
+
 
     }
 
@@ -79,7 +80,8 @@ public class PlayerBallController {
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
     private void appendAdditionalBalls() {
-        int numerBalls = Util.randomBetween(2,10);
+        int numerBalls = Util.randomBetween(2, 10);
+
 
 
     }
@@ -92,21 +94,22 @@ public class PlayerBallController {
         // display the ball that has collided with the hexagon
         grid.getOccupiedCells().add(collidedCell);
         collidedCell.getElement().setImage(player.getPlayerBall().getImage());
-        if(collidedCell.getElement() instanceof Ball)
+        if (collidedCell.getElement() instanceof Ball) {
             ((Ball) collidedCell.getElement()).setColor(player.getPlayerBall().getColor());
+        }
         GameController.getView().display(collidedCell);
 
         // check whether the shot ball has hit at least 2 other balls of the same color
 
         ArrayList<Cell> ballsToBeRemoved = checkRemovalBalls();
-        if(ballsToBeRemoved != null) {
+        if (ballsToBeRemoved != null) {
             removeBalls(ballsToBeRemoved);
-        } else if(player.getMissCounter() >= 5) {
+        } else if (player.getMissCounter() >= 5) {
             player.setMissCounter(0);
             appendAdditionalBalls();
         }
         else {
-            player.setMissCounter(player.getMissCounter()+1);
+            player.setMissCounter(player.getMissCounter() + 1);
         }
 
         //reset variables
@@ -118,14 +121,15 @@ public class PlayerBallController {
         nextBall();
 
         //set a rotation
-        grid.setRotationDifference(0);
+        grid.setRotationDifference(10);
     }
 
     private void nextBall() {
 
         player.setPlayerBall(new PlayerBall(View.STAGE_WIDTH / 2,
                 View.TOP_BAR_HEIGHT, player.getNextBall().getColor()));
-        player.setNextBall(new Ball(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)], null));
+        player.setNextBall(new Ball(Ball.COLORS[Util.randomBetween(0,
+                Ball.COLORS.length - 1)], null));
         this.setMouseY(0);
         this.setMouseX(0);
         this.setDeltaX(0);
@@ -140,17 +144,17 @@ public class PlayerBallController {
         if (getMouseY() == 0) return;
 
         //checks for collisions with cells
-        if(collidedCell == null){
-            collidedCell = player.getPlayerBall().getCellCollision(grid);
+        if (collidedCell == null) {
+            collidedCell = player.getPlayerBall().getCellCollision(grid, deltaX, deltaY);
         }
-        if(collidedCell != null) {
+        if (collidedCell != null) {
             ballCollisionHandler();
             return;
         }
 
         // if the wall has collided with the wall for a maximum of 4 times then it will reset
         // the ball
-        else if(player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
+        else if (player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
             nextBall();
         }
 

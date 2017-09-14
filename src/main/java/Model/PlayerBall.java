@@ -112,38 +112,22 @@ public class PlayerBall {
      * @param grid
      * @return null if not in range else return cell
      */
-    public Cell hasCollidedWithCell(Grid grid) {
-        Cell closestCell = grid.closestCellToLocation(x, y);
-
-        if (closestCell.getElement().getSprite() == null) {
-            final double radiusBallDouble = 30;
-
-            double distance = Util.getDistance(x, y, closestCell.getCurrentX(),
-                    closestCell.getCurrentY());
-            if (distance <= radiusBallDouble) {
-                for (Cell c : closestCell.getAdjacentCells()) {
-                    if (c.getElement().getSprite() != null) return closestCell;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Checks if there is a full cell in collision range
-     *
-     * @param grid
-     * @return null if not in range else return cell
-     */
-    public Cell getCellCollision(Grid grid) {
+    public Cell getCellCollision(Grid grid, double deltaX, double deltaY) {
         Cell c = grid.closestFullCellToLocation(x, y);
-        for (Cell c2 : c.getAdjacentCells()) {
-            if (c2.getElement().getSprite() == null) {
-                if (Util.getDistance(x, y, c2.getCurrentX(), c2.getCurrentY()) <= Cell.EDGE_CENTER_DISTANCE /1.1) {
-                    return c2;
-                }
+        Cell c2 = grid.closestEmptyCellToLocation(c.getCurrentX(), c.getCurrentY());
+        if (Util.getDistance(x, y, c2.getCurrentX(), c2.getCurrentY()) <= Cell.EDGE_CENTER_DISTANCE / 1.3) {
+            return c2;
+        }
+        for (int i = 1; i < 3; i++) {
+            double nx = this.getX() + deltaX * i;
+            double ny = this.getY() + deltaY * i;
+
+            if (Util.getDistance(nx, ny, c.getCurrentX(), c.getCurrentY())
+                    <= Cell.EDGE_CENTER_DISTANCE) {
+                return grid.closestEmptyCellToLocation(this.x, this.y);
             }
         }
+
         return null;
     }
 }

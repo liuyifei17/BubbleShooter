@@ -1,5 +1,6 @@
 package View;
 
+import Model.Ball;
 import Model.Cell;
 import Model.GameData;
 import Utility.setTimeout;
@@ -123,6 +124,9 @@ public class View {
     // this method removes a ball and displays a '+1' icon for 1 second
     public void removeBall(Cell c) {
         c.getElement().setImage(new Image("images/plus1.png"));
+        if(c.getElement() instanceof Ball) {
+            ((Ball) c.getElement()).setColor(null);
+        }
 
         removePlusOneIcon r = new removePlusOneIcon(c);
 
