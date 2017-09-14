@@ -11,18 +11,18 @@ public class GridController {
 
     private Grid grid;
 
-    public void process(){
+    public void process() {
         //calculate the rotated cell coordinate values based on rotation change
-        if(grid.getRotationDifference() != 0){
-            if(grid.getRotationDifference() > 0){
+        if(grid.getRotationDifference() != 0) {
+            if(grid.getRotationDifference() > 0) {
                 grid.setRotationDifference(grid.getRotationDifference() - grid.getRotationSpeed());
                 grid.setRotation(grid.getRotation() + grid.getRotationSpeed());
             }
-            if(grid.getRotationDifference() < 0){
+            if(grid.getRotationDifference() < 0) {
                 grid.setRotationDifference(grid.getRotationDifference() + grid.getRotationSpeed());
                 grid.setRotation(grid.getRotation() - grid.getRotationSpeed());
             }
-            for(Cell c: grid.getCells()){
+            for(Cell c: grid.getCells()) {
                 double[] newCoords = Util.calculateRotatedCoordinates(c.getInitialX(), c.getInitialY(),
                         grid.getCenterCell().getInitialX(), grid.getCenterCell().getInitialY(), grid.getRotation());
                 c.setCurrentX(newCoords[0]);
