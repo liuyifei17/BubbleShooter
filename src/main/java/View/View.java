@@ -23,7 +23,6 @@ public class View {
     private ImageView scoreBar;
 
 
-
     private ImageView playerBall;
     private ImageView nextBall;
     private ImageView fake;
@@ -35,12 +34,12 @@ public class View {
     private static final int SCORE_BAR_WIDTH = 240;
 
 
-    public View(Pane gamePane, GameData data){
+    public View(Pane gamePane, GameData data) {
         this.gamePane = gamePane;
         this.data = data;
     }
 
-    public void drawGame(){
+    public void drawGame() {
         //draw background
         background = new Image("images/background1.png");
         gamePane.setBackground(new Background(new BackgroundImage(background, BackgroundRepeat.NO_REPEAT,
@@ -60,15 +59,15 @@ public class View {
 
         //draw entities
 
-        for(Cell c: data.getGrid().getOccupiedCells()){
+        for (Cell c : data.getGrid().getOccupiedCells()) {
             c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
         }
 
         nextBall = new ImageView(data.getPlayer().getNextBall().getSprite());
-        nextBall.relocate(View.STAGE_WIDTH / 2 - data.getPlayer().getNextBall().getSprite().getWidth()/4,
+        nextBall.relocate(View.STAGE_WIDTH / 2 - data.getPlayer().getNextBall().getSprite().getWidth() / 4,
                 View.TOP_BAR_HEIGHT - 30);
-        nextBall.setFitWidth(data.getPlayer().getNextBall().getSprite().getWidth()/2);
-        nextBall.setFitHeight(data.getPlayer().getNextBall().getSprite().getHeight()/2);
+        nextBall.setFitWidth(data.getPlayer().getNextBall().getSprite().getWidth() / 2);
+        nextBall.setFitHeight(data.getPlayer().getNextBall().getSprite().getHeight() / 2);
 
 
         playerBall = new ImageView(data.getPlayer().getPlayerBall().getImage());
@@ -79,7 +78,7 @@ public class View {
         //add components to game pane
         gamePane.getChildren().add(topBar);
         gamePane.getChildren().add(scoreBar);
-        for(Cell c: data.getGrid().getCells()){
+        for (Cell c : data.getGrid().getCells()) {
             gamePane.getChildren().add(c.getElement().getImageView());
         }
         gamePane.getChildren().add(playerBall);
@@ -87,15 +86,19 @@ public class View {
 
     }
 
-    public void redraw(){
+    public void redraw() {
         //check for changed cells and update children
         ArrayList<Cell> cells = data.getGrid().getOccupiedCells();
 
 
         //relocate elements
-        for(Cell c:cells){
-            c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
-            c.getElement().getImageView().rotateProperty().setValue(data.getGrid().getRotation());
+        for (Cell c : cells) {
+            if (c.getElement().getSprite() == null) {
+                continue;
+            } else {
+                c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
+                c.getElement().getImageView().rotateProperty().setValue(data.getGrid().getRotation());
+            }
         }
 
         playerBall.setImage(data.getPlayer().getPlayerBall().getImage());
@@ -107,7 +110,7 @@ public class View {
 
     }
 
-    class removePlusOneIcon implements Runnable{
+    class removePlusOneIcon implements Runnable {
 
         private Cell cell;
 
@@ -124,7 +127,7 @@ public class View {
     // this method removes a ball and displays a '+1' icon for 1 second
     public void removeBall(Cell c) {
         c.getElement().setImage(new Image("images/plus1.png"));
-        if(c.getElement() instanceof Ball) {
+        if (c.getElement() instanceof Ball) {
             ((Ball) c.getElement()).setColor(null);
         }
 
@@ -141,11 +144,11 @@ public class View {
         c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
     }
 
-    private double getScreenX(Cell cell){
+    private double getScreenX(Cell cell) {
         return (cell.getCurrentX() - (cell.getElement().getSprite().getWidth() / 2));
     }
 
-    private double getScreenY(Cell cell){
+    private double getScreenY(Cell cell) {
         return (cell.getCurrentY() - (cell.getElement().getSprite().getHeight() / 2));
     }
 
