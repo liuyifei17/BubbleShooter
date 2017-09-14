@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
  */
 public class Ball extends Element {
 
-    public static final String[] COLORS = {"blue","green","orange","purple","red","yellow"};
+    public static final String[] COLORS = {"blue", "green", "orange", "purple", "red", "yellow"};
     private String color;
 
     /** creates a ball that is located inside a cell
@@ -17,7 +17,7 @@ public class Ball extends Element {
     public Ball(String color, Cell cell) {
         super(cell, null);
         this.color = color;
-        if(color != null) super.setImage(new Image("images/" + color + " ball.png"));
+        if (color != null) super.setImage(new Image("images/" + color + " ball.png"));
     }
 
     public String getColor() {
@@ -30,8 +30,8 @@ public class Ball extends Element {
      * @param color the color to check for
      * @return true if color exists and false if it does not
      */
-    public static boolean colorExists(String color){
-        for(String s: COLORS){
+    public static boolean colorExists(String color) {
+        for(String s: COLORS) {
             if(s.equalsIgnoreCase(color)) return true;
         }
         return false;
