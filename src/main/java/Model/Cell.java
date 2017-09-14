@@ -1,5 +1,8 @@
 package Model;
 
+import Controller.PlayerBallController;
+import View.View;
+
 import java.util.ArrayList;
 
 /**
@@ -59,5 +62,16 @@ public class Cell {
 
     public void setCurrentY(double currentY) {
         this.currentY = currentY;
+    }
+
+
+    public boolean hasCollidedWithWall() {
+        if ((currentX < PlayerBallController.BALL_RADIUS)
+                || (currentX >= View.STAGE_WIDTH)
+                || (currentY < View.TOP_BAR_HEIGHT)
+                || (currentY >= View.STAGE_HEIGHT)) {
+            return true;
+        }
+        return false;
     }
 }

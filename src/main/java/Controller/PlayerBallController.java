@@ -121,7 +121,8 @@ public class PlayerBallController {
         nextBall();
 
         //set a rotation
-        grid.setRotationDifference(10);
+        grid.setRotationDifference(100);
+
     }
 
     private void nextBall() {
@@ -152,7 +153,7 @@ public class PlayerBallController {
             return;
         }
 
-        // if the wall has collided with the wall for a maximum of 4 times then it will reset
+        // if the ball has collided with the wall for a maximum of 4 times then it will reset
         // the ball
         else if (player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
             nextBall();
