@@ -20,13 +20,18 @@ public class PlayerBallController {
     public final static int BALL_RADIUS = 15;
     public final static int SPEEDUP = 3;
     private final int  maximumTimesBallHit = 4;
+    private final int[] leftRotation = {-10, -20, -30};
+    private final int[] rightRotation = {10, 20, 30};
     private Player player;
     private Grid grid;
     private double mouseX;
     private double mouseY;
     private double deltaX;
     private double deltaY;
+    private double directionDeltaX;
+    private double directionDeltaY;
     private int counter;
+    private int stopWatch;
     private Cell collidedCell;
 
 
@@ -41,6 +46,7 @@ public class PlayerBallController {
         this.grid = grid;
         collidedCell = null;
         counter = 0;
+        stopWatch = 0;
     }
 
     /**
@@ -54,17 +60,15 @@ public class PlayerBallController {
             return;
         }
 
-        double vectorX = mouseX - player.getPlayerBall().getX();
-        double vectorY = mouseY - player.getPlayerBall().getY();
+        directionDeltaX = mouseX - player.getPlayerBall().getX();
+        directionDeltaY = mouseY - player.getPlayerBall().getY();
 
-        double dotProd = Math.sqrt(vectorX*vectorX + vectorY*vectorY);
+        double dotProd = Math.sqrt(directionDeltaX * directionDeltaX
+                + directionDeltaY * directionDeltaY);
 
-
-        deltaX = SPEEDUP * vectorX / dotProd;
-        deltaY = SPEEDUP * vectorY / dotProd;
+        deltaX = SPEEDUP * directionDeltaX / dotProd;
+        deltaY = SPEEDUP * directionDeltaY / dotProd;
         counter++;
-
-
     }
 
     // this method checks after the shot ball has reached the hexagon if any balls should be removed
@@ -117,11 +121,12 @@ public class PlayerBallController {
         mouseX = 0;
         collidedCell = null;
 
+        //set a rotation
+        calculateRotation();
+
         //nextBall
         nextBall();
 
-        //set a rotation
-        grid.setRotationDifference(10);
     }
 
     private void nextBall() {
@@ -143,6 +148,8 @@ public class PlayerBallController {
     public void launchBall() {
         if (getMouseY() == 0) return;
 
+        stopWatch++;
+
         //checks for collisions with cells
         if (collidedCell == null) {
             collidedCell = player.getPlayerBall().getCellCollision(grid, deltaX, deltaY);
@@ -155,6 +162,7 @@ public class PlayerBallController {
         // if the wall has collided with the wall for a maximum of 4 times then it will reset
         // the ball
         else if (player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
+            stopWatch = 0;
             nextBall();
         }
 
@@ -192,6 +200,37 @@ public class PlayerBallController {
             deltaY = deltaY * -1;
         }
         return new double [] {deltaX, deltaY};
+    }
+
+    /**
+     *
+     */
+    public void calculateRotation() {
+        System.out.println(stopWatch);
+        if (directionDeltaX > 0 && directionDeltaY > 0) {
+            if (stopWatch < 70) {
+                grid.setRotationDifference(rightRotation[0]);
+            }
+            if (stopWatch < 170) {
+                grid.setRotationDifference(rightRotation[1]);
+            }
+            if (stopWatch > 170) {
+                grid.setRotationDifference(rightRotation[2]);
+            }
+        }
+
+        if (directionDeltaX < 0 && directionDeltaY > 0) {
+            if (stopWatch < 70) {
+                grid.setRotationDifference(leftRotation[0]);
+            }
+            if (stopWatch < 170) {
+                grid.setRotationDifference(leftRotation[1]);
+            }
+            if (stopWatch > 170) {
+                grid.setRotationDifference(leftRotation[2]);
+            }
+        }
+        stopWatch = 0;
     }
 
     /**
