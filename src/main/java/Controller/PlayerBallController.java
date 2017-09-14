@@ -8,6 +8,7 @@ import Model.Cell;
 import Model.Grid;
 import Utility.Util;
 import View.View;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 
@@ -20,13 +21,18 @@ public class PlayerBallController {
     public final static int BALL_RADIUS = 15;
     public final static int SPEEDUP = 3;
     private final int  maximumTimesBallHit = 4;
+    private final int[] leftRotation = {-10, -20, -30};
+    private final int[] rightRotation = {10, 20, 30};
     private Player player;
     private Grid grid;
     private double mouseX;
     private double mouseY;
     private double deltaX;
     private double deltaY;
+    private double directionDeltaX;
+    private double directionDeltaY;
     private int counter;
+    private int stopWatch;
     private Cell collidedCell;
 
 
@@ -41,6 +47,7 @@ public class PlayerBallController {
         this.grid = grid;
         collidedCell = null;
         counter = 0;
+        stopWatch = 0;
     }
 
     /**
@@ -54,22 +61,36 @@ public class PlayerBallController {
             return;
         }
 
-        double vectorX = mouseX - player.getPlayerBall().getX();
-        double vectorY = mouseY - player.getPlayerBall().getY();
+        directionDeltaX = mouseX - player.getPlayerBall().getX();
+        directionDeltaY = mouseY - player.getPlayerBall().getY();
 
-        double dotProd = Math.sqrt(vectorX*vectorX + vectorY*vectorY);
+        double dotProd = Math.sqrt(directionDeltaX * directionDeltaX
+                + directionDeltaY * directionDeltaY);
 
-
-        deltaX = SPEEDUP * vectorX / dotProd;
-        deltaY = SPEEDUP * vectorY / dotProd;
+        deltaX = SPEEDUP * directionDeltaX / dotProd;
+        deltaY = SPEEDUP * directionDeltaY / dotProd;
         counter++;
-
-
     }
 
     // this method checks after the shot ball has reached the hexagon if any balls should be removed
     private ArrayList<Cell> checkRemovalBalls() {
         return null;
+    }
+
+    private boolean fillEmptyCell(int index) {
+        for(Cell c : grid.getOccupiedCells().get(index).getAdjacentCells()) {
+            if(c.getElement().getSprite() == null) {
+                String color = Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length-1)];
+                grid.getOccupiedCells().add(c);
+                c.getElement().setImage(new Image("images/" + color + " ball.png"));
+                if (c.getElement() instanceof Ball) {
+                    ((Ball) c.getElement()).setColor(color);
+                }
+                GameController.getView().display(c);
+                return true;
+            }
+        }
+        return false;
     }
 
     // this method removes the balls that the method checkRemovalBalls returns and adds the points
@@ -80,10 +101,18 @@ public class PlayerBallController {
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
     private void appendAdditionalBalls() {
-        int numerBalls = Util.randomBetween(2, 10);
-
-
-
+        int numberBalls = Util.randomBetween(2, 10);
+        int randomIndex;
+        ArrayList<Integer> randomIndexes = new ArrayList<Integer>();
+        for(int i = 0; i < numberBalls; i++) {
+            while(true) {
+                randomIndex = Util.randomBetween(0, grid.getOccupiedCells().size()-1);
+                if(!randomIndexes.contains(randomIndex) && fillEmptyCell(randomIndex)) {
+                    randomIndexes.add(randomIndex);
+                    break;
+                }
+            }
+        }
     }
 
     // this method takes care of the situation in which the shot ball hits the hexagon
@@ -117,11 +146,12 @@ public class PlayerBallController {
         mouseX = 0;
         collidedCell = null;
 
+        //set a rotation
+        calculateRotation();
+
         //nextBall
         nextBall();
 
-        //set a rotation
-        grid.setRotationDifference(100);
 
     }
 
@@ -144,6 +174,8 @@ public class PlayerBallController {
     public void launchBall() {
         if (getMouseY() == 0) return;
 
+        stopWatch++;
+
         //checks for collisions with cells
         if (collidedCell == null) {
             collidedCell = player.getPlayerBall().getCellCollision(grid, deltaX, deltaY);
@@ -156,6 +188,7 @@ public class PlayerBallController {
         // if the ball has collided with the wall for a maximum of 4 times then it will reset
         // the ball
         else if (player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
+            stopWatch = 0;
             nextBall();
         }
 
@@ -193,6 +226,36 @@ public class PlayerBallController {
             deltaY = deltaY * -1;
         }
         return new double [] {deltaX, deltaY};
+    }
+
+    /**
+     *
+     */
+    public void calculateRotation() {
+        if (directionDeltaX > 0 && directionDeltaY > 0) {
+            if (stopWatch < 70) {
+                grid.setRotationDifference(rightRotation[0]);
+            }
+            if (stopWatch < 170) {
+                grid.setRotationDifference(rightRotation[1]);
+            }
+            if (stopWatch > 170) {
+                grid.setRotationDifference(rightRotation[2]);
+            }
+        }
+
+        if (directionDeltaX < 0 && directionDeltaY > 0) {
+            if (stopWatch < 70) {
+                grid.setRotationDifference(leftRotation[0]);
+            }
+            if (stopWatch < 170) {
+                grid.setRotationDifference(leftRotation[1]);
+            }
+            if (stopWatch > 170) {
+                grid.setRotationDifference(leftRotation[2]);
+            }
+        }
+        stopWatch = 0;
     }
 
     /**
