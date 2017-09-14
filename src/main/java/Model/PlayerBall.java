@@ -1,4 +1,4 @@
-package Elements;
+package Model;
 
 import Controller.PlayerBallController;
 import Model.Cell;
