@@ -8,6 +8,7 @@ import Model.Cell;
 import Model.Grid;
 import Utility.Util;
 import View.View;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 
@@ -76,6 +77,22 @@ public class PlayerBallController {
         return null;
     }
 
+    private boolean fillEmptyCell(int index) {
+        for(Cell c : grid.getOccupiedCells().get(index).getAdjacentCells()) {
+            if(c.getElement().getSprite() == null) {
+                String color = Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length-1)];
+                grid.getOccupiedCells().add(c);
+                c.getElement().setImage(new Image("images/" + color + " ball.png"));
+                if (c.getElement() instanceof Ball) {
+                    ((Ball) c.getElement()).setColor(color);
+                }
+                GameController.getView().display(c);
+                return true;
+            }
+        }
+        return false;
+    }
+
     // this method removes the balls that the method checkRemovalBalls returns and adds the points
     // to the score
     private void removeBalls(ArrayList<Cell> toRemove) {
@@ -84,10 +101,18 @@ public class PlayerBallController {
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
     private void appendAdditionalBalls() {
-        int numerBalls = Util.randomBetween(2, 10);
-
-
-
+        int numberBalls = Util.randomBetween(2, 10);
+        int randomIndex;
+        ArrayList<Integer> randomIndexes = new ArrayList<Integer>();
+        for(int i = 0; i < numberBalls; i++) {
+            while(true) {
+                randomIndex = Util.randomBetween(0, grid.getOccupiedCells().size()-1);
+                if(!randomIndexes.contains(randomIndex) && fillEmptyCell(randomIndex)) {
+                    randomIndexes.add(randomIndex);
+                    break;
+                }
+            }
+        }
     }
 
     // this method takes care of the situation in which the shot ball hits the hexagon
@@ -206,7 +231,6 @@ public class PlayerBallController {
      *
      */
     public void calculateRotation() {
-        System.out.println(stopWatch);
         if (directionDeltaX > 0 && directionDeltaY > 0) {
             if (stopWatch < 70) {
                 grid.setRotationDifference(rightRotation[0]);
