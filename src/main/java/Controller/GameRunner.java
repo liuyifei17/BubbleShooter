@@ -3,8 +3,6 @@ package Controller;
 import java.awt.event.*;
 import javax.swing.Timer;
 
-import Main.Main;
-
 /**
  * Created by jur on 9/5/2017.
  */
@@ -24,7 +22,7 @@ public class GameRunner {
         slowTimer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 gridController.process();
-                Main.getView().redraw();
+                GameController.getView().redraw();
             }
         });
     }

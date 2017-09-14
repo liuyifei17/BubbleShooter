@@ -1,10 +1,9 @@
 package Controller;
 
 
-import Elements.Ball;
-import Elements.Player;
-import Elements.PlayerBall;
-import Main.Main;
+import Model.Ball;
+import Model.Player;
+import Model.PlayerBall;
 import Model.Cell;
 import Model.Grid;
 import Utility.Util;
@@ -102,7 +101,7 @@ public class PlayerBallController {
         if (collidedCell.getElement() instanceof Ball) {
             ((Ball) collidedCell.getElement()).setColor(player.getPlayerBall().getColor());
         }
-        Main.getView().display(collidedCell);
+        GameController.getView().display(collidedCell);
 
         // check whether the shot ball has hit at least 2 other balls of the same color
 

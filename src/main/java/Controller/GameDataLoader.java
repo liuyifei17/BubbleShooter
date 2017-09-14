@@ -1,8 +1,8 @@
 package Controller;
 
-import Elements.Ball;
-import Elements.CenterPiece;
-import Elements.Player;
+import Model.Ball;
+import Model.CenterPiece;
+import Model.Player;
 import Model.Cell;
 import Model.GameData;
 import Model.Grid;
