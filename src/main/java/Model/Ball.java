@@ -1,6 +1,5 @@
-package Elements;
+package Model;
 
-import Model.Cell;
 import javafx.scene.image.Image;
 
 /**
