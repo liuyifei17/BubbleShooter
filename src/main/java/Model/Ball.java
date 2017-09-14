@@ -1,8 +1,6 @@
-package Elements;
+package Model;
 
-import Model.Cell;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 /**
  * Created by jur on 9/5/2017.

@@ -1,4 +1,4 @@
-package Elements;
+package Model;
 
 import Utility.Util;
 import View.View;

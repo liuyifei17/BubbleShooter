@@ -1,8 +1,5 @@
 package Model;
 
-import Elements.Ball;
-import Elements.Element;
-
 import java.util.ArrayList;
 
 /**
