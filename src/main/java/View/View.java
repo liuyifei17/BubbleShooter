@@ -1,6 +1,6 @@
 package View;
 
-import Elements.Ball;
+import Model.Ball;
 import Model.Cell;
 import Model.GameData;
 import Utility.setTimeout;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class View {
 
     private GameData data;
-    private Pane pane;
+    private Pane gamePane;
 
     private Image background;
     private ImageView topBar;
@@ -35,21 +35,21 @@ public class View {
     private static final int SCORE_BAR_WIDTH = 240;
 
 
-    public View(Pane pane, GameData data){
-        this.pane = pane;
+    public View(Pane gamePane, GameData data){
+        this.gamePane = gamePane;
         this.data = data;
     }
 
-    public void draw(){
+    public void drawGame(){
         //draw background
         background = new Image("images/background1.png");
-        pane.setBackground(new Background(new BackgroundImage(background, BackgroundRepeat.NO_REPEAT,
+        gamePane.setBackground(new Background(new BackgroundImage(background, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 
         //draw top bar
         topBar = new ImageView("images/topBar1.png");
         topBar.relocate(0, 0);
-        topBar.fitWidthProperty().bind(pane.widthProperty());
+        topBar.fitWidthProperty().bind(gamePane.widthProperty());
         topBar.setFitHeight(TOP_BAR_HEIGHT);
 
         //draw score bar
@@ -77,13 +77,13 @@ public class View {
 
 
         //add components to game pane
-        pane.getChildren().add(topBar);
-        pane.getChildren().add(scoreBar);
+        gamePane.getChildren().add(topBar);
+        gamePane.getChildren().add(scoreBar);
         for(Cell c: data.getGrid().getCells()){
-            pane.getChildren().add(c.getElement().getImageView());
+            gamePane.getChildren().add(c.getElement().getImageView());
         }
-        pane.getChildren().add(playerBall);
-        pane.getChildren().add(nextBall);
+        gamePane.getChildren().add(playerBall);
+        gamePane.getChildren().add(nextBall);
 
     }
 
