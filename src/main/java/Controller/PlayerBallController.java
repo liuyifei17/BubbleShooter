@@ -79,7 +79,7 @@ public class PlayerBallController {
         removalBalls.add(collidedCell);
 
         //initialise a queue for BFS
-        Queue queue = new LinkedList<Cell>();
+        Queue<Cell> queue = new LinkedList<Cell>();
         queue.add(collidedCell);
 
         // initialise a list which keeps the visited cells
@@ -95,28 +95,29 @@ public class PlayerBallController {
             //loop through all neighbors
             for (Cell adjacentCell : current.getAdjacentCells()) {
 
+                if (adjacentCell.getElement() instanceof Ball) {
+                    Ball ball = (Ball) adjacentCell.getElement();
 
-                Ball ball = (Ball) adjacentCell.getElement();
-
-                boolean sameColour = player.getPlayerBall().getColor().equals(ball.getColor());
+                    boolean sameColour = player.getPlayerBall().getColor().equals(ball.getColor());
 
 
-                //if never visited and both cells contains same colour ball
-                if (!visited.contains(adjacentCell) && sameColour) {
-                    //add the cell into the queue and removalBallsList
-                    queue.add(adjacentCell);
-                    removalBalls.add(adjacentCell);
+                    //if never visited and both cells contains same colour ball
+                    if (!visited.contains(adjacentCell) && sameColour) {
+                        //add the cell into the queue and removalBallsList
+                        queue.add(adjacentCell);
+                        removalBalls.add(adjacentCell);
+                    }
+
+                    //this adjacentCell is visited
+                    visited.add(adjacentCell);
                 }
-
-                //this adjacentCell is visited
-                visited.add(adjacentCell);
             }
         }
 
-        for (Cell cell : removalBalls) {
+/*        for (Cell cell : removalBalls) {
             Ball ball = (Ball) cell.getElement();
             System.out.println(ball.getColor());
-        }
+        }*/
         return removalBalls;
     }
 
@@ -126,16 +127,63 @@ public class PlayerBallController {
         if (toRemove.size() > 2) {
 
             for (Cell cell : toRemove) {
+                ((Ball) cell.getElement()).setColor(null);
                 Main.getView().removeBall(cell);
             }
-
+            toRemove.clear();
             //check if all the cells are connected to the centre cell,
             // if not, remove the ball in that cell.
-            for(Cell cell: grid.getOccupiedCells()){
-
+            toRemove = notConnectedToCentre();
+            for (Cell cell : toRemove) {
+                if (cell.getElement() instanceof Ball) {
+                    ((Ball) cell.getElement()).setColor(null);
+                    Main.getView().removeBall(cell);
+                }
             }
         }
-        System.out.println("removed Balls");
+    }
+
+    // check if the ball is connected to the centre piece using Breadth First Search
+    //if it isn't connected, it should be removed in method removeBalls.
+    private ArrayList<Cell> notConnectedToCentre() {
+
+        ArrayList<Cell> toRemove = new ArrayList<Cell>();
+
+/*        for (Cell cell : grid.getOccupiedCells()) {
+            ArrayList<Cell> visited = new ArrayList<Cell>();
+            Queue<Cell> queue = new LinkedList<Cell>();
+            boolean connected = false;
+
+            Cell current;
+            queue.add(cell);
+
+            while (!queue.isEmpty()) {
+
+                current = queue.remove();
+
+                for (Cell adjacent : current.getAdjacentCells()) {
+                    if (adjacent.getElement() instanceof Ball && !visited.contains(adjacent)) {
+                        queue.add(adjacent);
+                        visited.add(adjacent);
+                    } else if (adjacent.getElement() instanceof CenterPiece) {
+                        //System.out.println(adjacent.getInitialX()+ " "+ adjacent.getInitialY());
+                      connected = true;
+                      break;
+                    }
+                }
+
+                if(connected) {
+                    break;
+                }
+            }
+
+            if (!connected) {
+                toRemove.add(cell);
+            }
+
+        }
+        System.out.println(toRemove.size());*/
+        return toRemove;
     }
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
