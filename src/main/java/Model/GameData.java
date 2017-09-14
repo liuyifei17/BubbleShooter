@@ -1,7 +1,5 @@
 package Model;
 
-import Elements.Player;
-
 /**
  * Created by jur on 9/5/2017.
  */
