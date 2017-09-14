@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class PlayerBallController {
 
     public final static int BALL_RADIUS = 15;
-    public final static int SPEEDUP = 3;
+    public final static int SPEEDUP = 5;
     private final int  maximumTimesBallHit = 4;
     private Player player;
     private Grid grid;
