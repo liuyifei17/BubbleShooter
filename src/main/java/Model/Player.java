@@ -51,7 +51,6 @@ public class Player {
     }
 
 
-
     /**
      * @return get the amount of times u missed a ball.
      */

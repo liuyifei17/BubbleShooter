@@ -8,8 +8,8 @@ import javax.swing.Timer;
  */
 public class GameRunner {
 
-    private final Timer slowTimer = new Timer(30,null);
-    private final Timer fastTimer = new Timer(5,null);
+    private final Timer slowTimer = new Timer(30, null);
+    private final Timer fastTimer = new Timer(5, null);
 
     private GridController gridController;
     private PlayerBallController ballController;
@@ -34,7 +34,7 @@ public class GameRunner {
         slowTimer.start();
     }
 
-    public void stopGame(){
+    public void stopGame() {
         fastTimer.stop();
         slowTimer.stop();
     }

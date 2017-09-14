@@ -16,7 +16,7 @@ public class Element {
 
     /**
      * @param cell the cell object of the element
-     * @param img the image/sprite the element will display on the GUI
+     * @param img  the image/sprite the element will display on the GUI
      */
     public Element(Cell cell, Image img) {
         this.cell = cell;
@@ -26,6 +26,7 @@ public class Element {
 
     /**
      * Getter for the image field.
+     *
      * @return the image that is stored in the image field
      */
     public Image getSprite() {
@@ -34,6 +35,7 @@ public class Element {
 
     /**
      * Getter for the ImageView associated with the image.
+     *
      * @return the ImageView associated with the image
      */
     public ImageView getImageView() {
@@ -42,6 +44,7 @@ public class Element {
 
     /**
      * Setter for the image field.
+     *
      * @param im the image to be put in the image field
      */
     public void setImage(Image im) {
@@ -51,6 +54,7 @@ public class Element {
 
     /**
      * Getter for the cell field.
+     *
      * @return the cell that is stored in the cell field
      */
     public Cell getCell() {
@@ -59,6 +63,7 @@ public class Element {
 
     /**
      * Setter for the cell field.
+     *
      * @param cell the cell to be put in the cell field
      */
     public void setCell(Cell cell) {
