@@ -5,7 +5,9 @@ package Utility;
  */
 public class Util {
 
-    /** Calculate the rotated coordinates of rotating point (X,Y) around a center point (X,Y).
+    /**
+     * Calculate the rotated coordinates of rotating point (X,Y) around a center point (X,Y).
+     *
      * @param rotatingX
      * @param rotatingY
      * @param centerX
@@ -13,13 +15,13 @@ public class Util {
      * @param rotation
      * @return the new rotated coordinates (X,Y) of the rotated point
      */
-    public static double[] calculateRotatedCoordinates(double rotatingX, double rotatingY, double centerX, double centerY, double rotation){
+    public static double[] calculateRotatedCoordinates(double rotatingX, double rotatingY, double centerX, double centerY, double rotation) {
         double angleInRadians = Math.toRadians(rotation);
         double vecX = centerX - rotatingX;
         double vecY = centerY - rotatingY;
         double rotateX = vecX * Math.cos(angleInRadians) - vecY * Math.sin(angleInRadians);
         double rotateY = vecX * Math.sin(angleInRadians) + vecY * Math.cos(angleInRadians);
-        double[] coords = {(rotateX + centerX),(rotateY + centerY)};
+        double[] coords = {(rotateX + centerX), (rotateY + centerY)};
         return coords;
     }
 
@@ -29,14 +31,16 @@ public class Util {
      * @return outputs a random integer value between min and max
      */
     public static int randomBetween(int min, int max) {
-        if(min > max) return 1;
-        if(min == max) return min;
+        if (min > max) return 1;
+        if (min == max) return min;
 
         int randomRange = (int) Math.round(Math.random() * (max - min));
         return min + randomRange;
     }
 
-    /** Calculates the distance between the points (x1, y1) and (x2, y2)
+    /**
+     * Calculates the distance between the points (x1, y1) and (x2, y2)
+     *
      * @param x1, x coord of point 1
      * @param y1, y coord of point 1
      * @param x2, x coord of point 2

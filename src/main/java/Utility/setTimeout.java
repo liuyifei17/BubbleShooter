@@ -7,7 +7,7 @@ public class setTimeout extends Thread {
 
     private int delay;
     private Runnable runnable;
-    
+
     public setTimeout(String name, int delay, Runnable runnable) {
         super(name);
         this.delay = delay;
@@ -21,7 +21,5 @@ public class setTimeout extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 }

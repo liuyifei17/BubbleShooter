@@ -19,8 +19,8 @@ import java.util.ArrayList;
 public class PlayerBallController {
 
     public final static int BALL_RADIUS = 15;
-    public final static int SPEEDUP = 3;
-    private final int  maximumTimesBallHit = 4;
+    public final static int SPEEDUP = 5;
+    private final int maximumTimesBallHit = 4;
     private final int[] leftRotation = {-10, -20, -30};
     private final int[] rightRotation = {10, 20, 30};
     private Player player;
@@ -38,9 +38,10 @@ public class PlayerBallController {
 
     /**
      * The playerballController consists of the player and the grid of the game and a counter
-     *  which keeps track of the times the mouse has been clicked.
+     * which keeps track of the times the mouse has been clicked.
+     *
      * @param player the player object of the game.
-     * @param grid the grid of the game.
+     * @param grid   the grid of the game.
      */
     public PlayerBallController(Player player, Grid grid) {
         this.player = player;
@@ -136,8 +137,7 @@ public class PlayerBallController {
         } else if (player.getMissCounter() >= 5) {
             player.setMissCounter(0);
             appendAdditionalBalls();
-        }
-        else {
+        } else {
             player.setMissCounter(player.getMissCounter() + 1);
         }
 
@@ -210,6 +210,7 @@ public class PlayerBallController {
     /**
      * When the ball collides with the wall, then it will make deltaX negative if it collided
      * with the walls in the width and deltaY negative if it collided with the s in the height.
+     *
      * @param deltaX the X direction in which the ball moves.
      * @param deltaY the Y direction in whch the ball moves.
      * @return an array with the negative of either or both of the deltaX and deltaY.
@@ -224,7 +225,7 @@ public class PlayerBallController {
                 || (player.getPlayerBall().getY() >= View.STAGE_HEIGHT)) {
             deltaY = deltaY * -1;
         }
-        return new double [] {deltaX, deltaY};
+        return new double[]{deltaX, deltaY};
     }
 
     /**
@@ -299,6 +300,15 @@ public class PlayerBallController {
      */
     public void setDeltaY(double deltaY) {
         this.deltaY = deltaY;
+    }
+
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setGrid(Grid grid) {
+        this.grid = grid;
     }
 
 }
