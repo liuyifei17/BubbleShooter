@@ -93,21 +93,23 @@ public class PlayerBallController {
 
             //loop through all neighbors
             for (Cell adjacentCell : current.getAdjacentCells()) {
+                if(adjacentCell.getElement() instanceof Ball) {
 
-                Ball ball = (Ball) adjacentCell.getElement();
+                    Ball ball = (Ball) adjacentCell.getElement();
 
-                boolean sameColour = player.getPlayerBall().getColor().equals(ball.getColor());
+                    boolean sameColour = player.getPlayerBall().getColor().equals(ball.getColor());
 
 
-                //if never visited and both cells contains same colour ball
-                if (!visited.contains(adjacentCell) && sameColour) {
-                    //add the cell into the queue and removalBallsList
-                    queue.add(adjacentCell);
-                    removalBalls.add(adjacentCell);
+                    //if never visited and both cells contains same colour ball
+                    if (!visited.contains(adjacentCell) && sameColour) {
+                        //add the cell into the queue and removalBallsList
+                        queue.add(adjacentCell);
+                        removalBalls.add(adjacentCell);
+                    }
+
+                    //this adjacentCell is visited
+                    visited.add(adjacentCell);
                 }
-
-                //this adjacentCell is visited
-                visited.add(adjacentCell);
 
             }
         }
