@@ -1,8 +1,6 @@
 package Model;
 
 import Controller.PlayerBallController;
-import Model.Cell;
-import Model.Grid;
 import Utility.Util;
 import View.View;
 import javafx.scene.image.Image;
@@ -22,6 +20,7 @@ public class PlayerBall {
      *
      * @param x the x coordinate of the ball.
      * @param y the y coordinate of the ball.
+     * @param color the color of the ball the user is going to shoot with
      */
     public PlayerBall(double x, double y, String color) {
         this.color = color;
@@ -107,15 +106,18 @@ public class PlayerBall {
     }
 
     /**
-     * Checks if there is a full cell in collision range
+     * Checks if there is a full cell in collision range.
      *
-     * @param grid
+     * @param grid the grid associated with the ball the user is going to shoot with
+     * @param deltaX the distance in the X direction, the ball makes every 5 miliseconds
+     * @param deltaY  the distance in the Y direction, the ball makes every 5 miliseconds
      * @return null if not in range else return cell
      */
     public Cell getCellCollision(Grid grid, double deltaX, double deltaY) {
         Cell c = grid.closestFullCellToLocation(x, y);
         Cell c2 = grid.closestEmptyCellToLocation(c.getCurrentX(), c.getCurrentY());
-        if (Util.getDistance(x, y, c2.getCurrentX(), c2.getCurrentY()) <= Cell.EDGE_CENTER_DISTANCE / 1.3) {
+        if (Util.getDistance(x, y, c2.getCurrentX(), c2.getCurrentY())
+                <= Cell.EDGE_CENTER_DISTANCE / 1.3) {
             return c2;
         }
         for (int i = 1; i < 3; i++) {
