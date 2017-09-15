@@ -234,7 +234,7 @@ public class View {
     }
 
     public void showGameOverPopup() {
-        //popupScore.setText("Score);
+        popupScore.setText("Score: " + data.getPlayer().getScore());
         gameOverPopup.setVisible(true);
     }
 
