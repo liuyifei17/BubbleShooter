@@ -1,6 +1,5 @@
 package Model;
 
-import Model.Cell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

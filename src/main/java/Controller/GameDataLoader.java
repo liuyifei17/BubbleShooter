@@ -15,11 +15,10 @@ import java.util.ArrayList;
  */
 public class GameDataLoader {
 
-    GameData data;
+    private GameData data;
 
     /**
-     * Initializes the game data
-     *
+     * Initializes the game data.
      * @param data    the class in which the data is saved
      * @param centerX the center coord X of the screen where the grid is initialized
      * @param centerY the center coord Y of the screen where the grid is initialized
@@ -33,7 +32,8 @@ public class GameDataLoader {
     }
 
     /**
-     * Loads the initial elements i.e. balls and centerpiece into the empty cells from the center outwards
+     * Loads the initial elements i.e. balls and centerpiece
+     * into the empty cells from the center outwards.
      */
     private void loadElements() {
         //create the centerpiece

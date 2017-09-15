@@ -12,7 +12,6 @@ public class Ball extends Element {
 
     /**
      * creates a ball that is located inside a cell.
-     *
      * @param color the color of the ball
      * @param cell  the cell in which the ball is currently located
      */
@@ -26,7 +25,6 @@ public class Ball extends Element {
 
     /**
      * Getter for the color field.
-     *
      * @return the color of the ball
      */
     public String getColor() {
@@ -34,13 +32,15 @@ public class Ball extends Element {
     }
 
 
+    /**
+     * @param color sets the color
+     */
     public void setColor(String color) {
         this.color = color;
     }
 
     /**
      * Checks if a ball with a certain color exists.
-     *
      * @param color the color to check for
      * @return true if color exists and false if it does not
      */
