@@ -18,8 +18,8 @@ import static org.mockito.Mockito.*;
  * Created by Henks Laptop on 10/09/2017.
  */
 class GridControllerTest {
-    Grid grid;
-    GridController gridController;
+    private Grid grid;
+    private GridController gridController;
 
     @BeforeEach
     public void setUp() {
@@ -27,7 +27,7 @@ class GridControllerTest {
         gridController = new GridController(grid);
     }
     @Test
-    void processPositiveRotation() {
+    private void processPositiveRotation() {
         when(grid.getRotationDifference()).thenReturn(10);
         gridController.process();
         verify(grid).setRotationDifference(anyInt());
@@ -36,7 +36,7 @@ class GridControllerTest {
 
 
     @Test
-    void processNegativeRotation() {
+    private void processNegativeRotation() {
         when(grid.getRotationDifference()).thenReturn(-19);
         gridController.process();
         verify(grid).setRotationDifference(anyInt());
@@ -44,7 +44,7 @@ class GridControllerTest {
     }
 
     @Test
-    void processNoRotation() {
+    private void processNoRotation() {
         when(grid.getRotationDifference()).thenReturn(0);
         gridController.process();
         verify(grid, times(0)).setRotationDifference(anyInt());
@@ -52,7 +52,7 @@ class GridControllerTest {
     }
 
     @Test
-    void cellTest() {
+    private void cellTest() {
         when(grid.getRotationDifference()).thenReturn(-19);
         Cell cell = mock(Cell.class);
         Ball ball = mock(Ball.class);
