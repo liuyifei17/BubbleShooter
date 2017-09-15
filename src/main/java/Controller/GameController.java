@@ -34,6 +34,7 @@ public class GameController {
     private int backgroundMusicVolume;
 
     private boolean gamePaused;
+    private long clickDelay;
 
     public GameController(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -51,8 +52,8 @@ public class GameController {
         loader.initialize(data, View.STAGE_WIDTH / 2, (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
 
         //Initialize controllers
-        gridController = new GridController(data.getGrid());
-        playerBallController = new PlayerBallController(data.getPlayer(), data.getGrid());
+        gridController = new GridController(this, data.getGrid());
+        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
 
         // set up the sound
         // if the route is not correct start the game without sound
@@ -109,12 +110,15 @@ public class GameController {
     }
 
     private void setMouseControllers() {
+        clickDelay = System.currentTimeMillis();
+
         // ball firing event
         gameScreen.setOnMouseReleased(event -> {
-            if (!gamePaused) {
+            if (!gamePaused && (clickDelay + 800) < System.currentTimeMillis()) {
                 playerBallController.setMouseX(event.getSceneX());
                 playerBallController.setMouseY(event.getSceneY());
                 playerBallController.calculateDelta();
+                clickDelay = System.currentTimeMillis();
             }
         });
 
@@ -139,11 +143,13 @@ public class GameController {
             handleMusicButtonClick();
         });
 
+        //popup home button event
         view.getPopupHomeButton().setOnMouseReleased(event -> {
-            primaryStage.setScene(mainMenu);
             resetGame();
+            primaryStage.setScene(mainMenu);
         });
 
+        //popup restart button event
         view.getPopupRestartButton().setOnMouseReleased(event -> {
             resetGame();
         });
@@ -166,13 +172,7 @@ public class GameController {
         //pause the game
         gameScreen.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
-                if (gamePaused) {
-                    continueGame();
-                    view.closeGameOverPopup();
-                } else {
-                    pauseGame();
-                    view.showGameOverPopup();
-                }
+                //do nothing yet
             }
         });
     }
@@ -188,8 +188,37 @@ public class GameController {
     }
 
     private void resetGame() {
+        //close the game over popup
         view.closeGameOverPopup();
-        continueGame();
+
+        //reset data
+        data = new GameData();
+        loader = new GameDataLoader();
+        loader.initialize(data, View.STAGE_WIDTH / 2, (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
+        gridController = new GridController(this, data.getGrid());
+        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
+
+        //reset view
+        gamePane = new Pane();
+        view.setData(data);
+        view.setGamePane(gamePane);
+        view.drawGame();
+        gameScreen = new Scene(gamePane, View.STAGE_WIDTH, View.STAGE_HEIGHT);
+        primaryStage.setScene(gameScreen);
+
+        //continue playing the game
+        runner = new GameRunner(gridController, playerBallController);
+        runner.runGame();
+        gamePaused = false;
+
+        //reset controllers
+        setMouseControllers();
+        setKeyboardControllers();
+    }
+
+    public void gameOver(){
+        pauseGame();
+        view.showGameOverPopup();
     }
 
 }

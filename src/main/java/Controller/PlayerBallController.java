@@ -23,6 +23,7 @@ public class PlayerBallController {
     private final int[] rightRotation = {15, 30, 45};
     private Player player;
     private Grid grid;
+    private GameController gc;
     private double mouseX;
     private double mouseY;
     private double deltaX;
@@ -41,7 +42,8 @@ public class PlayerBallController {
      * @param player the player object of the game.
      * @param grid   the grid of the game.
      */
-    public PlayerBallController(Player player, Grid grid) {
+    public PlayerBallController(GameController gc, Player player, Grid grid) {
+        this.gc = gc;
         this.player = player;
         this.grid = grid;
         collidedCell = null;
