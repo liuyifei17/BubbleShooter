@@ -157,9 +157,32 @@ public class PlayerBallController {
     private ArrayList<Cell> notConnectedBalls(){
         ArrayList<Cell> visited = new ArrayList<>();
         ArrayList<Cell> notConnected = new ArrayList<>();
+        Queue<Cell> queue = new LinkedList<>();
 
+        visited.add(grid.getCenterCell());
+        queue.add(grid.getCenterCell());
+        Cell current;
 
-        return new ArrayList<Cell>();
+        while(!queue.isEmpty()){
+            current = queue.remove();
+
+            for(Cell adjacentCell : current.getAdjacentCells()) {
+                if(!visited.contains(adjacentCell) && adjacentCell.getElement() instanceof Ball
+                        && ((Ball) adjacentCell.getElement()).getColor()!= null){
+                    queue.add(adjacentCell);
+                    visited.add(adjacentCell);
+                }
+            }
+        }
+
+        for(Cell cell: grid.getOccupiedCells()){
+            if(!visited.contains(cell) && cell.getElement() instanceof Ball
+                    && ((Ball) cell.getElement()).getColor()!= null) {
+                notConnected.add(cell);
+            }
+        }
+
+        return notConnected;
     }
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
