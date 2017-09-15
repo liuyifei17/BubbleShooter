@@ -4,14 +4,9 @@ import Model.GameData;
 import javafx.scene.layout.Pane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import javax.swing.text.html.ImageView;
 
-import java.awt.*;
-
-import static com.sun.javaws.JnlpxArgs.verify;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
