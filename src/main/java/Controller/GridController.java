@@ -1,6 +1,8 @@
 package Controller;
 
+import Model.Ball;
 import Model.Cell;
+import Model.CenterPiece;
 import Model.Grid;
 import Utility.Util;
 
@@ -12,6 +14,7 @@ public class GridController {
     private Grid grid;
 
     public void process() {
+        int counter = 0;
         //calculate the rotated cell coordinate values based on rotation change
         if (grid.getRotationDifference() != 0) {
             if (grid.getRotationDifference() > 0) {
@@ -27,6 +30,14 @@ public class GridController {
                         grid.getCenterCell().getInitialX(), grid.getCenterCell().getInitialY(), grid.getRotation());
                 c.setCurrentX(newCoords[0]);
                 c.setCurrentY(newCoords[1]);
+
+                if (!(c.getElement() instanceof CenterPiece) && ((Ball) c.getElement()).getSprite() != null) {
+                    if(c.hasCollidedWithWall()){
+                        System.out.println("u died");
+                        counter++;
+                        System.out.println(counter);
+                    }
+                }
             }
         }
     }

@@ -152,6 +152,7 @@ public class PlayerBallController {
         //nextBall
         nextBall();
 
+
     }
 
     private void nextBall() {
@@ -184,7 +185,7 @@ public class PlayerBallController {
             return;
         }
 
-        // if the wall has collided with the wall for a maximum of 4 times then it will reset
+        // if the ball has collided with the wall for a maximum of 4 times then it will reset
         // the ball
         else if (player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
             stopWatch = 0;
