@@ -15,19 +15,19 @@ import javafx.scene.text.TextAlignment;
 import java.util.ArrayList;
 
 /**
- * Created by jur on 9/5/2017.
+ * The view class.
  */
 public class View {
 
     public static final double STAGE_WIDTH = 600;
     public static final double STAGE_HEIGHT = 700;
     public static final int TOP_BAR_HEIGHT = 70;
-    public static final int SCORE_BAR_HEIGHT = 40;
-    public static final int SCORE_BAR_WIDTH = 240;
-    public static final int POPUP_WIDTH = 300;
-    public static final int POPUP_HEIGHT = 360;
-    public static final int POPUP_X = 150;
-    public static final int POPUP_Y = 200;
+    private static final int SCORE_BAR_HEIGHT = 40;
+    private static final int SCORE_BAR_WIDTH = 240;
+    private static final int POPUP_WIDTH = 300;
+    private static final int POPUP_HEIGHT = 360;
+    private static final int POPUP_X = 150;
+    private static final int POPUP_Y = 200;
     private GameData data;
     private Pane gamePane;
     private Pane mainMenuPane;
@@ -51,16 +51,25 @@ public class View {
     private ImageView playerBall;
     private ImageView nextBall;
 
+    /**
+     * @param mainMenuPane sets the main menu pane
+     * @param gamePane sets the game pane
+     * @param data sets the game data
+     */
     public View(Pane mainMenuPane, Pane gamePane, GameData data) {
         this.mainMenuPane = mainMenuPane;
         this.gamePane = gamePane;
         this.data = data;
     }
 
+    /**
+     * draws up the main menu screen.
+     */
     public void drawMainMenu() {
         //draw background
         mainMenuBg = new Image("images/main-menu-bg.png");
-        mainMenuPane.setBackground(new Background(new BackgroundImage(mainMenuBg, BackgroundRepeat.NO_REPEAT,
+        mainMenuPane.setBackground(new Background(
+                new BackgroundImage(mainMenuBg, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 
         //draw buttons
@@ -100,11 +109,15 @@ public class View {
         mainMenuPane.getChildren().add(musicIcon);
     }
 
+    /**
+     * Fills the game pane with elements to initialize the game pane view.
+     */
     public void drawGame() {
         //draw background
         gameBg = new Image("images/background1.png");
-        gamePane.setBackground(new Background(new BackgroundImage(gameBg, BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        gamePane.setBackground(new Background(
+                new BackgroundImage(gameBg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 
         //draw top bar
         topBar = new ImageView("images/topBar1.png");
@@ -130,14 +143,18 @@ public class View {
         }
 
         nextBall = new ImageView(data.getPlayer().getNextBall().getSprite());
-        nextBall.relocate(View.STAGE_WIDTH / 2 - data.getPlayer().getNextBall().getSprite().getWidth() / 4,
+        nextBall.relocate(View.STAGE_WIDTH / 2
+                        - data.getPlayer().getNextBall().getSprite().getWidth() / 4,
                 View.TOP_BAR_HEIGHT - 30);
         nextBall.setFitWidth(data.getPlayer().getNextBall().getSprite().getWidth() / 2);
         nextBall.setFitHeight(data.getPlayer().getNextBall().getSprite().getHeight() / 2);
 
         playerBall = new ImageView(data.getPlayer().getPlayerBall().getImage());
-        playerBall.relocate(data.getPlayer().getPlayerBall().getX() - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
-                data.getPlayer().getPlayerBall().getY() - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
+        playerBall.relocate(data.getPlayer().getPlayerBall().getX()
+                        - data.getPlayer().getPlayerBall().getImage().getWidth()
+                        / 2,
+                data.getPlayer().getPlayerBall().getY()
+                        - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
 
         //create popup on game over
         createGameOverPopup();
@@ -155,13 +172,16 @@ public class View {
         gameOverPopup.setVisible(false);
     }
 
+    /**
+     * redraws the screen elements, which is mainly used for animations.
+     */
     public void redraw() {
         //check for changed cells and update children
         ArrayList<Cell> cells = data.getGrid().getOccupiedCells();
 
         //relocate elements
         for (Cell c : cells) {
-            if(c.getElement().getSprite() == null) {
+            if (c.getElement().getSprite() == null) {
                 continue;
             }
             c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
@@ -171,13 +191,14 @@ public class View {
         playerBall.setImage(data.getPlayer().getPlayerBall().getImage());
         nextBall.setImage(data.getPlayer().getNextBall().getSprite());
 
-        playerBall.relocate(data.getPlayer().getPlayerBall().getX() - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
-                data.getPlayer().getPlayerBall().getY() - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
+        playerBall.relocate(data.getPlayer().getPlayerBall().getX()
+                        - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
+                data.getPlayer().getPlayerBall().getY()
+                        - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
 
         scoreBarScore.setText("Score: " + data.getPlayer().getScore());
     }
 
-    // this method removes a ball and displays a '+1' icon for 1 second
     public void removeBall(Cell c) {
         c.getElement().setImage(new Image("images/plus1.png"));
         if (c.getElement() instanceof Ball) {
@@ -194,21 +215,31 @@ public class View {
         c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
     }
 
-    public void changeMusicButton(int amount) {
-        if (amount == 100) musicIcon.setImage(musicIconMin);
-        else if (amount == 0) musicIcon.setImage(musicIconMax);
+    /**
+     * @param volume the music volume based on which the music icon is changed
+     */
+    public void changeMusicButton(int volume) {
+        if (volume == 100) {
+            musicIcon.setImage(musicIconMin);
+        }
+        else if (volume == 0) {
+            musicIcon.setImage(musicIconMax);
+        }
         musicIcon.relocate(510, 620);
         musicIcon.fitWidthProperty().setValue(60);
         musicIcon.fitHeightProperty().setValue(60);
     }
 
+    /**
+     * Creates a game over popup menu.
+     */
     private void createGameOverPopup() {
         //create popup container
         gameOverPopup = new Pane();
         gameOverPopup.setPrefSize(POPUP_WIDTH, POPUP_HEIGHT);
         gameOverPopup.relocate(POPUP_X, POPUP_Y);
-        gameOverPopup.setBackground(new Background(new BackgroundImage(new Image("images/gameOverPopupBg.png",
-                POPUP_WIDTH, POPUP_HEIGHT, false, true),
+        gameOverPopup.setBackground(new Background(new BackgroundImage(
+                new Image("images/gameOverPopupBg.png", POPUP_WIDTH, POPUP_HEIGHT, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 
@@ -233,57 +264,91 @@ public class View {
         gameOverPopup.getChildren().add(popupHomeButton);
     }
 
+    /**
+     * Sets the game over popup to being visible and updates the score.
+     */
     public void showGameOverPopup() {
         popupScore.setText("Score: " + data.getPlayer().getScore());
         gameOverPopup.setVisible(true);
     }
 
+    /**
+     * Sets the gam over popup to being invisible.
+     */
     public void closeGameOverPopup() {
         gameOverPopup.setVisible(false);
     }
 
+    /**
+     * @param cell the cell to calculate the screen coordinates of.
+     * @return the calculate screen coordinate x.
+     */
     private double getScreenX(Cell cell) {
         return (cell.getCurrentX() - (cell.getElement().getSprite().getWidth() / 2));
     }
 
+    /**
+     * @param cell the cell to calculate the screen coordinates of.
+     * @return the calculate screen coordinate y.
+     */
     private double getScreenY(Cell cell) {
         return (cell.getCurrentY() - (cell.getElement().getSprite().getHeight() / 2));
     }
 
+    /**
+     * @return play button.
+     */
     public ImageView getPlayButton() {
         return playButton;
     }
 
+    /**
+     * @return exit button.
+     */
     public ImageView getExitButton() {
         return exitButton;
     }
 
+    /**
+     * @return music button.
+     */
     public ImageView getMusicButton() {
         return musicButton;
     }
 
+    /**
+     * @return music icon.
+     */
     public ImageView getMusicIcon() {
         return musicIcon;
     }
 
+    /**
+     * @return popup restart button.
+     */
     public ImageView getPopupRestartButton() {
         return popupRestartButton;
     }
 
+    /**
+     * @return the popup home button.
+     */
     public ImageView getPopupHomeButton() {
         return popupHomeButton;
     }
 
+    /**
+     * @param data sets a data.
+     */
     public void setData(GameData data) {
         this.data = data;
     }
 
+    /**
+     * @param gamePane sets a new Pane.
+     */
     public void setGamePane(Pane gamePane) {
         this.gamePane = gamePane;
-    }
-
-    public Pane getGamePane() {
-        return gamePane;
     }
 
     class removePlusOneIcon implements Runnable {

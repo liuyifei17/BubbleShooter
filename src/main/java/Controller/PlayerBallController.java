@@ -38,7 +38,7 @@ public class PlayerBallController {
     /**
      * The playerballController consists of the player and the grid of the game and a counter
      * which keeps track of the times the mouse has been clicked.
-     *
+     * @param gc the game controller object
      * @param player the player object of the game.
      * @param grid   the grid of the game.
      */
