@@ -36,20 +36,31 @@ public class GameController {
     private boolean gamePaused;
     private long clickDelay;
 
+    /**
+     * the constructor of the game controller class.
+     * @param primaryStage sets the primary stage
+     */
     public GameController(Stage primaryStage) {
         this.primaryStage = primaryStage;
         gamePaused = false;
     }
 
+    /**
+     * @return the view.
+     */
     public static View getView() {
         return view;
     }
 
+    /**
+     * initializes the game.
+     */
     public void setup() {
         //Initialize data
         data = new GameData();
         loader = new GameDataLoader();
-        loader.initialize(data, View.STAGE_WIDTH / 2, (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
+        loader.initialize(data, View.STAGE_WIDTH / 2,
+                (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
 
         //Initialize controllers
         gridController = new GridController(this, data.getGrid());
@@ -77,12 +88,13 @@ public class GameController {
     private void setupSound() {
         backgroundMusicVolume = 100;
         try {
-            backgroundMusic = new Media(new File("src/main/resources/sounds/bgm1.mp3").toURI().toString());
+            backgroundMusic = new Media(
+                    new File("src/main/resources/sounds/bgm1.mp3").toURI().toString());
             mediaPlayer = new MediaPlayer(backgroundMusic);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.play();
         }
-        catch(Exception e){
+        catch (Exception e) {
             System.out.println("Error loading sound...");
         }
     }
@@ -156,7 +168,9 @@ public class GameController {
     }
 
     private void handleMusicButtonClick() {
-        if (mediaPlayer == null) return;
+        if (mediaPlayer == null) {
+            return;
+        }
 
         view.changeMusicButton(backgroundMusicVolume);
         if (backgroundMusicVolume == 100) {
@@ -177,12 +191,12 @@ public class GameController {
         });
     }
 
-    private void pauseGame(){
+    private void pauseGame() {
         gamePaused = true;
         runner.pauseGame();
     }
 
-    private void continueGame(){
+    private void continueGame() {
         gamePaused = false;
         runner.continueGame();
     }
@@ -194,7 +208,8 @@ public class GameController {
         //reset data
         data = new GameData();
         loader = new GameDataLoader();
-        loader.initialize(data, View.STAGE_WIDTH / 2, (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
+        loader.initialize(data, View.STAGE_WIDTH / 2,
+                (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
         gridController = new GridController(this, data.getGrid());
         playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
 
@@ -216,7 +231,10 @@ public class GameController {
         setKeyboardControllers();
     }
 
-    public void gameOver(){
+    /**
+     * Pauses the game and shows the game over popup.
+     */
+    public void gameOver() {
         pauseGame();
         view.showGameOverPopup();
     }
