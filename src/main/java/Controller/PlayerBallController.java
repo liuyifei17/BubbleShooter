@@ -21,8 +21,8 @@ public class PlayerBallController {
     public final static int BALL_RADIUS = 15;
     public final static int SPEEDUP = 5;
     private final int maximumTimesBallHit = 4;
-    private final int[] leftRotation = {-10, -20, -30};
-    private final int[] rightRotation = {10, 20, 30};
+    private final int[] leftRotation = {-15, -30, -45};
+    private final int[] rightRotation = {15, 30, 45};
     private Player player;
     private Grid grid;
     private double mouseX;
@@ -230,14 +230,14 @@ public class PlayerBallController {
     }
 
     /**
-     *
+     * Rotate a certain degree based on the time it takes to hit the grid.
      */
     public void calculateRotation() {
         if (directionDeltaX > 0 && directionDeltaY > 0) {
             if (stopWatch < 70) {
                 grid.setRotationDifference(rightRotation[0]);
             }
-            if (stopWatch < 170) {
+            if (stopWatch >= 70 && stopWatch < 170) {
                 grid.setRotationDifference(rightRotation[1]);
             }
             if (stopWatch > 170) {
@@ -249,7 +249,7 @@ public class PlayerBallController {
             if (stopWatch < 70) {
                 grid.setRotationDifference(leftRotation[0]);
             }
-            if (stopWatch < 170) {
+            if (stopWatch >= 70 && stopWatch < 170) {
                 grid.setRotationDifference(leftRotation[1]);
             }
             if (stopWatch > 170) {
