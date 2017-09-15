@@ -171,6 +171,8 @@ public class View {
 
         playerBall.relocate(data.getPlayer().getPlayerBall().getX() - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
                 data.getPlayer().getPlayerBall().getY() - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
+
+        scoreBarScore.setText("Score: " + data.getPlayer().getScore());
     }
 
     // this method removes a ball and displays a '+1' icon for 1 second
