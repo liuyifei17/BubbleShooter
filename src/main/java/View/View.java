@@ -159,9 +159,10 @@ public class View {
 
         //relocate elements
         for (Cell c : cells) {
-            if(c.getElement().getSprite() != null) {
-                c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
+            if(c.getElement().getSprite() == null) {
+                continue;
             }
+            c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
             c.getElement().getImageView().rotateProperty().setValue(data.getGrid().getRotation());
         }
 
