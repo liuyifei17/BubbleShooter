@@ -110,10 +110,8 @@ public class PlayerBallController {
                     //this adjacentCell is visited
                     visited.add(adjacentCell);
                 }
-
             }
         }
-
         return removalBalls;
     }
 
@@ -219,7 +217,7 @@ public class PlayerBallController {
         // check whether the shot ball has hit at least 2 other balls of the same color
 
         ArrayList<Cell> ballsToBeRemoved = checkRemovalBalls();
-        if (ballsToBeRemoved != null) {
+        if (ballsToBeRemoved.size() >= 3) {
             removeBalls(ballsToBeRemoved);
         } else if (player.getMissCounter() >= 5) {
             player.setMissCounter(0);
