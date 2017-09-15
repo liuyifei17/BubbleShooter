@@ -15,7 +15,6 @@ import static org.mockito.Mockito.*;
 class ViewTest {
 
     View view;
-    Pane pane = mock(Pane.class);
     GameData gameData = mock(GameData.class);
     ImageView topBar = mock(ImageView.class);
 
