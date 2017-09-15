@@ -1,22 +1,15 @@
 package Model;
 
+import Controller.GameController;
+
 /**
  * Created by jur on 9/5/2017.
  */
 public class GameData {
 
     private Grid grid;
-    private int score;
     private int initialBallAmount;
     private Player player;
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 
     public Grid getGrid() {
         return grid;
