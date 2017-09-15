@@ -3,7 +3,7 @@ package View;
 import Model.Ball;
 import Model.Cell;
 import Model.GameData;
-import Utility.setTimeout;
+import Utility.SetTimeout;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -19,11 +19,18 @@ import java.util.ArrayList;
  */
 public class View {
 
+    public static final double STAGE_WIDTH = 600;
+    public static final double STAGE_HEIGHT = 700;
+    public static final int TOP_BAR_HEIGHT = 70;
+    public static final int SCORE_BAR_HEIGHT = 40;
+    public static final int SCORE_BAR_WIDTH = 240;
+    public static final int POPUP_WIDTH = 300;
+    public static final int POPUP_HEIGHT = 360;
+    public static final int POPUP_X = 150;
+    public static final int POPUP_Y = 200;
     private GameData data;
-
     private Pane gamePane;
     private Pane mainMenuPane;
-
     private Image mainMenuBg;
     private ImageView playButton;
     private ImageView exitButton;
@@ -33,30 +40,16 @@ public class View {
     private Image musicIconMin;
     private ImageView musicIcon;
     private ImageView settingsIcon;
-
     private Image gameBg;
     private ImageView topBar;
     private ImageView scoreBar;
     private Text scoreBarScore;
-
     private Pane gameOverPopup;
     private Text popupScore;
     private ImageView popupRestartButton;
     private ImageView popupHomeButton;
-
     private ImageView playerBall;
     private ImageView nextBall;
-
-    public static final double STAGE_WIDTH = 600;
-    public static final double STAGE_HEIGHT = 700;
-    public static final int TOP_BAR_HEIGHT = 70;
-    public static final int SCORE_BAR_HEIGHT = 40;
-    public static final int SCORE_BAR_WIDTH = 240;
-
-    public static final int POPUP_WIDTH = 300;
-    public static final int POPUP_HEIGHT = 360;
-    public static final int POPUP_X = 150;
-    public static final int POPUP_Y = 200;
 
     public View(Pane mainMenuPane, Pane gamePane, GameData data) {
         this.mainMenuPane = mainMenuPane;
@@ -166,7 +159,9 @@ public class View {
 
         //relocate elements
         for (Cell c : cells) {
-            c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
+            if(c.getElement().getSprite() != null) {
+                c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
+            }
             c.getElement().getImageView().rotateProperty().setValue(data.getGrid().getRotation());
         }
 
@@ -175,19 +170,6 @@ public class View {
 
         playerBall.relocate(data.getPlayer().getPlayerBall().getX() - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
                 data.getPlayer().getPlayerBall().getY() - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
-    }
-
-    class removePlusOneIcon implements Runnable {
-        private Cell cell;
-
-        public removePlusOneIcon(Cell c) {
-            this.cell = c;
-        }
-
-        public void run() {
-            this.cell.getElement().setImage(null);
-            data.getGrid().getOccupiedCells().remove(this.cell);
-        }
     }
 
     // this method removes a ball and displays a '+1' icon for 1 second
@@ -199,7 +181,7 @@ public class View {
 
         removePlusOneIcon r = new removePlusOneIcon(c);
 
-        setTimeout t = new setTimeout("Timeout Thread", 1000, r);
+        SetTimeout t = new SetTimeout("Timeout Thread", 1000, r);
         t.start();
     }
 
@@ -292,6 +274,19 @@ public class View {
 
     public void setGamePane(Pane gamePane) {
         this.gamePane = gamePane;
+    }
+
+    class removePlusOneIcon implements Runnable {
+        private Cell cell;
+
+        public removePlusOneIcon(Cell c) {
+            this.cell = c;
+        }
+
+        public void run() {
+            this.cell.getElement().setImage(null);
+            data.getGrid().getOccupiedCells().remove(this.cell);
+        }
     }
 
 }

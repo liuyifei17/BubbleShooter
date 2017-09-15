@@ -75,10 +75,15 @@ public class GameController {
 
     private void setupSound() {
         backgroundMusicVolume = 100;
-        backgroundMusic = new Media(new File("src/main/resources/sounds/bgm1.mp3").toURI().toString());
-        mediaPlayer = new MediaPlayer(backgroundMusic);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
+        try {
+            backgroundMusic = new Media(new File("src/main/resources/sounds/bgm1.mp3").toURI().toString());
+            mediaPlayer = new MediaPlayer(backgroundMusic);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.play();
+        }
+        catch(Exception e){
+            System.out.println("Error loading sound...");
+        }
     }
 
     private void setupView() {
@@ -145,6 +150,8 @@ public class GameController {
     }
 
     private void handleMusicButtonClick() {
+        if (mediaPlayer == null) return;
+
         view.changeMusicButton(backgroundMusicVolume);
         if (backgroundMusicVolume == 100) {
             backgroundMusicVolume = 0;
@@ -160,20 +167,29 @@ public class GameController {
         gameScreen.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 if (gamePaused) {
-                    gamePaused = false;
+                    continueGame();
                     view.closeGameOverPopup();
                 } else {
-                    gamePaused = true;
+                    pauseGame();
                     view.showGameOverPopup();
                 }
             }
         });
     }
 
+    private void pauseGame(){
+        gamePaused = true;
+        runner.pauseGame();
+    }
+
+    private void continueGame(){
+        gamePaused = false;
+        runner.continueGame();
+    }
+
     private void resetGame() {
         view.closeGameOverPopup();
-
-        gamePaused = false;
+        continueGame();
     }
 
 }
