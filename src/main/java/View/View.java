@@ -199,18 +199,26 @@ public class View {
         scoreBarScore.setText("Score: " + data.getPlayer().getScore());
     }
 
+    /**
+     * This method removes the image of a ball from the cell and from the GUI.
+     * @param c the cell whose image needs to be removed
+     */
     public void removeBall(Cell c) {
         c.getElement().setImage(new Image("images/plus1.png"));
         if (c.getElement() instanceof Ball) {
             ((Ball) c.getElement()).setColor(null);
         }
 
-        removePlusOneIcon r = new removePlusOneIcon(c);
+        RemovePlusOneIcon r = new RemovePlusOneIcon(c);
 
         SetTimeout t = new SetTimeout("Timeout Thread", 1000, r);
         t.start();
     }
 
+    /**
+     * This method is used to display a ball on the GUI.
+     * @param c the cell in which the ball is located
+     */
     public void display(Cell c) {
         c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
     }
@@ -351,13 +359,23 @@ public class View {
         this.gamePane = gamePane;
     }
 
-    class removePlusOneIcon implements Runnable {
+    /**
+     * This class creates an object that when executed removes the +1 icons in the game.
+     */
+    private class RemovePlusOneIcon implements Runnable {
         private Cell cell;
 
-        public removePlusOneIcon(Cell c) {
+        /**
+         * This is the constructor of the class.
+         * @param c the cell where the +1 image should be removed
+         */
+        RemovePlusOneIcon(Cell c) {
             this.cell = c;
         }
 
+        /**
+         * The code that removes the +1 image from the cell stored in the cell field.
+         */
         public void run() {
             this.cell.getElement().setImage(null);
             data.getGrid().getOccupiedCells().remove(this.cell);
