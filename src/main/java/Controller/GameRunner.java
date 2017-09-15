@@ -8,22 +8,23 @@ import javax.swing.Timer;
  */
 public class GameRunner {
 
-    private final Timer slowTimer = new Timer(30, null);
-    private final Timer fastTimer = new Timer(5, null);
+    private final Timer timer = new Timer(5, null);
+    private int graphicsdelay;
 
     private GridController gridController;
     private PlayerBallController ballController;
 
     private void initializeGameTimer() {
-        fastTimer.addActionListener(new ActionListener() {
+        graphicsdelay = 0;
+        timer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                graphicsdelay++;
                 ballController.launchBall();
-            }
-        });
-        slowTimer.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                gridController.process();
-                GameController.getView().redraw();
+                if(graphicsdelay == 6) {
+                    gridController.process();
+                    GameController.getView().redraw();
+                    graphicsdelay = 0;
+                }
             }
         });
     }
@@ -33,24 +34,21 @@ public class GameRunner {
      */
     public void runGame() {
         initializeGameTimer();
-        fastTimer.start();
-        slowTimer.start();
+        timer.start();
     }
 
     /**
      * Pauses the game timers.
      */
     public void pauseGame() {
-        fastTimer.stop();
-        slowTimer.stop();
+        timer.stop();
     }
 
     /**
      * Restarts the game timers.
      */
     public void continueGame() {
-        fastTimer.start();
-        slowTimer.start();
+        timer.start();
     }
 
     /**
