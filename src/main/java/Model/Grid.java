@@ -113,6 +113,15 @@ public class Grid {
                 }
             }
         }
+
+        for (Cell c2 : cells) {
+            if (Math.abs(centerCell.getCurrentX() - c2.getCurrentX()) < Cell.EDGE_CENTER_DISTANCE * 3
+                    && Math.abs(centerCell.getCurrentY() - c2.getCurrentY()) < Cell.EDGE_CENTER_DISTANCE * 3) {
+                if (!centerCell.equals(c2) && !centerCell.getAdjacentCells().contains(c2)){
+                    centerCell.getAdjacentCells().add(c2);
+                }
+            }
+        }
     }
 
     /**
@@ -197,12 +206,12 @@ public class Grid {
         return centerCell;
     }
 
-    public void setRotation(int rotation) {
-        this.rotation = rotation;
-    }
-
     public int getRotation() {
         return rotation;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
     }
 
     public int getRotationDifference() {
