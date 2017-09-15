@@ -107,6 +107,16 @@ public class Grid {
                 }
             }
         }
+
+        for(Cell c1 : cells){
+            if(Math.abs(centerCell.getCurrentX() - c1.getCurrentX()) < Cell.EDGE_CENTER_DISTANCE * 3
+                    && Math.abs(centerCell.getCurrentY() - c1.getCurrentY()) < Cell.EDGE_CENTER_DISTANCE * 3) {
+                if(!c1.equals(centerCell) && !centerCell.getAdjacentCells().contains(c1)) {
+                    centerCell.getAdjacentCells().add(c1);
+                }
+            }
+        }
+
     }
 
     /** finds the closest cell to a certain location (x, y)

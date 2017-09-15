@@ -1,12 +1,7 @@
 package Controller;
 
 
-import Model.Ball;
-import Model.CenterPiece;
-import Model.Player;
-import Model.PlayerBall;
-import Model.Cell;
-import Model.Grid;
+import Model.*;
 import Utility.Util;
 import View.View;
 
@@ -114,10 +109,6 @@ public class PlayerBallController {
             }
         }
 
-/*        for (Cell cell : removalBalls) {
-            Ball ball = (Ball) cell.getElement();
-            System.out.println(ball.getColor());
-        }*/
         return removalBalls;
     }
 
@@ -146,42 +137,35 @@ public class PlayerBallController {
     // check if the ball is connected to the centre piece using Breadth First Search
     //if it isn't connected, it should be removed in method removeBalls.
     private ArrayList<Cell> notConnectedToCentre() {
+        ArrayList<Cell> visited = new ArrayList<Cell>();
+        ArrayList<Cell> notConnected = new ArrayList<Cell>();
+        Queue<Cell> queue = new LinkedList<Cell>();
 
-        ArrayList<Cell> toRemove = new ArrayList<Cell>();
+        visited.add(grid.getCenterCell());
+        queue.add(grid.getCenterCell());
+        Cell current;
 
-        for (Cell cell : grid.getOccupiedCells()) {
-            ArrayList<Cell> visited = new ArrayList<Cell>();
-            Queue<Cell> queue = new LinkedList<Cell>();
-            boolean connected = false;
+        while(!queue.isEmpty()){
+            current = queue.remove();
 
-            Cell current;
-            queue.add(cell);
-
-            while (!queue.isEmpty()) {
-
-                current = queue.remove();
-
-                for (Cell adjacent : current.getAdjacentCells()) {
-                    if (adjacent.getElement() instanceof Ball && !visited.contains(adjacent)) {
-                        queue.add(adjacent);
-                        visited.add(adjacent);
-                    } else if (adjacent.getElement() instanceof CenterPiece) {
-                      connected = true;
-                      break;
+            for(Cell adjacentCell : current.getAdjacentCells()) {
+                if(adjacentCell.getElement() instanceof Ball && !visited.contains(adjacentCell)) {
+                    Ball ball = (Ball) adjacentCell.getElement();
+                    if(ball.getColor() != null){
+                        queue.add(adjacentCell);
+                        visited.add(adjacentCell);
                     }
                 }
-
-                if(connected) {
-                    break;
-                }
             }
-
-            if (!connected) {
-                toRemove.add(cell);
-            }
-
         }
-        return toRemove;
+        for(Cell cell:grid.getOccupiedCells()) {
+            if(!visited.contains(cell) && cell.getElement() instanceof Ball
+                    &&((Ball) cell.getElement()).getColor()!= null) {
+                    notConnected.add(cell);
+            }
+        }
+        System.out.println(notConnected.size());
+        return notConnected;
     }
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
