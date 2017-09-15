@@ -1,6 +1,5 @@
 package Model;
 
-import Controller.GameController;
 import Utility.Util;
 import View.View;
 
@@ -25,10 +24,18 @@ public class Player {
         score = 0;
     }
 
+    /**
+     * This is the getter for the score fiels.
+     * @return score the score the player has achieved
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * This is the method used to update the score.
+     * @param score the new score
+     */
     public void setScore(int score) {
         this.score = score;
     }

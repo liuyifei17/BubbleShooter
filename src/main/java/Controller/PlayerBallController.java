@@ -38,7 +38,8 @@ public class PlayerBallController {
     /**
      * The playerballController consists of the player and the grid of the game and a counter
      * which keeps track of the times the mouse has been clicked.
-     * @param gc the game controller object
+     *
+     * @param gc     the game controller object
      * @param player the player object of the game.
      * @param grid   the grid of the game.
      */
@@ -95,7 +96,7 @@ public class PlayerBallController {
 
             //loop through all neighbors
             for (Cell adjacentCell : current.getAdjacentCells()) {
-                if(adjacentCell.getElement() instanceof Ball) {
+                if (adjacentCell.getElement() instanceof Ball) {
 
                     Ball ball = (Ball) adjacentCell.getElement();
 
@@ -118,9 +119,9 @@ public class PlayerBallController {
     }
 
     private boolean fillEmptyCell(int index) {
-        for(Cell c : grid.getOccupiedCells().get(index).getAdjacentCells()) {
-            if(c.getElement().getSprite() == null) {
-                String color = Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length-1)];
+        for (Cell c : grid.getOccupiedCells().get(index).getAdjacentCells()) {
+            if (c.getElement().getSprite() == null) {
+                String color = Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)];
                 grid.getOccupiedCells().add(c);
                 c.getElement().setImage(new Image("images/" + color + " ball.png"));
                 if (c.getElement() instanceof Ball) {
@@ -136,19 +137,19 @@ public class PlayerBallController {
     // this method removes the balls that the method checkRemovalBalls returns and adds the points
     // to the score
     private void removeBalls(ArrayList<Cell> toRemove) {
-       if(toRemove.size()>2){
-           for(Cell cell: toRemove) {
-               if (cell.getElement() instanceof Ball){
-                   GameController.getView().removeBall(cell);
-                   ((Ball) cell.getElement()).setColor(null);
-               }
-           }
-       }
+        if (toRemove.size() > 2) {
+            for (Cell cell : toRemove) {
+                if (cell.getElement() instanceof Ball) {
+                    GameController.getView().removeBall(cell);
+                    ((Ball) cell.getElement()).setColor(null);
+                }
+            }
+        }
 
         toRemove.clear();
         toRemove = notConnectedBalls();
-        for (Cell cell: toRemove) {
-            if (cell.getElement() instanceof Ball){
+        for (Cell cell : toRemove) {
+            if (cell.getElement() instanceof Ball) {
                 GameController.getView().removeBall(cell);
                 ((Ball) cell.getElement()).setColor(null);
             }
@@ -156,7 +157,7 @@ public class PlayerBallController {
 
     }
 
-    private ArrayList<Cell> notConnectedBalls(){
+    private ArrayList<Cell> notConnectedBalls() {
         ArrayList<Cell> visited = new ArrayList<>();
         ArrayList<Cell> notConnected = new ArrayList<>();
         Queue<Cell> queue = new LinkedList<>();
@@ -165,21 +166,21 @@ public class PlayerBallController {
         queue.add(grid.getCenterCell());
         Cell current;
 
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             current = queue.remove();
 
-            for(Cell adjacentCell : current.getAdjacentCells()) {
-                if(!visited.contains(adjacentCell) && adjacentCell.getElement() instanceof Ball
-                        && ((Ball) adjacentCell.getElement()).getColor()!= null){
+            for (Cell adjacentCell : current.getAdjacentCells()) {
+                if (!visited.contains(adjacentCell) && adjacentCell.getElement() instanceof Ball
+                        && ((Ball) adjacentCell.getElement()).getColor() != null) {
                     queue.add(adjacentCell);
                     visited.add(adjacentCell);
                 }
             }
         }
 
-        for(Cell cell: grid.getOccupiedCells()){
-            if(!visited.contains(cell) && cell.getElement() instanceof Ball
-                    && ((Ball) cell.getElement()).getColor()!= null) {
+        for (Cell cell : grid.getOccupiedCells()) {
+            if (!visited.contains(cell) && cell.getElement() instanceof Ball
+                    && ((Ball) cell.getElement()).getColor() != null) {
                 notConnected.add(cell);
             }
         }
@@ -192,10 +193,10 @@ public class PlayerBallController {
         int numberBalls = Util.randomBetween(5, 15);
         int randomIndex;
         ArrayList<Integer> randomIndexes = new ArrayList<Integer>();
-        for(int i = 0; i < numberBalls; i++) {
-            while(true) {
-                randomIndex = Util.randomBetween(0, grid.getOccupiedCells().size()-1);
-                if(!randomIndexes.contains(randomIndex) && fillEmptyCell(randomIndex)) {
+        for (int i = 0; i < numberBalls; i++) {
+            while (true) {
+                randomIndex = Util.randomBetween(0, grid.getOccupiedCells().size() - 1);
+                if (!randomIndexes.contains(randomIndex) && fillEmptyCell(randomIndex)) {
                     randomIndexes.add(randomIndex);
                     break;
                 }
@@ -260,7 +261,9 @@ public class PlayerBallController {
      * Launches the ball in the direction of the mouse.
      */
     public void launchBall() {
-        if (getMouseY() == 0) return;
+        if (getMouseY() == 0) {
+            return;
+        }
 
         stopWatch++;
 
@@ -391,11 +394,20 @@ public class PlayerBallController {
         this.deltaY = deltaY;
     }
 
-
+    /**
+     * This is the setter for the player field.
+     *
+     * @param player the player object that is associated with this controller
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
+    /**
+     * This is the setter for the grid field.
+     *
+     * @param grid the grid object that is associated with this controller
+     */
     public void setGrid(Grid grid) {
         this.grid = grid;
     }
