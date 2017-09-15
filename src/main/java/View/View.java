@@ -161,9 +161,10 @@ public class View {
 
         //relocate elements
         for (Cell c : cells) {
-            if(c.getElement().getSprite() != null) {
-                c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
+            if(c.getElement().getSprite() == null) {
+                continue;
             }
+            c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
             c.getElement().getImageView().rotateProperty().setValue(data.getGrid().getRotation());
         }
 
@@ -172,6 +173,8 @@ public class View {
 
         playerBall.relocate(data.getPlayer().getPlayerBall().getX() - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
                 data.getPlayer().getPlayerBall().getY() - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
+
+        scoreBarScore.setText("Score: " + data.getPlayer().getScore());
     }
 
     // this method removes a ball and displays a '+1' icon for 1 second

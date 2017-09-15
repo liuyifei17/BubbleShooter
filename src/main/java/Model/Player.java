@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.GameController;
 import Utility.Util;
 import View.View;
 
@@ -10,6 +11,7 @@ public class Player {
     private Ball nextBall;
     private PlayerBall playerBall;
     private int missCounter;
+    private int score;
 
     /**
      * The player has a score, a ball with whom it shoots and a misscounter for each missed
@@ -20,6 +22,15 @@ public class Player {
         playerBall = new PlayerBall(View.STAGE_WIDTH / 2, View.TOP_BAR_HEIGHT,
                 Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)]);
         missCounter = 0;
+        score = 0;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     /**
