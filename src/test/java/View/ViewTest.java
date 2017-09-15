@@ -14,9 +14,9 @@ import static org.mockito.Mockito.*;
  */
 class ViewTest {
 
-    View view;
-    GameData gameData = mock(GameData.class);
-    ImageView topBar = mock(ImageView.class);
+    private View view;
+    private GameData gameData = mock(GameData.class);
+    private ImageView topBar = mock(ImageView.class);
 
     @BeforeEach
     public void setUp() {
