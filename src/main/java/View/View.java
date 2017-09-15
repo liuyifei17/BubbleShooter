@@ -3,7 +3,7 @@ package View;
 import Model.Ball;
 import Model.Cell;
 import Model.GameData;
-import Utility.setTimeout;
+import Utility.SetTimeout;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -181,7 +181,7 @@ public class View {
 
         removePlusOneIcon r = new removePlusOneIcon(c);
 
-        setTimeout t = new setTimeout("Timeout Thread", 1000, r);
+        SetTimeout t = new SetTimeout("Timeout Thread", 1000, r);
         t.start();
     }
 
