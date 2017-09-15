@@ -12,7 +12,7 @@ import static org.mockito.Mockito.mock;
 class GameDataTest {
 
 
-    private GameData gameData;
+/*    private GameData gameData;
 
     @BeforeEach
     public void setUp() {
@@ -49,6 +49,6 @@ class GameDataTest {
     private void getInitialBallAmount() {
         gameData.setInitialBallAmount(20);
         assertThat(gameData.getInitialBallAmount()).isEqualTo(20);
-    }
+    }*/
 
 }
