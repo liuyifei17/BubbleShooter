@@ -12,6 +12,7 @@ import Utility.Util;
 public class GridController {
 
     private Grid grid;
+    private GameController gc;
 
     public void process() {
         int counter = 0;
@@ -33,16 +34,15 @@ public class GridController {
 
                 if (!(c.getElement() instanceof CenterPiece) && ((Ball) c.getElement()).getSprite() != null) {
                     if(c.hasCollidedWithWall()){
-                        System.out.println("u died");
-                        counter++;
-                        System.out.println(counter);
+                        gc.gameOver();
                     }
                 }
             }
         }
     }
 
-    public GridController(Grid grid) {
+    public GridController(GameController gc, Grid grid) {
+        this.gc = gc;
         this.grid = grid;
     }
 

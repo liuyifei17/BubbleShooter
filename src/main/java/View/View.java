@@ -151,6 +151,8 @@ public class View {
         gamePane.getChildren().add(playerBall);
         gamePane.getChildren().add(nextBall);
         gamePane.getChildren().add(scoreBarScore);
+        gamePane.getChildren().add(gameOverPopup);
+        gameOverPopup.setVisible(false);
     }
 
     public void redraw() {
@@ -229,11 +231,12 @@ public class View {
     }
 
     public void showGameOverPopup() {
-        gamePane.getChildren().add(gameOverPopup);
+        //popupScore.setText("Score);
+        gameOverPopup.setVisible(true);
     }
 
     public void closeGameOverPopup() {
-        gamePane.getChildren().remove(gameOverPopup);
+        gameOverPopup.setVisible(false);
     }
 
     private double getScreenX(Cell cell) {
@@ -274,6 +277,10 @@ public class View {
 
     public void setGamePane(Pane gamePane) {
         this.gamePane = gamePane;
+    }
+
+    public Pane getGamePane() {
+        return gamePane;
     }
 
     class removePlusOneIcon implements Runnable {
