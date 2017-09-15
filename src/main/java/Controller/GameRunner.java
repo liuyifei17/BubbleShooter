@@ -34,9 +34,14 @@ public class GameRunner {
         slowTimer.start();
     }
 
-    public void stopGame() {
+    public void pauseGame() {
         fastTimer.stop();
         slowTimer.stop();
+    }
+
+    public void continueGame() {
+        fastTimer.start();
+        slowTimer.start();
     }
 
     public GameRunner(GridController gridController, PlayerBallController ballController) {
