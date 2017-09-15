@@ -1,16 +1,14 @@
 package Controller;
 
 
-import Model.Ball;
-import Model.Player;
-import Model.PlayerBall;
-import Model.Cell;
-import Model.Grid;
+import Model.*;
 import Utility.Util;
 import View.View;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 /**
@@ -75,7 +73,48 @@ public class PlayerBallController {
 
     // this method checks after the shot ball has reached the hexagon if any balls should be removed
     private ArrayList<Cell> checkRemovalBalls() {
-        return null;
+        //initialise an arrayList which will contain all possible removedBalls
+        ArrayList<Cell> removalBalls = new ArrayList<Cell>();
+        removalBalls.add(collidedCell);
+
+        //initialise a queue for BFS
+        Queue queue = new LinkedList<Cell>();
+        queue.add(collidedCell);
+
+        // initialise a list which keeps the visited cells
+        ArrayList<Cell> visited = new ArrayList<Cell>();
+        visited.add(collidedCell);
+        Cell current;
+
+        // loop through the queue
+        while (!queue.isEmpty()) {
+
+            current = (Cell) queue.remove();
+
+            //loop through all neighbors
+            for (Cell adjacentCell : current.getAdjacentCells()) {
+                if(adjacentCell.getElement() instanceof Ball) {
+
+                    Ball ball = (Ball) adjacentCell.getElement();
+
+                    boolean sameColour = player.getPlayerBall().getColor().equals(ball.getColor());
+
+
+                    //if never visited and both cells contains same colour ball
+                    if (!visited.contains(adjacentCell) && sameColour) {
+                        //add the cell into the queue and removalBallsList
+                        queue.add(adjacentCell);
+                        removalBalls.add(adjacentCell);
+                    }
+
+                    //this adjacentCell is visited
+                    visited.add(adjacentCell);
+                }
+
+            }
+        }
+
+        return removalBalls;
     }
 
     private boolean fillEmptyCell(int index) {
@@ -97,7 +136,55 @@ public class PlayerBallController {
     // this method removes the balls that the method checkRemovalBalls returns and adds the points
     // to the score
     private void removeBalls(ArrayList<Cell> toRemove) {
-        return;
+       if(toRemove.size()>2){
+           for(Cell cell: toRemove) {
+               if (cell.getElement() instanceof Ball){
+                   GameController.getView().removeBall(cell);
+                   ((Ball) cell.getElement()).setColor(null);
+               }
+           }
+       }
+
+        toRemove.clear();
+        toRemove = notConnectedBalls();
+        for (Cell cell: toRemove) {
+            if (cell.getElement() instanceof Ball){
+                GameController.getView().removeBall(cell);
+                ((Ball) cell.getElement()).setColor(null);
+            }
+        }
+
+    }
+
+    private ArrayList<Cell> notConnectedBalls(){
+        ArrayList<Cell> visited = new ArrayList<>();
+        ArrayList<Cell> notConnected = new ArrayList<>();
+        Queue<Cell> queue = new LinkedList<>();
+
+        visited.add(grid.getCenterCell());
+        queue.add(grid.getCenterCell());
+        Cell current;
+
+        while(!queue.isEmpty()){
+            current = queue.remove();
+
+            for(Cell adjacentCell : current.getAdjacentCells()) {
+                if(!visited.contains(adjacentCell) && adjacentCell.getElement() instanceof Ball
+                        && ((Ball) adjacentCell.getElement()).getColor()!= null){
+                    queue.add(adjacentCell);
+                    visited.add(adjacentCell);
+                }
+            }
+        }
+
+        for(Cell cell: grid.getOccupiedCells()){
+            if(!visited.contains(cell) && cell.getElement() instanceof Ball
+                    && ((Ball) cell.getElement()).getColor()!= null) {
+                notConnected.add(cell);
+            }
+        }
+
+        return notConnected;
     }
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
