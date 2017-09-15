@@ -112,10 +112,8 @@ public class PlayerBallController {
                     //this adjacentCell is visited
                     visited.add(adjacentCell);
                 }
-
             }
         }
-
         return removalBalls;
     }
 
@@ -191,7 +189,7 @@ public class PlayerBallController {
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
     private void appendAdditionalBalls() {
-        int numberBalls = Util.randomBetween(2, 10);
+        int numberBalls = Util.randomBetween(5, 15);
         int randomIndex;
         ArrayList<Integer> randomIndexes = new ArrayList<Integer>();
         for(int i = 0; i < numberBalls; i++) {
@@ -221,7 +219,8 @@ public class PlayerBallController {
         // check whether the shot ball has hit at least 2 other balls of the same color
 
         ArrayList<Cell> ballsToBeRemoved = checkRemovalBalls();
-        if (ballsToBeRemoved != null) {
+        if (ballsToBeRemoved.size() >= 3) {
+            player.setScore(player.getScore() + ballsToBeRemoved.size());
             removeBalls(ballsToBeRemoved);
         } else if (player.getMissCounter() >= 5) {
             player.setMissCounter(0);
