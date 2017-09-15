@@ -19,34 +19,34 @@ class GameDataTest {
         gameData = new GameData();
     }
     @Test
-    void getScore() {
+    private void getScore() {
         gameData.setScore(20);
         assertThat(gameData.getScore()).isEqualTo(20);
     }
 
     @Test
-    void setScore() {
+    private void setScore() {
         gameData.setScore(20);
         assertThat(gameData.getScore()).isEqualTo(20);
 
     }
 
     @Test
-    void getGrid() {
+    private void getGrid() {
         Grid grid = mock(Grid.class);
         gameData.setGrid(grid);
         assertThat(gameData.getGrid()).isEqualTo(grid);
     }
 
     @Test
-    void setGrid() {
+    private void setGrid() {
         Grid grid = mock(Grid.class);
         gameData.setGrid(grid);
         assertThat(gameData.getGrid()).isEqualTo(grid);
     }
 
     @Test
-    void getInitialBallAmount() {
+    private void getInitialBallAmount() {
         gameData.setInitialBallAmount(20);
         assertThat(gameData.getInitialBallAmount()).isEqualTo(20);
     }
