@@ -26,7 +26,6 @@ public class GameDataLoader {
      */
     public void initialize(GameData data, double centerX, double centerY) {
         this.data = data;
-        data.setScore(0);
         data.setInitialBallAmount(90);
         data.setGrid(new Grid(centerX, centerY));
         data.setPlayer(new Player());
