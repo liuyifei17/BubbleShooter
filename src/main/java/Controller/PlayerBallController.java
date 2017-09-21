@@ -16,8 +16,8 @@ import java.util.Queue;
  */
 public class PlayerBallController {
 
-    public final static int BALL_RADIUS = 15;
-    public final static int SPEEDUP = 5;
+    public static final int BALL_RADIUS = 15;
+    public static final int SPEEDUP = 5;
     private final int maximumTimesBallHit = 4;
     private final int[] leftRotation = {-15, -30, -45};
     private final int[] rightRotation = {15, 30, 45};
