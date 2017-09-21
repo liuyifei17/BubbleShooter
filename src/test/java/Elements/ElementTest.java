@@ -4,13 +4,11 @@ import Model.Cell;
 import Model.Element;
 import javafx.application.Application;
 import javafx.scene.image.Image;
-import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 
 /**
