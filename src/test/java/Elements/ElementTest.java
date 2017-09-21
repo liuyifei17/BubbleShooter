@@ -31,7 +31,7 @@ class ElementTest {
 
     @Test
     void getSprite() {
-        assertThat(element.getSprite()).isNotEqualTo(img);
+        assertThat(element.getSprite()).isEqualTo(img);
     }
 
     @Test
