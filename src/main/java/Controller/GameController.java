@@ -16,9 +16,9 @@ import java.io.File;
  */
 public class GameController {
 
+    private static View view;
     private GameData data;
     private GameDataLoader loader;
-    private static View view;
     private GameRunner runner;
     private GridController gridController;
     private PlayerBallController playerBallController;
@@ -126,7 +126,8 @@ public class GameController {
 
         // ball firing event
         gameScreen.setOnMouseReleased(event -> {
-            if (!gamePaused && (clickDelay + 800) < System.currentTimeMillis()) {
+            if (!gamePaused && !(event.getSceneY() < View.TOP_BAR_HEIGHT + 20)
+                    && (clickDelay + 800) < System.currentTimeMillis()) {
                 playerBallController.setMouseX(event.getSceneX());
                 playerBallController.setMouseY(event.getSceneY());
                 playerBallController.calculateDelta();
@@ -165,6 +166,31 @@ public class GameController {
         view.getPopupRestartButton().setOnMouseReleased(event -> {
             resetGame();
         });
+
+        //continue playing the game
+        view.getPopupContinueButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
+            view.closePausePopup();
+            resumeGame();
+        });
+
+        //continue playing the game
+        view.getPopupExitButton().setOnMouseReleased(event -> {
+            System.exit(0);
+        });
+
+        //return to main menu
+        view.getPopupMainMenuButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
+            primaryStage.setScene(mainMenu);
+            view.closePausePopup();
+        });
+
+        //
+        view.getGamePauseIcon().setOnMouseReleased(event -> {
+            view.showPausePopup();
+            pauseGame();
+        });
     }
 
     private void handleMusicButtonClick() {
@@ -186,7 +212,13 @@ public class GameController {
         //pause the game
         gameScreen.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
-                //do nothing yet
+                if (!gamePaused) {
+                    view.showPausePopup();
+                    pauseGame();
+                } else {
+                    view.closePausePopup();
+                    resumeGame();
+                }
             }
         });
     }
@@ -196,7 +228,7 @@ public class GameController {
         runner.pauseGame();
     }
 
-    private void continueGame() {
+    private void resumeGame() {
         gamePaused = false;
         runner.continueGame();
     }
