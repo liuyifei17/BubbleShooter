@@ -20,7 +20,7 @@ public class GameRunner {
             public void actionPerformed(ActionEvent evt) {
                 graphicsDelay++;
                 ballController.launchBall();
-                if(graphicsDelay == 6) {
+                if (graphicsDelay == 6) {
                     gridController.process();
                     GameController.getView().redraw();
                     graphicsDelay = 0;
