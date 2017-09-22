@@ -9,21 +9,21 @@ import javax.swing.Timer;
 public class GameRunner {
 
     private final Timer timer = new Timer(5, null);
-    private int graphicsdelay;
+    private int graphicsDelay;
 
     private GridController gridController;
     private PlayerBallController ballController;
 
     private void initializeGameTimer() {
-        graphicsdelay = 0;
+        graphicsDelay = 0;
         timer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                graphicsdelay++;
+                graphicsDelay++;
                 ballController.launchBall();
-                if(graphicsdelay == 6) {
+                if(graphicsDelay == 6) {
                     gridController.process();
                     GameController.getView().redraw();
-                    graphicsdelay = 0;
+                    graphicsDelay = 0;
                 }
             }
         });
