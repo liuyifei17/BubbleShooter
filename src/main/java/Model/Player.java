@@ -17,7 +17,8 @@ public class Player {
      * ball.
      */
     public Player() {
-        nextBall = new Ball(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)], null);
+        nextBall = new Ball(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)],
+                null, false);
         playerBall = new PlayerBall(View.STAGE_WIDTH / 2, View.TOP_BAR_HEIGHT,
                 Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)]);
         missCounter = 0;
