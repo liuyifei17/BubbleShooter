@@ -27,7 +27,7 @@ public class Cell {
         initialY = y;
         currentX = x;
         currentY = y;
-        element = new Ball(null, null);
+        element = new Ball(null, null, false);
         element.setCell(this);
         adjacentCells = new ArrayList<Cell>();
     }
