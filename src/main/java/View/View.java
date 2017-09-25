@@ -31,6 +31,8 @@ public class View {
     private GameData data;
     private Pane gamePane;
     private Pane mainMenuPane;
+    private ImageView gameSettingsIcon;
+    private ImageView gamePauseIcon;
     private Image mainMenuBg;
     private ImageView playButton;
     private ImageView exitButton;
@@ -50,6 +52,10 @@ public class View {
     private ImageView popupHomeButton;
     private ImageView playerBall;
     private ImageView nextBall;
+    private Pane pausePopup;
+    private ImageView popupContinueButton;
+    private ImageView popupMainMenuButton;
+    private ImageView popupExitButton;
 
     /**
      * @param mainMenuPane sets the main menu pane
@@ -137,6 +143,16 @@ public class View {
         scoreBarScore.relocate(15, 22);
         scoreBarScore.setFill(Color.YELLOW);
 
+        //draw button icons
+        gamePauseIcon = new ImageView("images/pause-icon.png");
+        gamePauseIcon.relocate(495, 10);
+        gamePauseIcon.fitHeightProperty().setValue(48);
+        gamePauseIcon.fitWidthProperty().setValue(48);
+        gameSettingsIcon = new ImageView("images/settings-icon.png");
+        gameSettingsIcon.relocate(550, 10);
+        gameSettingsIcon.fitHeightProperty().setValue(44);
+        gameSettingsIcon.fitWidthProperty().setValue(44);
+
         //draw entities
         for (Cell c : data.getGrid().getOccupiedCells()) {
             c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
@@ -156,8 +172,9 @@ public class View {
                 data.getPlayer().getPlayerBall().getY()
                         - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
 
-        //create popup on game over
+        //create popup menu's
         createGameOverPopup();
+        createPausePopup();
 
         //add components to game pane
         gamePane.getChildren().add(topBar);
@@ -168,8 +185,12 @@ public class View {
         gamePane.getChildren().add(playerBall);
         gamePane.getChildren().add(nextBall);
         gamePane.getChildren().add(scoreBarScore);
+        gamePane.getChildren().add(gamePauseIcon);
+        gamePane.getChildren().add(gameSettingsIcon);
         gamePane.getChildren().add(gameOverPopup);
+        gamePane.getChildren().add(pausePopup);
         gameOverPopup.setVisible(false);
+        pausePopup.setVisible(false);
     }
 
     /**
@@ -273,6 +294,36 @@ public class View {
     }
 
     /**
+     * Creates a game over popup menu.
+     */
+    private void createPausePopup() {
+        //create popup container
+        pausePopup = new Pane();
+        pausePopup.setPrefSize(POPUP_WIDTH, POPUP_HEIGHT);
+        pausePopup.relocate(POPUP_X, POPUP_Y);
+        pausePopup.setBackground(new Background(new BackgroundImage(
+                new Image("images/gameOverPopupBg.png", POPUP_WIDTH, POPUP_HEIGHT, false, true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
+
+        //create graphical elements
+        ImageView pauseMessage = new ImageView("images/pauseMessage.png");
+        pauseMessage.relocate(0, 20);
+        popupContinueButton = new ImageView("images/restart-icon.png");
+        popupContinueButton.relocate(5, 260);
+        popupExitButton = new ImageView("images/exit-icon.png");
+        popupExitButton.relocate(100, 260);
+        popupMainMenuButton = new ImageView("images/home-icon.png");
+        popupMainMenuButton.relocate(198, 260);
+
+        //add graphical elements to popup container
+        pausePopup.getChildren().add(pauseMessage);
+        pausePopup.getChildren().add(popupContinueButton);
+        pausePopup.getChildren().add(popupMainMenuButton);
+        pausePopup.getChildren().add(popupExitButton);
+    }
+
+    /**
      * Sets the game over popup to being visible and updates the score.
      */
     public void showGameOverPopup() {
@@ -281,10 +332,24 @@ public class View {
     }
 
     /**
+     * Sets the pause popup to being visible.
+     */
+    public void showPausePopup() {
+        pausePopup.setVisible(true);
+    }
+
+    /**
      * Sets the gam over popup to being invisible.
      */
     public void closeGameOverPopup() {
         gameOverPopup.setVisible(false);
+    }
+
+    /**
+     * Sets the gam over popup to being invisible.
+     */
+    public void closePausePopup() {
+        pausePopup.setVisible(false);
     }
 
     /**
@@ -357,6 +422,41 @@ public class View {
      */
     public void setGamePane(Pane gamePane) {
         this.gamePane = gamePane;
+    }
+
+    /**
+     * @return popup continue game button
+     */
+    public ImageView getPopupContinueButton() {
+        return popupContinueButton;
+    }
+
+    /**
+     * @return popup main menu return button
+     */
+    public ImageView getPopupMainMenuButton() {
+        return popupMainMenuButton;
+    }
+
+    /**
+     * @return popup exit game button
+     */
+    public ImageView getPopupExitButton() {
+        return popupExitButton;
+    }
+
+    /**
+     * @return game settings button
+     */
+    public ImageView getGameSettingsIcon() {
+        return gameSettingsIcon;
+    }
+
+    /**
+     * @return game pause button
+     */
+    public ImageView getGamePauseIcon() {
+        return gamePauseIcon;
     }
 
     /**
