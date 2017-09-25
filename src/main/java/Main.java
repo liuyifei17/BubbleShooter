@@ -7,6 +7,8 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
+    private GameController game;
+
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
         GameController game;
