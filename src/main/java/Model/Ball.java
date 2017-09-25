@@ -9,18 +9,24 @@ public class Ball extends Element {
 
     public static final String[] COLORS = {"blue", "green", "orange", "purple", "red", "yellow"};
     private String color;
+    private boolean isCenterPiece;
 
     /**
      * creates a ball that is located inside a cell.
      * @param color the color of the ball
      * @param cell  the cell in which the ball is currently located
+     * @param isCP  is the current ball the center piece
      */
-    public Ball(String color, Cell cell) {
+    public Ball(String color, Cell cell, boolean isCP) {
         super(cell, null);
         this.color = color;
-        if (color != null) {
+        if (this.color != null && this.color.equals("center")) {
+            super.setImage(new Image("images/center.png"));
+        }
+        else if (color != null) {
             super.setImage(new Image("images/" + color + " ball.png"));
         }
+        this.isCenterPiece = isCP;
     }
 
     /**
@@ -53,6 +59,8 @@ public class Ball extends Element {
         return false;
     }
 
-
+    public boolean isCenterPiece() {
+        return isCenterPiece;
+    }
 
 }
