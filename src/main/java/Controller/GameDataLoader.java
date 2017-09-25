@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Ball;
-import Model.CenterPiece;
 import Model.Player;
 import Model.Cell;
 import Model.GameData;
@@ -37,8 +36,7 @@ public class GameDataLoader {
      */
     private void loadElements() {
         //create the centerpiece
-        CenterPiece center = new CenterPiece();
-        center.setCell(data.getGrid().getCenterCell());
+        Ball center = new Ball("center", data.getGrid().getCenterCell(), true);
         data.getGrid().getCenterCell().setElement(center);
 
         //add an x amount of random colored balls to start
@@ -57,7 +55,7 @@ public class GameDataLoader {
         for (int i = 0; i < data.getInitialBallAmount(); i++) {
             Cell c = emptyCells.get(i);
             String color = Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)];
-            Ball b = new Ball(color, c);
+            Ball b = new Ball(color, c, false);
             c.setElement(b);
             b.setCell(c);
         }
