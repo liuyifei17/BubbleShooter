@@ -19,11 +19,11 @@ class GridTest {
     private Grid grid;
     private int HEIGHT = 20;
     private int WIDTH = 10;
-
-    @BeforeEach
-    private void setUp() {
-        grid = new Grid(WIDTH, HEIGHT);
-    }
+//
+//    @BeforeEach
+//    private void setUp() {
+//        grid = new Grid(WIDTH, HEIGHT);
+//    }
 
 
     @Test
@@ -58,15 +58,15 @@ class GridTest {
     @Test
     void getOccupiedCells() {
     }
-    //@Test
-    void closestCellToLocation() {
-        assertThat(grid.closestCellToLocation(WIDTH, HEIGHT)).isEqualTo(grid.getCenterCell());
-    }
-
-    //@Test
-    void closestEmptyCellToLocation() {
-        assertThat(grid.closestEmptyCellToLocation(WIDTH, HEIGHT)).isEqualTo(grid.getCenterCell());
-    }
+//    @Test
+//    void closestCellToLocation() {
+//        assertThat(grid.closestCellToLocation(WIDTH, HEIGHT)).isEqualTo(grid.getCenterCell());
+//    }
+//
+//    @Test
+//    void closestEmptyCellToLocation() {
+//        assertThat(grid.closestEmptyCellToLocation(WIDTH, HEIGHT)).isEqualTo(grid.getCenterCell());
+//    }
 
 
     @Test
