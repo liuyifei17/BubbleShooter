@@ -16,11 +16,6 @@ import java.util.Queue;
  */
 public class PlayerBallController {
 
-    public static final int BALL_RADIUS = 15;
-    public static final int SPEEDUP = 5;
-    private final int maximumTimesBallHit = 4;
-    private final int[] leftRotation = {-15, -30, -45};
-    private final int[] rightRotation = {15, 30, 45};
     private Player player;
     private Grid grid;
     private GameController gc;
@@ -69,8 +64,8 @@ public class PlayerBallController {
         double dotProd = Math.sqrt(directionDeltaX * directionDeltaX
                 + directionDeltaY * directionDeltaY);
 
-        deltaX = SPEEDUP * directionDeltaX / dotProd;
-        deltaY = SPEEDUP * directionDeltaY / dotProd;
+        deltaX = GameConfiguration.speedup * directionDeltaX / dotProd;
+        deltaY = GameConfiguration.speedup * directionDeltaY / dotProd;
         counter++;
     }
 
@@ -121,7 +116,8 @@ public class PlayerBallController {
     private boolean fillEmptyCell(int index) {
         for (Cell c : grid.getOccupiedCells().get(index).getAdjacentCells()) {
             if (c.getElement().getSprite() == null) {
-                String color = Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)];
+                String color = GameConfiguration.colors.get(Util.randomBetween(0,
+                        GameConfiguration.colors.size() - 1));
                 grid.getOccupiedCells().add(c);
                 c.getElement().setImage(new Image("images/" + color + " ball.png"));
                 if (c.getElement() instanceof Ball) {
@@ -246,10 +242,10 @@ public class PlayerBallController {
 
     private void nextBall() {
 
-        player.setPlayerBall(new PlayerBall(View.STAGE_WIDTH / 2,
-                View.TOP_BAR_HEIGHT, player.getNextBall().getColor()));
-        player.setNextBall(new Ball(Ball.COLORS[Util.randomBetween(0,
-                Ball.COLORS.length - 1)], null, false));
+        player.setPlayerBall(new PlayerBall(GameConfiguration.stageWidth / 2,
+                GameConfiguration.topBarHeight, player.getNextBall().getColor()));
+        player.setNextBall(new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
+                GameConfiguration.colors.size() - 1)), null, false));
         this.setMouseY(0);
         this.setMouseX(0);
         this.setDeltaX(0);
@@ -278,7 +274,7 @@ public class PlayerBallController {
 
         // if the ball has collided with the wall for a maximum of 4 times then it will reset
         // the ball
-        else if (player.getPlayerBall().getCounter() >= maximumTimesBallHit) {
+        else if (player.getPlayerBall().getCounter() >= GameConfiguration.maximumTimesBallHit) {
             stopWatch = 0;
             nextBall();
         }
@@ -309,12 +305,12 @@ public class PlayerBallController {
      */
     private double[] reflectBack(double deltaX, double deltaY) {
 
-        if ((player.getPlayerBall().getX() < BALL_RADIUS)
-                || (player.getPlayerBall().getX() >= View.STAGE_WIDTH)) {
+        if ((player.getPlayerBall().getX() < GameConfiguration.ballRadius)
+                || (player.getPlayerBall().getX() >= GameConfiguration.stageWidth)) {
             deltaX = deltaX * -1;
         }
-        if ((player.getPlayerBall().getY() < View.TOP_BAR_HEIGHT)
-                || (player.getPlayerBall().getY() >= View.STAGE_HEIGHT)) {
+        if ((player.getPlayerBall().getY() < GameConfiguration.topBarHeight)
+                || (player.getPlayerBall().getY() >= GameConfiguration.stageHeight)) {
             deltaY = deltaY * -1;
         }
         return new double[]{deltaX, deltaY};
@@ -326,25 +322,25 @@ public class PlayerBallController {
     public void calculateRotation() {
         if (directionDeltaX > 0 && directionDeltaY > 0) {
             if (stopWatch < 70) {
-                grid.setRotationDifference(rightRotation[0]);
+                grid.setRotationDifference(GameConfiguration.rightRotation.get(0));
             }
             if (stopWatch >= 70 && stopWatch < 170) {
-                grid.setRotationDifference(rightRotation[1]);
+                grid.setRotationDifference(GameConfiguration.rightRotation.get(1));
             }
             if (stopWatch > 170) {
-                grid.setRotationDifference(rightRotation[2]);
+                grid.setRotationDifference(GameConfiguration.rightRotation.get(2));
             }
         }
 
         if (directionDeltaX < 0 && directionDeltaY > 0) {
             if (stopWatch < 70) {
-                grid.setRotationDifference(leftRotation[0]);
+                grid.setRotationDifference(GameConfiguration.leftRotation.get(0));
             }
             if (stopWatch >= 70 && stopWatch < 170) {
-                grid.setRotationDifference(leftRotation[1]);
+                grid.setRotationDifference(GameConfiguration.leftRotation.get(1));
             }
             if (stopWatch > 170) {
-                grid.setRotationDifference(leftRotation[2]);
+                grid.setRotationDifference(GameConfiguration.leftRotation.get(2));
             }
         }
         stopWatch = 0;
