@@ -1,5 +1,6 @@
-package Model;
+package UnitTests.Model;
 
+import Model.Cell;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 /**
- * Created by Henks Laptop on 07/09/2017.
+ * This class provides test cases for the Cell class.
  */
 class CellTest {
     private Cell cell;
