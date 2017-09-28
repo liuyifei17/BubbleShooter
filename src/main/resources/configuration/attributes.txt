@@ -1,0 +1,33 @@
+# GROUP NAME: Multi Culti Soup
+# DEVELOPED GAME: Bubble Shooter
+#
+#=======================================================================
+# ATTRIBUTE TYPES
+#=======================================================================
+#int width = 300
+#real length = 12.1
+#bool flag = true
+#string text = This is text
+#real list = [0.8, 2, 3.14, 2.71, 3]
+#=======================================================================
+# ATTRIBUTES
+#=======================================================================
+
+real stageWidth = 600
+real stageHeight = 700
+real edgeToDistance = 15
+
+int topBarHeight = 70
+int scoreBarHeight = 40
+int scoreBarWidth = 240
+int popupWidth = 300
+int popupHeight = 360
+int popupX = 150
+int popupY = 200
+int ballRadius = 15
+int speedup = 5
+int maximumTimesBallHit = 4
+
+int leftRotation = [-15, -30, -45]
+int rightRotation = [15, 30, 45]
+string colors = [blue, green, orange, purple, red, yellow]

@@ -1,8 +1,7 @@
 package Model;
 
-import Controller.PlayerBallController;
+import Controller.GameConfiguration;
 import Utility.Util;
-import View.View;
 import javafx.scene.image.Image;
 
 /**
@@ -94,10 +93,10 @@ public class PlayerBall {
      * @return true if it hit the wall and false if it didn't.
      */
     public boolean hasCollidedWithWall() {
-        if ((x < PlayerBallController.BALL_RADIUS)
-                || (x >= View.STAGE_WIDTH)
-                || (y < View.TOP_BAR_HEIGHT)
-                || (y >= View.STAGE_HEIGHT)) {
+        if ((x < GameConfiguration.ballRadius)
+                || (x >= GameConfiguration.stageWidth)
+                || (y < GameConfiguration.topBarHeight)
+                || (y >= GameConfiguration.stageHeight)) {
             counter++;
             return true;
         }
@@ -117,7 +116,7 @@ public class PlayerBall {
         Cell c = grid.closestFullCellToLocation(x, y);
         Cell c2 = grid.closestEmptyCellToLocation(c.getCurrentX(), c.getCurrentY());
         if (Util.getDistance(x, y, c2.getCurrentX(), c2.getCurrentY())
-                <= Cell.EDGE_CENTER_DISTANCE / 1.3) {
+                <= GameConfiguration.edgeToDistance / 1.3) {
             return c2;
         }
         for (int i = 1; i < 3; i++) {
@@ -125,7 +124,7 @@ public class PlayerBall {
             double ny = this.getY() + deltaY * i;
 
             if (Util.getDistance(nx, ny, c.getCurrentX(), c.getCurrentY())
-                    <= Cell.EDGE_CENTER_DISTANCE) {
+                    <= GameConfiguration.edgeToDistance) {
                 return grid.closestEmptyCellToLocation(this.x, this.y);
             }
         }

@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.GameConfiguration;
 import javafx.scene.image.Image;
 
 /**
@@ -7,7 +8,6 @@ import javafx.scene.image.Image;
  */
 public class Ball extends Element {
 
-    public static final String[] COLORS = {"blue", "green", "orange", "purple", "red", "yellow"};
     private String color;
     private boolean isCenterPiece;
 
@@ -27,6 +27,7 @@ public class Ball extends Element {
             super.setImage(new Image("images/" + color + " ball.png"));
         }
         this.isCenterPiece = isCP;
+
     }
 
     /**
@@ -51,7 +52,7 @@ public class Ball extends Element {
      * @return true if color exists and false if it does not
      */
     public static boolean colorExists(String color) {
-        for (String s : COLORS) {
+        for (String s : GameConfiguration.colors) {
             if (s.equalsIgnoreCase(color)) {
                 return true;
             }
@@ -59,6 +60,9 @@ public class Ball extends Element {
         return false;
     }
 
+    /**
+     * @return true if it is the centerpiece
+     */
     public boolean isCenterPiece() {
         return isCenterPiece;
     }
