@@ -56,7 +56,7 @@ class CellTest {
     }
 
 
-/*
+
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         cell = new Cell(INITIALX, INITIALY);
@@ -76,22 +76,6 @@ class CellTest {
         assertThat(cell.getCurrentY()).isEqualTo(INITIALY);
     }
 
-    @org.junit.jupiter.api.Test
-    void setY() {
-        cell.setY(10.0);
-        assertThat(cell.getY()).isEqualTo(10.0);
-    }
-
-    @org.junit.jupiter.api.Test
-    void getX() {
-        assertThat(cell.getX()).isEqualTo(4.0);
-    }
-
-    @org.junit.jupiter.api.Test
-    void setX() {
-        cell.setX(6.0);
-        assertThat(cell.getX()).isEqualTo(6.0);
-    }
 
     @org.junit.jupiter.api.Test
     void AdjecentCellsEmpty() {
@@ -113,5 +97,5 @@ class CellTest {
         cell.getAdjacentCells().add(otherCell);
         assertThat(cell.getAdjacentCells().size()).isEqualTo(4);
     }
-*/
+
 }

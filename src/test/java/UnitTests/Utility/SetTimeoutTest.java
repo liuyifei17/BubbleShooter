@@ -22,4 +22,15 @@ public class SetTimeoutTest {
 
         if(System.currentTimeMillis() - Timer < 500) assert false;
     }
+
+    @Test
+    public void SetTimeoutTest3() {
+        SetTimeout st = new SetTimeout("Gina", 1200, () -> { assert true; });
+        long Timer = System.currentTimeMillis();
+        assertTimeout(ofMillis(1500), () -> {
+            st.run();
+        });
+
+        if(System.currentTimeMillis() - Timer < 1200) assert false;
+    }
 }
