@@ -59,12 +59,15 @@ public class PlayerBall {
     }
 
     /**
-     * This method updates the color field and the image
+     * This method updates the color field and the image.
      * @param color the color of the ball the user is going to shoot with
      */
-    public void setColorAndImage(String color) {
+    public void setColor(String color) {
         this.color = color;
-        image = new Image("images/" + this.color + " ball.png");
+    }
+
+    public void setImage(Image im) {
+        this.image = im;
     }
 
     /**

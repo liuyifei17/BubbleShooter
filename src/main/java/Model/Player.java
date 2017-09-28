@@ -2,6 +2,7 @@ package Model;
 
 import Utility.Util;
 import View.View;
+import javafx.scene.image.Image;
 
 /**
  * The player class is keeps track of the players attributes.
@@ -20,7 +21,9 @@ public class Player {
         nextBall = new Ball(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)],
                 null, false);
         playerBall = new PlayerBall(View.STAGE_WIDTH / 2, View.TOP_BAR_HEIGHT);
-        playerBall.setColorAndImage(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)]);
+        playerBall.setColor(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)]);
+        playerBall.setImage(new Image(
+                "images/" + playerBall.getColor() + " ball.png"));
         missCounter = 0;
         score = 0;
     }
