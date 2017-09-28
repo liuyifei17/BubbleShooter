@@ -19,8 +19,8 @@ public class Player {
     public Player() {
         nextBall = new Ball(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)],
                 null, false);
-        playerBall = new PlayerBall(View.STAGE_WIDTH / 2, View.TOP_BAR_HEIGHT,
-                Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)]);
+        playerBall = new PlayerBall(View.STAGE_WIDTH / 2, View.TOP_BAR_HEIGHT);
+        playerBall.setColorAndImage(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)]);
         missCounter = 0;
         score = 0;
     }

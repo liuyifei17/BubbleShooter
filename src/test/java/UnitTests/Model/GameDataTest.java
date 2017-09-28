@@ -1,4 +1,4 @@
-package Model;
+package UnitTests.Model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 /**
- * Created by Henks Laptop on 07/09/2017.
+ * This class provides test cases for the GameData class.
  */
 class GameDataTest {
 

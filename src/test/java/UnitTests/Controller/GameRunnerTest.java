@@ -1,14 +1,15 @@
-package Controller;
+package UnitTests.Controller;
 
+import Controller.GridController;
+import Controller.PlayerBallController;
 import org.junit.jupiter.api.Test;
 import View.View;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 /**
- * Created by Henks Laptop on 10/09/2017.
+ * This class provides test cases for the GameRunner class.
  */
 class GameRunnerTest {
     GridController gridController = mock(GridController.class);

@@ -11,7 +11,7 @@ import static org.mockito.Mockito.verify;
 
 
 /**
- * Created by Henks Laptop on 07/09/2017.
+ * This class provides test cases for the Grid class.
  */
 class GridTest {
 
