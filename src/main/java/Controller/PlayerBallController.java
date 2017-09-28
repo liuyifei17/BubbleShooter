@@ -376,6 +376,21 @@ public class PlayerBallController {
         this.mouseY = mouseY;
     }
 
+    /**
+     * This method is the getter for the deltaX field.
+     */
+    public double getDeltaX() {
+        return this.deltaX;
+    }
+
+
+    /**
+     * This method is the getter for the deltaY field.
+     */
+    public double getDeltaY() {
+        return this.deltaY;
+    }
+
 
     /**
      * @param deltaX the X translation of the ball
