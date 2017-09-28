@@ -19,15 +19,24 @@ public class Player {
      * ball.
      */
     public Player() {
+        nextBall = null;
+        playerBall = null;
+        missCounter = 0;
+        score = 0;
+    }
+
+    /**
+     *
+     */
+    public void updatePlayer() {
         nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)), null, false);
+        nextBall.updateBall();
         playerBall = new PlayerBall(GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight);
         playerBall.setColor(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)));
         playerBall.setImage(new Image(
                 "images/" + playerBall.getColor() + " ball.png"));
-        missCounter = 0;
-        score = 0;
     }
 
     /**

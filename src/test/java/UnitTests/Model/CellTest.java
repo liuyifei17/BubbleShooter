@@ -1,10 +1,11 @@
 package UnitTests.Model;
 
+import Model.Ball;
 import Model.Cell;
+import org.assertj.core.api.AssertionsForClassTypes;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -16,62 +17,47 @@ class CellTest {
     private double INITIALX = 4.0;
     private double INITIALY = 3.0;
 
-
-
-    @Test
-    void getElement1() {
-
-    }
-
-    @Test
-    void setElement1() {
-    }
-
-    @Test
-    void getAdjacentCells() {
-    }
-
-    @Test
-    void getInitialX() {
-    }
-
-    @Test
-    void getInitialY() {
-    }
-
-    @Test
-    void getCurrentX() {
-    }
-
-    @Test
-    void setCurrentX() {
-    }
-
-    @Test
-    void getCurrentY() {
-    }
-
-    @Test
-    void setCurrentY() {
-    }
-
-
-
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
         cell = new Cell(INITIALX, INITIALY);
     }
 
-    @org.junit.jupiter.api.Test
-    void getElement() {
 
+    @Test
+    void testElement() {
+        Ball ball = mock(Ball.class);
+        cell.setElement(ball);
+        assertThat(cell.getElement()).isEqualTo(ball);
     }
 
-    @org.junit.jupiter.api.Test
-    void setElement() {
+    @Test
+    void testInitialX() {
+        assertThat(cell.getInitialX()).isEqualTo(INITIALX);
     }
-    
-    @org.junit.jupiter.api.Test
+
+
+    @Test
+    void testInitialY() {
+        assertThat(cell.getInitialY()).isEqualTo(INITIALY);
+    }
+
+    @Test
+    void testCurrentY() {
+        cell.setCurrentY(3);
+        assertThat(cell.getCurrentY()).isEqualTo(3);
+    }
+
+    @Test
+    void testCurrentX() {
+        cell.setCurrentX(3);
+        assertThat(cell.getCurrentY()).isEqualTo(3);
+    }
+
+
+    /**
+     *
+     */
+    @Test
     void getY() {
         assertThat(cell.getCurrentY()).isEqualTo(INITIALY);
     }
@@ -98,4 +84,40 @@ class CellTest {
         assertThat(cell.getAdjacentCells().size()).isEqualTo(4);
     }
 
+    /**
+     * Created by Henks Laptop on 28/09/2017.
+     */
+    static class BallTest {
+
+        Ball ball;
+        String color = "Red";
+        Cell cell = mock(Cell.class);
+        @Test
+        void getColor() {
+            ball = new Ball(color, cell, false);
+            ball.setColor("green");
+            AssertionsForClassTypes.assertThat(ball.getColor()).isEqualTo("green");
+        }
+
+
+        //@Test
+        void colorExists() {
+            ball = new Ball("GREEN", cell, false);
+            AssertionsForClassTypes.assertThat(ball.colorExists(color)).isTrue();
+
+        }
+
+        @Test
+        void isCenterPiece() {
+            ball = new Ball(color, cell, true);
+            AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isTrue();
+        }
+
+        @Test
+        void isNotCenterPiece() {
+            ball = new Ball(color, cell, false);
+            AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isFalse();
+        }
+
+    }
 }
