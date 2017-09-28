@@ -54,7 +54,8 @@ public class GameDataLoader {
         emptyCells.remove(data.getGrid().getCenterCell());
         for (int i = 0; i < data.getInitialBallAmount(); i++) {
             Cell c = emptyCells.get(i);
-            String color = Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)];
+            String color = GameConfiguration.colors.get(Util.randomBetween(0,
+                    GameConfiguration.colors.size() - 1));
             Ball b = new Ball(color, c, false);
             c.setElement(b);
             b.setCell(c);

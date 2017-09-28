@@ -1,5 +1,6 @@
 package UnitTests.Model;
 
+import Controller.GameConfiguration;
 import Controller.PlayerBallController;
 import Model.Cell;
 import Model.Grid;
@@ -19,14 +20,14 @@ public class PlayerBallTest {
 
     @Test
     void hasCollidedWithWallTest_false() {
-        PlayerBall pb = new PlayerBall(PlayerBallController.BALL_RADIUS,View.STAGE_HEIGHT/2);
+        PlayerBall pb = new PlayerBall(GameConfiguration.ballRadius, GameConfiguration.stageWidth/2);
 
         assertThat(pb.hasCollidedWithWall()).isFalse();
     }
 
     @Test
     void hasCollidedWithWallTest_true() {
-       PlayerBall pb = new PlayerBall(View.STAGE_WIDTH,0);
+       PlayerBall pb = new PlayerBall(GameConfiguration.stageWidth,0);
 
         assertThat(pb.hasCollidedWithWall()).isTrue();
     }
