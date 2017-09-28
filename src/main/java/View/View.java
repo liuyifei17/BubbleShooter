@@ -1,5 +1,6 @@
 package View;
 
+import Controller.GameConfiguration;
 import Model.Ball;
 import Model.Cell;
 import Model.GameData;
@@ -19,15 +20,6 @@ import java.util.ArrayList;
  */
 public class View {
 
-    public static final double STAGE_WIDTH = 600;
-    public static final double STAGE_HEIGHT = 700;
-    public static final int TOP_BAR_HEIGHT = 70;
-    private static final int SCORE_BAR_HEIGHT = 40;
-    private static final int SCORE_BAR_WIDTH = 240;
-    private static final int POPUP_WIDTH = 300;
-    private static final int POPUP_HEIGHT = 360;
-    private static final int POPUP_X = 150;
-    private static final int POPUP_Y = 200;
     private GameData data;
     private Pane gamePane;
     private Pane mainMenuPane;
@@ -130,13 +122,13 @@ public class View {
         topBar = new ImageView("images/topBar1.png");
         topBar.relocate(0, 0);
         topBar.fitWidthProperty().bind(gamePane.widthProperty());
-        topBar.setFitHeight(TOP_BAR_HEIGHT);
+        topBar.setFitHeight(GameConfiguration.topBarHeight);
 
         //draw score bar
         scoreBar = new ImageView("images/scoreBar1.png");
         scoreBar.relocate(8, 15);
-        scoreBar.setFitHeight(SCORE_BAR_HEIGHT);
-        scoreBar.setFitWidth(SCORE_BAR_WIDTH);
+        scoreBar.setFitHeight(GameConfiguration.scoreBarHeight);
+        scoreBar.setFitWidth(GameConfiguration.scoreBarWidth);
 
         //draw score text
         scoreBarScore = new Text("Score: 0");
@@ -160,9 +152,9 @@ public class View {
         }
 
         nextBall = new ImageView(data.getPlayer().getNextBall().getSprite());
-        nextBall.relocate(View.STAGE_WIDTH / 2
+        nextBall.relocate(GameConfiguration.stageWidth / 2
                         - data.getPlayer().getNextBall().getSprite().getWidth() / 4,
-                View.TOP_BAR_HEIGHT - 30);
+                GameConfiguration.topBarHeight - 30);
         nextBall.setFitWidth(data.getPlayer().getNextBall().getSprite().getWidth() / 2);
         nextBall.setFitHeight(data.getPlayer().getNextBall().getSprite().getHeight() / 2);
 
@@ -266,10 +258,11 @@ public class View {
     private void createGameOverPopup() {
         //create popup container
         gameOverPopup = new Pane();
-        gameOverPopup.setPrefSize(POPUP_WIDTH, POPUP_HEIGHT);
-        gameOverPopup.relocate(POPUP_X, POPUP_Y);
+        gameOverPopup.setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
+        gameOverPopup.relocate(GameConfiguration.popupX, GameConfiguration.popupY);
         gameOverPopup.setBackground(new Background(new BackgroundImage(
-                new Image("images/gameOverPopupBg.png", POPUP_WIDTH, POPUP_HEIGHT, false, true),
+                new Image("images/gameOverPopupBg.png", GameConfiguration.popupWidth,
+                        GameConfiguration.popupHeight, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 
@@ -278,7 +271,7 @@ public class View {
         gameOverMessage.relocate(0, 20);
         popupScore = new Text("Score: 0");
         popupScore.setFont(Font.font("Arial", 35));
-        popupScore.setWrappingWidth(POPUP_WIDTH);
+        popupScore.setWrappingWidth(GameConfiguration.popupWidth);
         popupScore.setTextAlignment(TextAlignment.CENTER);
         popupScore.setUnderline(true);
         popupScore.relocate(0, 130);
@@ -300,10 +293,11 @@ public class View {
     private void createPausePopup() {
         //create popup container
         pausePopup = new Pane();
-        pausePopup.setPrefSize(POPUP_WIDTH, POPUP_HEIGHT);
-        pausePopup.relocate(POPUP_X, POPUP_Y);
+        pausePopup.setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
+        pausePopup.relocate(GameConfiguration.popupX, GameConfiguration.popupY);
         pausePopup.setBackground(new Background(new BackgroundImage(
-                new Image("images/gameOverPopupBg.png", POPUP_WIDTH, POPUP_HEIGHT, false, true),
+                new Image("images/gameOverPopupBg.png", GameConfiguration.popupWidth,
+                        GameConfiguration.popupHeight, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 
@@ -464,7 +458,6 @@ public class View {
     public ImageView getGamePauseIcon() {
         return gamePauseIcon;
     }
-
 
     /**
      * @return popup close button
