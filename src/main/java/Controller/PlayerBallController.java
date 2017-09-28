@@ -246,8 +246,11 @@ public class PlayerBallController {
         player.getPlayerBall().setColor(player.getNextBall().getColor());
         player.getPlayerBall().setImage(new Image(
                 "images/" + player.getPlayerBall().getColor() + " ball.png"));
-        player.setNextBall(new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, false));
+        Ball ball = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
+                GameConfiguration.colors.size() - 1)), null, false);
+        ball.updateBall();
+        player.setNextBall(ball);
+
         this.setMouseY(0);
         this.setMouseX(0);
         this.setDeltaX(0);
