@@ -53,9 +53,10 @@ public class View {
     private ImageView playerBall;
     private ImageView nextBall;
     private Pane pausePopup;
-    private ImageView popupContinueButton;
+    private ImageView popupRestartButton2;
     private ImageView popupMainMenuButton;
     private ImageView popupExitButton;
+    private ImageView popupCloseButton;
 
     /**
      * @param mainMenuPane sets the main menu pane
@@ -309,18 +310,23 @@ public class View {
         //create graphical elements
         ImageView pauseMessage = new ImageView("images/pauseMessage.png");
         pauseMessage.relocate(0, 20);
-        popupContinueButton = new ImageView("images/restart-icon.png");
-        popupContinueButton.relocate(5, 260);
+        popupRestartButton2 = new ImageView("images/restart-icon.png");
+        popupRestartButton2.relocate(5, 260);
         popupExitButton = new ImageView("images/exit-icon.png");
         popupExitButton.relocate(100, 260);
         popupMainMenuButton = new ImageView("images/home-icon.png");
         popupMainMenuButton.relocate(198, 260);
+        popupCloseButton = new ImageView("images/close-icon.png");
+        popupCloseButton.relocate(260, 8);
+        popupCloseButton.fitWidthProperty().setValue(32);
+        popupCloseButton.fitHeightProperty().setValue(32);
 
         //add graphical elements to popup container
         pausePopup.getChildren().add(pauseMessage);
-        pausePopup.getChildren().add(popupContinueButton);
+        pausePopup.getChildren().add(popupRestartButton2);
         pausePopup.getChildren().add(popupMainMenuButton);
         pausePopup.getChildren().add(popupExitButton);
+        pausePopup.getChildren().add(popupCloseButton);
     }
 
     /**
@@ -427,8 +433,8 @@ public class View {
     /**
      * @return popup continue game button
      */
-    public ImageView getPopupContinueButton() {
-        return popupContinueButton;
+    public ImageView getPopupRestartButton2() {
+        return popupRestartButton2;
     }
 
     /**
@@ -457,6 +463,14 @@ public class View {
      */
     public ImageView getGamePauseIcon() {
         return gamePauseIcon;
+    }
+
+
+    /**
+     * @return popup close button
+     */
+    public ImageView getPopupCloseButton() {
+        return popupCloseButton;
     }
 
     /**
