@@ -1,4 +1,4 @@
-package Model;
+package UnitTests.Model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 class GridTest {
 
 
-    private Grid grid;
+    //private Grid grid;
     private int HEIGHT = 20;
     private int WIDTH = 10;
 //

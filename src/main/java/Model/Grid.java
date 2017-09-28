@@ -2,7 +2,6 @@ package Model;
 
 import Controller.GameConfiguration;
 import Utility.Util;
-import View.View;
 
 import java.util.ArrayList;
 

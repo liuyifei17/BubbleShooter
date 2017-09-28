@@ -1,5 +1,6 @@
 package UnitTests.Model;
 
+import Model.Player;
 import javafx.scene.image.Image;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,6 +14,7 @@ public class PlayerTest {
     void testPlayer() {
         Mockito.mock(Image.class);
 
+        //Player pl = new Player();
     }
 
 }
