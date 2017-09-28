@@ -248,7 +248,9 @@ public class PlayerBallController {
 
         player.setPlayerBall(new PlayerBall(View.STAGE_WIDTH / 2,
                 View.TOP_BAR_HEIGHT));
-        player.getPlayerBall().setColorAndImage(player.getNextBall().getColor());
+        player.getPlayerBall().setColor(player.getNextBall().getColor());
+        player.getPlayerBall().setImage(new Image(
+                "images/" + player.getPlayerBall().getColor() + " ball.png"));
         player.setNextBall(new Ball(Ball.COLORS[Util.randomBetween(0,
                 Ball.COLORS.length - 1)], null, false));
         this.setMouseY(0);
