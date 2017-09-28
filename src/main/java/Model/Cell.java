@@ -1,7 +1,6 @@
 package Model;
 
-import Controller.PlayerBallController;
-import View.View;
+import Controller.GameConfiguration;
 
 import java.util.ArrayList;
 
@@ -10,7 +9,6 @@ import java.util.ArrayList;
  */
 public class Cell {
 
-    public static final double EDGE_CENTER_DISTANCE = 15.0;
     private double initialX;
     private double initialY;
     private double currentX;
@@ -105,10 +103,10 @@ public class Cell {
      * @return checks if a ball has collided with a wall
      */
     public boolean hasCollidedWithWall() {
-        if ((currentX < PlayerBallController.BALL_RADIUS)
-                || (currentX >= View.STAGE_WIDTH)
-                || (currentY < View.TOP_BAR_HEIGHT)
-                || (currentY >= View.STAGE_HEIGHT)) {
+        if ((currentX < GameConfiguration.ballRadius)
+                || (currentX >= GameConfiguration.stageWidth)
+                || (currentY < GameConfiguration.topBarHeight)
+                || (currentY >= GameConfiguration.stageHeight)) {
             return true;
         }
         return false;

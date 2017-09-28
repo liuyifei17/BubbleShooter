@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.GameConfiguration;
 import Utility.Util;
 import View.View;
 import javafx.scene.image.Image;
@@ -18,10 +19,11 @@ public class Player {
      * ball.
      */
     public Player() {
-        nextBall = new Ball(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)],
-                null, false);
-        playerBall = new PlayerBall(View.STAGE_WIDTH / 2, View.TOP_BAR_HEIGHT);
-        playerBall.setColor(Ball.COLORS[Util.randomBetween(0, Ball.COLORS.length - 1)]);
+        nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
+                GameConfiguration.colors.size() - 1)), null, false);
+        playerBall = new PlayerBall(GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight);
+        playerBall.setColor(GameConfiguration.colors.get(Util.randomBetween(0,
+                GameConfiguration.colors.size() - 1)));
         playerBall.setImage(new Image(
                 "images/" + playerBall.getColor() + " ball.png"));
         missCounter = 0;

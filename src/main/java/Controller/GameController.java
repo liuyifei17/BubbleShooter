@@ -59,8 +59,10 @@ public class GameController {
         //Initialize data
         data = new GameData();
         loader = new GameDataLoader();
-        loader.initialize(data, View.STAGE_WIDTH / 2,
-                (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
+        GameConfiguration.setApi();
+        GameConfiguration.isApi();
+        loader.initialize(data, GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
 
         //Initialize controllers
         gridController = new GridController(this, data.getGrid());
@@ -110,8 +112,10 @@ public class GameController {
         view.drawGame();
 
         // Create scenes containing the panes
-        mainMenu = new Scene(mainMenuPane, View.STAGE_WIDTH, View.STAGE_HEIGHT);
-        gameScreen = new Scene(gamePane, View.STAGE_WIDTH, View.STAGE_HEIGHT);
+        mainMenu = new Scene(mainMenuPane, GameConfiguration.stageWidth,
+                GameConfiguration.stageHeight);
+        gameScreen = new Scene(gamePane, GameConfiguration.stageWidth,
+                GameConfiguration.stageHeight);
 
         // Add the scenes to the stage
         primaryStage.setTitle("Bubble Shooter"); // Set the stage title
@@ -126,7 +130,7 @@ public class GameController {
 
         // ball firing event
         gameScreen.setOnMouseReleased(event -> {
-            if (!gamePaused && !(event.getSceneY() < View.TOP_BAR_HEIGHT + 20)
+            if (!gamePaused && !(event.getSceneY() < GameConfiguration.topBarHeight + 20)
                     && (clickDelay + 800) < System.currentTimeMillis()) {
                 playerBallController.setMouseX(event.getSceneX());
                 playerBallController.setMouseY(event.getSceneY());
@@ -240,8 +244,8 @@ public class GameController {
         //reset data
         data = new GameData();
         loader = new GameDataLoader();
-        loader.initialize(data, View.STAGE_WIDTH / 2,
-                (View.STAGE_HEIGHT + View.TOP_BAR_HEIGHT) / 2);
+        loader.initialize(data, GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
         gridController = new GridController(this, data.getGrid());
         playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
 
@@ -250,7 +254,8 @@ public class GameController {
         view.setData(data);
         view.setGamePane(gamePane);
         view.drawGame();
-        gameScreen = new Scene(gamePane, View.STAGE_WIDTH, View.STAGE_HEIGHT);
+        gameScreen = new Scene(gamePane, GameConfiguration.stageWidth,
+                GameConfiguration.stageHeight);
         primaryStage.setScene(gameScreen);
 
         //continue playing the game
