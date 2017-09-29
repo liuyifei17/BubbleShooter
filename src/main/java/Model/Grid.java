@@ -259,4 +259,20 @@ public class Grid {
     public ArrayList<Cell> getOccupiedCells() {
         return this.occupiedCells;
     }
+
+    /**
+     * getter for centerX
+     * @return centerX
+     */
+    public double getCenterX() {
+        return centerX;
+    }
+
+    /**
+     * getter for centerY
+     * @return getter for centerY
+     */
+    public double getCenterY() {
+        return centerY;
+    }
 }
