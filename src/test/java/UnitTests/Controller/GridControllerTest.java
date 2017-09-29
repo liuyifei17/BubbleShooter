@@ -7,12 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 /**
  * GridControllerTest.
  */
-public class GridControllerTest {
+class GridControllerTest {
 
     private GameController gameController = mock(GameController.class);
     private Grid grid = new Grid(300,350);
@@ -40,7 +40,42 @@ public class GridControllerTest {
     }
 
     @Test
-    void progressTest() {
+    void progressTest1() {
+        Grid newGrid = mock(Grid.class);
+        gridController.setGrid(newGrid);
+        gridController.process();
+        verify(newGrid).getRotationDifference();
+    }
+
+    @Test
+    void progressTest2() {
+        Grid newGrid = mock(Grid.class);
+        when(newGrid.getRotationDifference()).thenReturn(1);
+        when(newGrid.getRotationSpeed()).thenReturn(5);
+        gridController.setGrid(newGrid);
+        gridController.process();
+        verify(newGrid).setRotationDifference(-4);
+    }
+
+    @Test
+    void progressTest3() {
+        Grid newGrid = mock(Grid.class);
+        when(newGrid.getRotationDifference()).thenReturn(-1);
+        when(newGrid.getRotationSpeed()).thenReturn(5);
+        gridController.setGrid(newGrid);
+        gridController.process();
+        verify(newGrid).setRotationDifference(4);
+    }
+
+    @Test
+    void progressTest4() {
+        Grid newGrid = mock(Grid.class);
+        when(newGrid.getRotationDifference()).thenReturn(-1);
+        when(newGrid.getRotationSpeed()).thenReturn(5);
+        gridController.setGrid(newGrid);
+        gridController.process();
+        verify(newGrid).setRotationDifference(4);
 
     }
+
 }
