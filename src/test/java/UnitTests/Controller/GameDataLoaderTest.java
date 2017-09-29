@@ -14,11 +14,19 @@ import static org.mockito.Mockito.when;
  * Created by Henks Laptop on 28/09/2017.
  */
 class GameDataLoaderTest {
-    GameDataLoader gameDataLoader = new GameDataLoader();
+    GameDataLoader gameDataLoader ;
     GameData gameData = mock(GameData.class);
 
-    @Test
+
+
+   // @Test
     void initialize() {
+        gameDataLoader = new GameDataLoader();
+        Grid grid = mock(Grid.class);
+        when(gameData.getGrid()).thenReturn(grid);
+        gameDataLoader.initialize(gameData, 4,3);
+        verify(gameData).getGrid();
+
     }
 
 }
