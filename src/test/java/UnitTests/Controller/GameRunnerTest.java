@@ -22,4 +22,13 @@ class GameRunnerTest {
 
     }
 
+    /**
+     * Created by Henks Laptop on 28/09/2017.
+     */
+    static class GameDataLoaderTest {
+        @Test
+        void initialize() {
+        }
+
+    }
 }
