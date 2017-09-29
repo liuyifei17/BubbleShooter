@@ -42,9 +42,13 @@ public class PlayerBallController {
         this.gc = gc;
         this.player = player;
         this.grid = grid;
-        collidedCell = null;
-        counter = 0;
-        stopWatch = 0;
+        this.collidedCell = null;
+        this.counter = 0;
+        this.stopWatch = 0;
+        this.deltaX = 0;
+        this.deltaY = 0;
+        this.mouseX = 0;
+        this.mouseY = 0;
     }
 
     /**
@@ -70,7 +74,7 @@ public class PlayerBallController {
     }
 
     // this method checks after the shot ball has reached the hexagon if any balls should be removed
-    public ArrayList<Cell> checkRemovalBalls() {
+    private ArrayList<Cell> checkRemovalBalls() {
         //initialise an arrayList which will contain all possible removedBalls
         ArrayList<Cell> removalBalls = new ArrayList<Cell>();
         removalBalls.add(collidedCell);
@@ -113,7 +117,7 @@ public class PlayerBallController {
         return removalBalls;
     }
 
-    public boolean fillEmptyCell(int index) {
+    private boolean fillEmptyCell(int index) {
         for (Cell c : grid.getOccupiedCells().get(index).getAdjacentCells()) {
             if (c.getElement().getSprite() == null) {
                 String color = GameConfiguration.colors.get(Util.randomBetween(0,
@@ -132,7 +136,7 @@ public class PlayerBallController {
 
     // this method removes the balls that the method checkRemovalBalls returns and adds the points
     // to the score
-    public void removeBalls(ArrayList<Cell> toRemove) {
+    private void removeBalls(ArrayList<Cell> toRemove) {
         if (toRemove.size() > 2) {
             for (Cell cell : toRemove) {
                 if (cell.getElement() instanceof Ball) {
@@ -153,7 +157,7 @@ public class PlayerBallController {
 
     }
 
-    public ArrayList<Cell> notConnectedBalls() {
+    private ArrayList<Cell> notConnectedBalls() {
         ArrayList<Cell> visited = new ArrayList<>();
         ArrayList<Cell> notConnected = new ArrayList<>();
         Queue<Cell> queue = new LinkedList<>();
@@ -185,7 +189,7 @@ public class PlayerBallController {
     }
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
-    public void appendAdditionalBalls() {
+    private void appendAdditionalBalls() {
         int numberBalls = Util.randomBetween(5, 15);
         int randomIndex;
         ArrayList<Integer> randomIndexes = new ArrayList<Integer>();
@@ -201,7 +205,7 @@ public class PlayerBallController {
     }
 
     // this method takes care of the situation in which the shot ball hits the hexagon
-    public void ballCollisionHandler() {
+    private void ballCollisionHandler() {
         //put ball in cell
         //collidedCell.setElement(new Ball(player.getPlayerBall().getColor(), collidedCell));
 
@@ -211,7 +215,8 @@ public class PlayerBallController {
         if (collidedCell.getElement() instanceof Ball) {
             ((Ball) collidedCell.getElement()).setColor(player.getPlayerBall().getColor());
         }
-        GameController.getView().display(collidedCell);
+
+        if(GameController.getView()!= null) GameController.getView().display(collidedCell);
 
         // check whether the shot ball has hit at least 2 other balls of the same color
 
@@ -235,28 +240,15 @@ public class PlayerBallController {
         calculateRotation();
 
         //nextBall
-        nextBall();
-
-
-    }
-
-    private void nextBall() {
-        player.setPlayerBall(new PlayerBall(GameConfiguration.stageWidth / 2,
-                GameConfiguration.topBarHeight));
-        player.getPlayerBall().setColor(player.getNextBall().getColor());
-        player.getPlayerBall().setImage(new Image(
-                "images/" + player.getPlayerBall().getColor() + " ball.png"));
-        Ball ball = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, false);
-        ball.updateBall();
-        player.setNextBall(ball);
-
+        player.nextBall();
         this.setMouseY(0);
         this.setMouseX(0);
         this.setDeltaX(0);
         this.setDeltaY(0);
         counter = 0;
     }
+
+
 
     /**
      * Launches the ball in the direction of the mouse.
@@ -281,7 +273,12 @@ public class PlayerBallController {
         // the ball
         else if (player.getPlayerBall().getCounter() >= GameConfiguration.maximumTimesBallHit) {
             stopWatch = 0;
-            nextBall();
+            player.nextBall();
+            this.setMouseY(0);
+            this.setMouseX(0);
+            this.setDeltaX(0);
+            this.setDeltaY(0);
+            counter = 0;
         }
 
         // if the ball has collided with the wall the deltaX or deltaY will become negative.
@@ -324,7 +321,7 @@ public class PlayerBallController {
     /**
      * Rotate a certain degree based on the time it takes to hit the grid.
      */
-    public void calculateRotation() {
+    private void calculateRotation() {
         if (directionDeltaX > 0 && directionDeltaY > 0) {
             if (stopWatch < 70) {
                 grid.setRotationDifference(GameConfiguration.rightRotation.get(0));
@@ -349,13 +346,6 @@ public class PlayerBallController {
             }
         }
         stopWatch = 0;
-    }
-
-    /**
-     * @return the X coordinate of the mouse
-     */
-    public double getMouseX() {
-        return mouseX;
     }
 
     /**
@@ -411,15 +401,6 @@ public class PlayerBallController {
     }
 
     /**
-     * This is the setter for the player field.
-     *
-     * @param player the player object that is associated with this controller
-     */
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    /**
      * This is the setter for the grid field.
      *
      * @param grid the grid object that is associated with this controller
@@ -428,4 +409,20 @@ public class PlayerBallController {
         this.grid = grid;
     }
 
+
+    /**
+     * This method is the getter for the stopWatch field.
+     */
+    public double getStopWatch() {
+        return this.stopWatch;
+    }
+
+    /**
+     * This is the setter for the grid field.
+     *
+     * @param stopWatch the integer to replace the value in the stopWatch field
+     */
+    public void setStopWatch(int stopWatch) {
+        this.stopWatch = stopWatch;
+    }
 }

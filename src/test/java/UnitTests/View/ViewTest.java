@@ -1,4 +1,4 @@
-package View;
+package UnitTests.View;
 
 import Model.GameData;
 import javafx.scene.layout.Pane;
@@ -14,7 +14,6 @@ import static org.mockito.Mockito.*;
  */
 class ViewTest {
 
-    private View view;
     private GameData gameData = mock(GameData.class);
     private ImageView topBar = mock(ImageView.class);
 
