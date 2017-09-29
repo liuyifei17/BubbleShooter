@@ -28,6 +28,8 @@ int ballRadius = 15
 int speedup = 5
 int maximumTimesBallHit = 4
 
+bool isColor = true
+
 int leftRotation = [-15, -30, -45]
 int rightRotation = [15, 30, 45]
 string colors = [blue, green, orange, purple, red, yellow]
