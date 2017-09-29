@@ -31,7 +31,7 @@ public class Util {
      */
     public static int randomBetween(int min, int max) {
         if (min > max) {
-            return 1;
+            return 0;
         }
         if (min == max) {
             return min;
