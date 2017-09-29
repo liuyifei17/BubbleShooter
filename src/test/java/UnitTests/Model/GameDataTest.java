@@ -8,21 +8,26 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
- * This class provides test cases for the GameData class
+ * This class provides test cases for the GameData class.
  */
-public class GameDataTest {
+class GameDataTest {
 
 
     private GameData gameData;
 
+    /**
+     * Setup.
+     */
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         gameData = new GameData();
     }
 
+    /**
+     * getGridTEst.
+     */
     @Test
     void getGridTest() {
         Grid grid = mock(Grid.class);
@@ -30,6 +35,9 @@ public class GameDataTest {
         assertThat(gameData.getGrid()).isEqualTo(grid);
     }
 
+    /**
+     * Testing setter.
+     */
     @Test
     void setGrid() {
         Grid grid = mock(Grid.class);
@@ -37,6 +45,9 @@ public class GameDataTest {
         assertThat(gameData.getGrid()).isEqualTo(grid);
     }
 
+    /**
+     * Testing Ball amount.
+     */
     @Test
     void getInitialBallAmount() {
         gameData.setInitialBallAmount(10);
@@ -44,12 +55,18 @@ public class GameDataTest {
 
     }
 
+    /**
+     * Testing setter ball amount.
+     */
     @Test
     void setInitialBallAmount() {
         gameData.setInitialBallAmount(10);
         assertThat(gameData.getInitialBallAmount()).isEqualTo(10);
     }
 
+    /**
+     * testgin player Getter.
+     */
     @Test
     void getPlayer() {
         Player player = mock(Player.class);

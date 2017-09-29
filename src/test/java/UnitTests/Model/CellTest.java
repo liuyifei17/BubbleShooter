@@ -1,9 +1,7 @@
 package UnitTests.Model;
 
-import Controller.GameConfiguration;
 import Model.Ball;
 import Model.Cell;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,15 +13,21 @@ import static org.mockito.Mockito.mock;
  */
 class CellTest {
     private Cell cell;
-    private double INITIALX = 4.0;
-    private double INITIALY = 3.0;
+    private final double INITIALX = 4.0;
+    private final double INITIALY = 3.0;
 
+    /**
+     * setup cell.
+     */
     @BeforeEach
     void setUp() {
         cell = new Cell(INITIALX, INITIALY);
     }
 
 
+    /**
+     * Testing element.
+     */
     @Test
     void testElement() {
         Ball ball = mock(Ball.class);
@@ -31,23 +35,34 @@ class CellTest {
         assertThat(cell.getElement()).isEqualTo(ball);
     }
 
+    /**
+     * Testing initial x value.
+     */
     @Test
     void testInitialX() {
         assertThat(cell.getInitialX()).isEqualTo(INITIALX);
     }
 
-
+    /**
+     * Testing initial Y value.
+     */
     @Test
     void testInitialY() {
         assertThat(cell.getInitialY()).isEqualTo(INITIALY);
     }
 
+    /**
+     * Testing currentY.
+     */
     @Test
     void testCurrentY() {
         cell.setCurrentY(3);
         assertThat(cell.getCurrentY()).isEqualTo(3);
     }
 
+    /**
+     * Testing currentX.
+     */
     @Test
     void testCurrentX() {
         cell.setCurrentX(3);
@@ -56,7 +71,7 @@ class CellTest {
 
 
     /**
-     *
+     *  TEsting Y getter.
      */
     @Test
     void getY() {
@@ -64,19 +79,30 @@ class CellTest {
     }
 
 
+    /**
+     * Testing if Cell is empty.
+     */
     @org.junit.jupiter.api.Test
-    void AdjecentCellsEmpty() {
+    void adjecentCellsEmpty() {
         assertThat(cell.getAdjacentCells().size()).isEqualTo(0);
     }
 
+
+    /**
+     * Testing getting adjecent cells.
+     */
     @org.junit.jupiter.api.Test
-    void AdjecentCellsOtherCell() {
+    void adjecentCellsOtherCell() {
         Cell otherCell = new Cell(INITIALX, INITIALY);
         cell.getAdjacentCells().add(otherCell);
         assertThat(cell.getAdjacentCells().get(0)).isEqualTo(otherCell);
     }
+
+    /**
+     * Testing adjectent cells more than one.
+     */
     @org.junit.jupiter.api.Test
-    void AdjecentCellsFilled() {
+    void adjecentCellsFilled() {
         Cell otherCell = new Cell(INITIALX, INITIALY);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
@@ -85,43 +111,6 @@ class CellTest {
         assertThat(cell.getAdjacentCells().size()).isEqualTo(4);
     }
 
-    /**
-     * Created by Henks Laptop on 28/09/2017.
-     */
-    static class BallTest {
-
-        Ball ball;
-        String color = "Red";
-        Cell cell = mock(Cell.class);
-
-        @Test
-        void getColor() {
-            ball = new Ball(color, cell, false);
-            ball.setColor("green");
-            AssertionsForClassTypes.assertThat(ball.getColor()).isEqualTo("green");
-        }
 
 
-        @Test
-        void colorExists() {
-            GameConfiguration.setApi();
-            GameConfiguration.isApi();
-            ball = new Ball("GREEN", cell, false);
-            AssertionsForClassTypes.assertThat(ball.colorExists(color)).isTrue();
-
-        }
-
-        @Test
-        void isCenterPiece() {
-            ball = new Ball(color, cell, true);
-            AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isTrue();
-        }
-
-        @Test
-        void isNotCenterPiece() {
-            ball = new Ball(color, cell, false);
-            AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isFalse();
-        }
-
-    }
 }

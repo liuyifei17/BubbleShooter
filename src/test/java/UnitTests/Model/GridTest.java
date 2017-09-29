@@ -8,29 +8,39 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by Henks Laptop on 28/09/2017.
+ * Grid Test.
  */
 class GridTest {
-    Grid grid;
-    double Horizontal = 10;
-    double Vertical = 20;
+    private Grid grid;
+    private double Horizontal = 10;
+    private double Vertical = 20;
 
+
+    /**
+     * setup.
+     */
     @BeforeEach
     void setUp() {
         grid = new Grid(Horizontal, Vertical);
     }
 
+
+    /**
+     * Testing closest to location.
+     */
     @Test
     void closestCellToLocation() {
         Cell cell = grid.getCenterCell();
         assertThat(grid.closestCellToLocation(Horizontal, Vertical)).isEqualTo(cell);
     }
 
+    /**
+     * Testing closest empty cell.
+     */
     @Test
     void closestEmptyCellToLocation() {
         Cell someCell = mock(Cell.class);
@@ -42,6 +52,9 @@ class GridTest {
         assertThat(cell.getElement().getSprite()).isNull();
     }
 
+    /**
+     * Testing full cell to location.
+     */
     @Test
     void closestFullCellToLocation() {
         Cell someCell = mock(Cell.class);
@@ -54,22 +67,9 @@ class GridTest {
         assertThat(cell).isNotNull();
     }
 
-    @Test
-    void getCells() {
-    }
-
-    @Test
-    void getCenterCell() {
-    }
-
-    @Test
-    void getRotation() {
-    }
-
-    @Test
-    void setRotation() {
-    }
-
+    /**
+     * Testing rotation difference.
+     */
     @Test
     void getRotationDifference() {
         grid.setRotationDifference(20);
@@ -77,15 +77,13 @@ class GridTest {
     }
 
 
+    /**
+     * Testing rotation Speed.
+     */
     @Test
     void getRotationSpeed() {
         assertThat(grid.getRotationSpeed()).isEqualTo(grid.getRotationSpeed());
     }
 
-    @Test
-    void getOccupiedCells() {
-
-        grid.getOccupiedCells();
-    }
 
 }

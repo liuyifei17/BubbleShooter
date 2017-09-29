@@ -3,6 +3,7 @@ package UnitTests.Controller;
 import Controller.GameDataLoader;
 import Model.GameData;
 import Model.Grid;
+import Model.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,11 +20,13 @@ class GameDataLoaderTest {
 
 
 
-   // @Test
+    //@Test
     void initialize() {
+        Player player = mock(Player.class);
         gameDataLoader = new GameDataLoader();
         Grid grid = mock(Grid.class);
         when(gameData.getGrid()).thenReturn(grid);
+        when(gameData.getPlayer()).thenReturn(player);
         gameDataLoader.initialize(gameData, 4,3);
         verify(gameData).getGrid();
 
