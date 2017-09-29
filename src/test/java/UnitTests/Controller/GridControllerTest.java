@@ -67,15 +67,4 @@ class GridControllerTest {
         verify(newGrid).setRotationDifference(4);
     }
 
-    @Test
-    void progressTest4() {
-        Grid newGrid = mock(Grid.class);
-        when(newGrid.getRotationDifference()).thenReturn(-1);
-        when(newGrid.getRotationSpeed()).thenReturn(5);
-        gridController.setGrid(newGrid);
-        gridController.process();
-        verify(newGrid).setRotationDifference(4);
-
-    }
-
 }

@@ -31,7 +31,8 @@ public class Player {
         nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)), null, false);
         nextBall.updateBall();
-        playerBall = new PlayerBall(GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight);
+        playerBall = new PlayerBall(GameConfiguration.stageWidth / 2,
+                GameConfiguration.topBarHeight);
         playerBall.setColor(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)));
         playerBall.setImage(new Image(
@@ -95,6 +96,21 @@ public class Player {
      */
     public void setMissCounter(int missCounter) {
         this.missCounter = missCounter;
+    }
+
+    /**
+     * This method gives the player new balls.
+     */
+    public void nextBall() {
+        playerBall = new PlayerBall(GameConfiguration.stageWidth / 2,
+                GameConfiguration.topBarHeight);
+        playerBall.setColor(nextBall.getColor());
+        playerBall.setImage(new Image(
+                "images/" + playerBall.getColor() + " ball.png"));
+        Ball ball = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
+                GameConfiguration.colors.size() - 1)), null, false);
+        ball.updateBall();
+        nextBall = ball;
     }
 
 }

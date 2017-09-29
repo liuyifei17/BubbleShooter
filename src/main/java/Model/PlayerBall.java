@@ -65,6 +65,10 @@ public class PlayerBall {
         this.color = color;
     }
 
+    /**
+     * This method is the setter for the Image field.
+     * @param im the image to replace the value stored in the Image field
+     */
     public void setImage(Image im) {
         this.image = im;
     }

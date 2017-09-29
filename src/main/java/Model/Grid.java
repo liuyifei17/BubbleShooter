@@ -261,7 +261,7 @@ public class Grid {
     }
 
     /**
-     * getter for centerX
+     * This is the getter for centerX.
      * @return centerX
      */
     public double getCenterX() {
@@ -269,7 +269,7 @@ public class Grid {
     }
 
     /**
-     * getter for centerY
+     * This is the getter for centerY.
      * @return getter for centerY
      */
     public double getCenterY() {
