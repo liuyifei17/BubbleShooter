@@ -216,7 +216,9 @@ public class PlayerBallController {
             ((Ball) collidedCell.getElement()).setColor(player.getPlayerBall().getColor());
         }
 
-        if(GameController.getView()!= null) GameController.getView().display(collidedCell);
+        if (GameController.getView() != null) {
+            GameController.getView().display(collidedCell);
+        }
 
         // check whether the shot ball has hit at least 2 other balls of the same color
 
@@ -371,6 +373,7 @@ public class PlayerBallController {
 
     /**
      * This method is the getter for the deltaX field.
+     * @return the value stored in the field deltaX
      */
     public double getDeltaX() {
         return this.deltaX;
@@ -379,6 +382,7 @@ public class PlayerBallController {
 
     /**
      * This method is the getter for the deltaY field.
+     * @return the value stored in the field deltaY
      */
     public double getDeltaY() {
         return this.deltaY;
@@ -412,6 +416,7 @@ public class PlayerBallController {
 
     /**
      * This method is the getter for the stopWatch field.
+     * @return the value stored in the field stopWatch
      */
     public double getStopWatch() {
         return this.stopWatch;
