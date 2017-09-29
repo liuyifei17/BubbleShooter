@@ -172,15 +172,19 @@ public class GameController {
         });
 
         //continue playing the game
-        view.getPopupContinueButton().setOnMouseReleased(event -> {
-            clickDelay = System.currentTimeMillis();
-            view.closePausePopup();
-            resumeGame();
+        view.getPopupRestartButton2().setOnMouseReleased(event -> {
+            resetGame();
         });
 
         //continue playing the game
         view.getPopupExitButton().setOnMouseReleased(event -> {
             System.exit(0);
+        });
+
+        view.getPopupCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
+            view.closePausePopup();
+            resumeGame();
         });
 
         //return to main menu
