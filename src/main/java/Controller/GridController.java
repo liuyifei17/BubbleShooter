@@ -14,6 +14,15 @@ public class GridController {
     private GameController gc;
 
     /**
+     * @param gc sets the game controller
+     * @param grid sets the grid
+     */
+    public GridController(GameController gc, Grid grid) {
+        this.gc = gc;
+        this.grid = grid;
+    }
+
+    /**
      * processes the dynamics of the grid based on a timer.
      */
     public void process() {
@@ -46,12 +55,11 @@ public class GridController {
     }
 
     /**
-     * @param gc sets the game controller
-     * @param grid sets the grid
+     *
+     * @return grid
      */
-    public GridController(GameController gc, Grid grid) {
-        this.gc = gc;
-        this.grid = grid;
+    public Grid getGrid() {
+        return grid;
     }
 
     /**
