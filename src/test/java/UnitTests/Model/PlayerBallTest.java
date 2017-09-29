@@ -23,12 +23,18 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class PlayerBallTest {
 
 
+    /**
+     * Setup.
+     */
     @BeforeEach
     void setUp() {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
     }
 
+    /**
+     * Testing ball constructor.
+     */
     @Test
     void testPlayerBallConstructor() {
         PlayerBall pb = new PlayerBall(GameConfiguration.ballRadius, GameConfiguration.stageWidth/2);
@@ -38,6 +44,9 @@ public class PlayerBallTest {
         assertThat(pb.getImage()).isNull();
     }
 
+    /**
+     * Testing color.
+     */
     @Test
     void testPlayerBallSetColorAndImage() {
         PlayerBall pb = new PlayerBall(GameConfiguration.ballRadius, GameConfiguration.stageWidth/2);
@@ -50,6 +59,9 @@ public class PlayerBallTest {
         assertThat(pb.getImage()).isInstanceOf(Image.class);
     }
 
+    /**
+     * Testing coordinates.
+     */
     @Test
     void testSetCoordinates() {
         PlayerBall pb = new PlayerBall(GameConfiguration.ballRadius, GameConfiguration.stageWidth/2);
@@ -61,6 +73,9 @@ public class PlayerBallTest {
                 () -> assertThat(pb.getY()).isEqualTo(8));
     }
 
+    /**
+     * Testing collition.
+     */
     @Test
     void hasCollidedWithWallTest_false() {
         PlayerBall pb = new PlayerBall(GameConfiguration.ballRadius+1, GameConfiguration.stageHeight/2);
@@ -68,19 +83,24 @@ public class PlayerBallTest {
         assertThat(pb.hasCollidedWithWall()).isFalse();
     }
 
+    /**
+     * Testing collision.
+     */
     @Test
     void hasCollidedWithWallTest_true() {
-       PlayerBall pb = new PlayerBall(GameConfiguration.stageWidth,0);
+        PlayerBall pb = new PlayerBall(GameConfiguration.stageWidth, 0);
 
         assertThat(pb.hasCollidedWithWall()).isTrue();
     }
 
-
+    /**
+     * Testing collision.
+     */
     @Test
     void getCollisionTest_close() {
         Grid grid = Mockito.mock(Grid.class);
         PlayerBall pb = new PlayerBall(200, 200);
-        Cell fullCell = new Cell(210,210);
+        Cell fullCell = new Cell(210, 210);
         Cell emptyCell = new Cell(205, 205);
 
         Mockito.when(grid.closestFullCellToLocation(pb.getX(), pb.getY())).thenReturn(fullCell);
@@ -90,11 +110,14 @@ public class PlayerBallTest {
         assertThat(pb.getCellCollision(grid, 1, 1)).isEqualTo(emptyCell);
     }
 
+    /**
+     * Testing collision.
+     */
     @Test
     void getCollisionTest_far() {
         Grid grid = Mockito.mock(Grid.class);
         PlayerBall pb = new PlayerBall(200, 200);
-        Cell fullCell = new Cell(250,250);
+        Cell fullCell = new Cell(250,  250);
         Cell emptyCell = new Cell(300, 300);
 
         Mockito.when(grid.closestFullCellToLocation(pb.getX(), pb.getY())).thenReturn(fullCell);
@@ -106,13 +129,13 @@ public class PlayerBallTest {
     }
 
     /**
-     *
+     *  Testing collision.
      */
     @Test
     void getCollisionTest_forced() {
         Grid grid = Mockito.mock(Grid.class);
         PlayerBall pb = new PlayerBall(200, 200);
-        Cell fullCell = new Cell(200,211);
+        Cell fullCell = new Cell(200, 211);
         Cell emptyCell = new Cell(300, 300);
 
         Mockito.when(grid.closestFullCellToLocation(pb.getX(), pb.getY())).thenReturn(fullCell);
