@@ -1,42 +1,51 @@
 package UnitTests.Model;
 
+import Model.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-
 
 /**
- * This class provides test cases for the Grid class.
+ * Created by Henks Laptop on 28/09/2017.
  */
 class GridTest {
+    Grid grid;
+    double Horizontal = 2;
+    double Vertical = 2;
 
-
-    //private Grid grid;
-    private int HEIGHT = 20;
-    private int WIDTH = 10;
-//
-//    @BeforeEach
-//    private void setUp() {
-//        grid = new Grid(WIDTH, HEIGHT);
-//    }
-
+    @BeforeEach
+    void setUp() {
+        //grid = new Grid(Horizontal, Vertical);
+    }
 
     @Test
-    void getCells() {
+    void closestCellToLocation() {
+    }
+
+    @Test
+    void closestEmptyCellToLocation() {
 
     }
 
     @Test
-    void setRotation() {
+    void closestFullCellToLocation() {
+    }
+
+    @Test
+    void getCells() {
+    }
+
+    @Test
+    void getCenterCell() {
     }
 
     @Test
     void getRotation() {
+    }
+
+    @Test
+    void setRotation() {
     }
 
     @Test
@@ -52,26 +61,7 @@ class GridTest {
     }
 
     @Test
-    void setRotationSpeed() {
-    }
-
-    @Test
     void getOccupiedCells() {
-    }
-//    @Test
-//    void closestCellToLocation() {
-//        assertThat(grid.closestCellToLocation(WIDTH, HEIGHT)).isEqualTo(grid.getCenterCell());
-//    }
-//
-//    @Test
-//    void closestEmptyCellToLocation() {
-//        assertThat(grid.closestEmptyCellToLocation(WIDTH, HEIGHT)).isEqualTo(grid.getCenterCell());
-//    }
-
-
-    @Test
-    void getCenterCell() {
-
     }
 
 }
