@@ -9,6 +9,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.File;
 
 /**
@@ -80,7 +81,7 @@ public class GameController {
         setupView();
 
         //Start running the game
-        runner = new GameRunner(gridController, playerBallController);
+        runner = new GameRunner(gridController, playerBallController, new Timer(5, null));
         runner.runGame();
 
         setMouseControllers();
@@ -259,7 +260,8 @@ public class GameController {
         primaryStage.setScene(gameScreen);
 
         //continue playing the game
-        runner = new GameRunner(gridController, playerBallController);
+
+        runner = new GameRunner(gridController, playerBallController, new Timer(5, null));
         runner.runGame();
         gamePaused = false;
 

@@ -42,9 +42,13 @@ public class PlayerBallController {
         this.gc = gc;
         this.player = player;
         this.grid = grid;
-        collidedCell = null;
-        counter = 0;
-        stopWatch = 0;
+        this.collidedCell = null;
+        this.counter = 0;
+        this.stopWatch = 0;
+        this.deltaX = 0;
+        this.deltaY = 0;
+        this.mouseX = 0;
+        this.mouseY = 0;
     }
 
     /**
@@ -211,7 +215,10 @@ public class PlayerBallController {
         if (collidedCell.getElement() instanceof Ball) {
             ((Ball) collidedCell.getElement()).setColor(player.getPlayerBall().getColor());
         }
-        GameController.getView().display(collidedCell);
+
+        if (GameController.getView() != null) {
+            GameController.getView().display(collidedCell);
+        }
 
         // check whether the shot ball has hit at least 2 other balls of the same color
 
@@ -235,23 +242,15 @@ public class PlayerBallController {
         calculateRotation();
 
         //nextBall
-        nextBall();
-
-
-    }
-
-    private void nextBall() {
-
-        player.setPlayerBall(new PlayerBall(GameConfiguration.stageWidth / 2,
-                GameConfiguration.topBarHeight, player.getNextBall().getColor()));
-        player.setNextBall(new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, false));
+        player.nextBall();
         this.setMouseY(0);
         this.setMouseX(0);
         this.setDeltaX(0);
         this.setDeltaY(0);
         counter = 0;
     }
+
+
 
     /**
      * Launches the ball in the direction of the mouse.
@@ -276,7 +275,12 @@ public class PlayerBallController {
         // the ball
         else if (player.getPlayerBall().getCounter() >= GameConfiguration.maximumTimesBallHit) {
             stopWatch = 0;
-            nextBall();
+            player.nextBall();
+            this.setMouseY(0);
+            this.setMouseX(0);
+            this.setDeltaX(0);
+            this.setDeltaY(0);
+            counter = 0;
         }
 
         // if the ball has collided with the wall the deltaX or deltaY will become negative.
@@ -319,7 +323,7 @@ public class PlayerBallController {
     /**
      * Rotate a certain degree based on the time it takes to hit the grid.
      */
-    public void calculateRotation() {
+    private void calculateRotation() {
         if (directionDeltaX > 0 && directionDeltaY > 0) {
             if (stopWatch < 70) {
                 grid.setRotationDifference(GameConfiguration.rightRotation.get(0));
@@ -347,13 +351,6 @@ public class PlayerBallController {
     }
 
     /**
-     * @return the X coordinate of the mouse
-     */
-    public double getMouseX() {
-        return mouseX;
-    }
-
-    /**
      * @param mouseX set the X coordinate of the mouse
      */
     public void setMouseX(double mouseX) {
@@ -374,6 +371,23 @@ public class PlayerBallController {
         this.mouseY = mouseY;
     }
 
+    /**
+     * This method is the getter for the deltaX field.
+     * @return the value stored in the field deltaX
+     */
+    public double getDeltaX() {
+        return this.deltaX;
+    }
+
+
+    /**
+     * This method is the getter for the deltaY field.
+     * @return the value stored in the field deltaY
+     */
+    public double getDeltaY() {
+        return this.deltaY;
+    }
+
 
     /**
      * @param deltaX the X translation of the ball
@@ -391,15 +405,6 @@ public class PlayerBallController {
     }
 
     /**
-     * This is the setter for the player field.
-     *
-     * @param player the player object that is associated with this controller
-     */
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    /**
      * This is the setter for the grid field.
      *
      * @param grid the grid object that is associated with this controller
@@ -408,4 +413,21 @@ public class PlayerBallController {
         this.grid = grid;
     }
 
+
+    /**
+     * This method is the getter for the stopWatch field.
+     * @return the value stored in the field stopWatch
+     */
+    public double getStopWatch() {
+        return this.stopWatch;
+    }
+
+    /**
+     * This is the setter for the grid field.
+     *
+     * @param stopWatch the integer to replace the value in the stopWatch field
+     */
+    public void setStopWatch(int stopWatch) {
+        this.stopWatch = stopWatch;
+    }
 }

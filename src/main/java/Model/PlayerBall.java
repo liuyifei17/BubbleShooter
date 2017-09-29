@@ -19,11 +19,10 @@ public class PlayerBall {
      *
      * @param x the x coordinate of the ball.
      * @param y the y coordinate of the ball.
-     * @param color the color of the ball the user is going to shoot with
      */
-    public PlayerBall(double x, double y, String color) {
-        this.color = color;
-        image = new Image("images/" + this.color + " ball.png");
+    public PlayerBall(double x, double y) {
+        this.color = null;
+        image = null;
         counter = 0;
         this.x = x;
         this.y = y;
@@ -59,6 +58,22 @@ public class PlayerBall {
     }
 
     /**
+     * This method updates the color field and the image.
+     * @param color the color of the ball the user is going to shoot with
+     */
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    /**
+     * This method is the setter for the Image field.
+     * @param im the image to replace the value stored in the Image field
+     */
+    public void setImage(Image im) {
+        this.image = im;
+    }
+
+    /**
      * @return the current image.
      */
     public Image getImage() {
@@ -70,13 +85,6 @@ public class PlayerBall {
      */
     public int getCounter() {
         return counter;
-    }
-
-    /**
-     * @param counter set the counter to an other number.
-     */
-    public void setCounter(int counter) {
-        this.counter = counter;
     }
 
     /**

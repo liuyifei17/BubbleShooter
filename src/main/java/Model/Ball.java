@@ -20,14 +20,20 @@ public class Ball extends Element {
     public Ball(String color, Cell cell, boolean isCP) {
         super(cell, null);
         this.color = color;
+        this.isCenterPiece = isCP;
+
+    }
+
+    /**
+     * updates ball values.
+     */
+    public void updateBall() {
         if (this.color != null && this.color.equals("center")) {
             super.setImage(new Image("images/center.png"));
         }
         else if (color != null) {
             super.setImage(new Image("images/" + color + " ball.png"));
         }
-        this.isCenterPiece = isCP;
-
     }
 
     /**

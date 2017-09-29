@@ -8,7 +8,7 @@ import javax.swing.Timer;
  */
 public class GameRunner {
 
-    private final Timer timer = new Timer(5, null);
+    private Timer timer;
     private int graphicsDelay;
 
     private GridController gridController;
@@ -55,9 +55,10 @@ public class GameRunner {
      * @param gridController sets the grid controller.
      * @param ballController sets the ball conrollers.
      */
-    public GameRunner(GridController gridController, PlayerBallController ballController) {
+    public GameRunner(GridController gridController, PlayerBallController ballController, Timer timer) {
         this.gridController = gridController;
         this.ballController = ballController;
+        this.timer = timer;
     }
 
     /**
