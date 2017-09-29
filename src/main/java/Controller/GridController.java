@@ -26,7 +26,6 @@ public class GridController {
      * processes the dynamics of the grid based on a timer.
      */
     public void process() {
-        int counter = 0;
         //calculate the rotated cell coordinate values based on rotation change
         if (grid.getRotationDifference() != 0) {
             if (grid.getRotationDifference() > 0) {
