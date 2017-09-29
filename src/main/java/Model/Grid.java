@@ -6,7 +6,7 @@ import Utility.Util;
 import java.util.ArrayList;
 
 /**
- * Created by jur on 9/5/2017.
+ * Grid.
  */
 public class Grid {
 
@@ -18,6 +18,10 @@ public class Grid {
     private int rotationSpeed; //turning speed in degrees per frame
     private double centerX;
     private double centerY;
+    private double edgeToDistance;
+    private double topBarHeight;
+    private double stageWidth;
+    private double  stageHeight;
 
     /**
      * Creates a grid based on the center values of the grid and initializes all grid cells.
@@ -25,13 +29,17 @@ public class Grid {
      * @param y the y coord of the center of the grid.
      */
     public Grid(double x, double y) {
-        cells = new ArrayList<Cell>();
-        occupiedCells = new ArrayList<Cell>();
+        cells = new ArrayList<>();
+        occupiedCells = new ArrayList<>();
         rotation = 180;
         rotationDifference = 0;
         rotationSpeed = 5;
         centerX = x;
         centerY = y;
+        edgeToDistance = GameConfiguration.edgeToDistance;
+        topBarHeight = GameConfiguration.topBarHeight;
+        stageWidth = GameConfiguration.stageWidth;
+        stageHeight = GameConfiguration.stageHeight;
         initializeCells(x, y);
     }
 
@@ -42,6 +50,10 @@ public class Grid {
      * @param y the y coord of the center of the grid.
      */
     private void initializeCells(double x, double y) {
+        edgeToDistance = 15;
+        topBarHeight = 70;
+        stageWidth = 600;
+        stageHeight = 700;
         //set center cell
         centerCell = new Cell(x, y);
         cells.add(centerCell);
@@ -49,13 +61,13 @@ public class Grid {
         //find minimum x coord of grid
         double minimumX = x;
         while (minimumX >= 0) {
-            minimumX -= (GameConfiguration.edgeToDistance * 3.5);
+            minimumX -= (edgeToDistance * 3.5);
         }
 
         //find minimum y coord of grid
         double minimumY = y;
-        while (minimumY >= GameConfiguration.topBarHeight) {
-            minimumY -= (GameConfiguration.edgeToDistance * 2);
+        while (minimumY >= topBarHeight) {
+            minimumY -= (edgeToDistance * 2);
         }
 
         //set first lines of cells
@@ -64,12 +76,11 @@ public class Grid {
         setCellLines(cellX, cellY, x, y, minimumY);
 
         //set second lines of cells
-        minimumX += (GameConfiguration.edgeToDistance * 1.75);
-        minimumY += (GameConfiguration.edgeToDistance);
+        minimumX += (edgeToDistance * 1.75);
+        minimumY += (edgeToDistance);
         cellX = minimumX;
         cellY = minimumY;
         setCellLines(cellX, cellY, x, y, minimumY);
-
         //set adjacent cells
         setAdjacentCells();
     }
@@ -83,17 +94,17 @@ public class Grid {
      * @param minimumY the minimum y coord on the screen that can contain a cell.
      */
     private void setCellLines(double cellX, double cellY, double x, double y, double minimumY) {
-        while (cellX <= GameConfiguration.stageWidth) {
-            while (cellY <= GameConfiguration.stageHeight) {
+        while (cellX <= stageWidth) {
+            while (cellY <= stageHeight) {
                 Cell c = new Cell(cellX, cellY);
                 cells.add(c);
-                cellY += (GameConfiguration.edgeToDistance * 2);
+                cellY += (edgeToDistance * 2);
                 if (cellX == x && cellY == y) {
-                    cellY += (GameConfiguration.edgeToDistance * 2);
+                    cellY += (edgeToDistance * 2);
                 }
             }
             cellY = minimumY;
-            cellX += (GameConfiguration.edgeToDistance * 3.5);
+            cellX += (edgeToDistance * 3.5);
         }
     }
 
@@ -105,9 +116,9 @@ public class Grid {
         for (Cell c1 : cells) {
             for (Cell c2 : cells) {
                 if (Math.abs(c1.getCurrentX()
-                        - c2.getCurrentX()) < GameConfiguration.edgeToDistance * 3
+                        - c2.getCurrentX()) < edgeToDistance * 3
                         && Math.abs(c1.getCurrentY()
-                        - c2.getCurrentY()) < GameConfiguration.edgeToDistance * 3) {
+                        - c2.getCurrentY()) < edgeToDistance * 3) {
                     if (!c1.equals(c2)) {
                         c1.getAdjacentCells().add(c2);
                     }
@@ -117,9 +128,9 @@ public class Grid {
 
         for (Cell c2 : cells) {
             if (Math.abs(centerCell.getCurrentX()
-                    - c2.getCurrentX()) < GameConfiguration.edgeToDistance * 3
+                    - c2.getCurrentX()) < edgeToDistance * 3
                     && Math.abs(centerCell.getCurrentY()
-                    - c2.getCurrentY()) < GameConfiguration.edgeToDistance * 3) {
+                    - c2.getCurrentY()) < edgeToDistance * 3) {
                 if (!centerCell.equals(c2) && !centerCell.getAdjacentCells().contains(c2)) {
                     centerCell.getAdjacentCells().add(c2);
                 }
