@@ -148,7 +148,7 @@ public class Grid {
         Cell closestCell = centerCell;
         for (Cell c : cells) {
             if (Util.getDistance(c.getInitialX(), c.getInitialY(), locX, locY)
-                    <= Util.getDistance(closestCell.getInitialX(),
+                    < Util.getDistance(closestCell.getInitialX(),
                     closestCell.getInitialY(), locX, locY)) {
                 closestCell = c;
             }
