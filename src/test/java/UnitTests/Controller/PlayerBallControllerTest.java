@@ -6,6 +6,7 @@ import Controller.PlayerBallController;
 import Model.Grid;
 import Model.Player;
 import Model.PlayerBall;
+import javafx.scene.image.Image;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,6 +75,18 @@ public class PlayerBallControllerTest {
 
         assertThat(pbc.getDeltaX()).isBetween(3.534, 3.536);
         assertThat(pbc.getDeltaY()).isBetween(3.534, 3.536);
+    }
+
+    @Test
+    void launchBallTest1() {
+        gameController = new GameController(null);
+        grid = new Grid(GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        player = new Player();
+        pbc = new PlayerBallController(gameController, player, grid);
+
+        pbc.launchBall();
+
     }
 
 

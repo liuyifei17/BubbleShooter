@@ -70,7 +70,7 @@ public class PlayerBallController {
     }
 
     // this method checks after the shot ball has reached the hexagon if any balls should be removed
-    private ArrayList<Cell> checkRemovalBalls() {
+    public ArrayList<Cell> checkRemovalBalls() {
         //initialise an arrayList which will contain all possible removedBalls
         ArrayList<Cell> removalBalls = new ArrayList<Cell>();
         removalBalls.add(collidedCell);
@@ -113,7 +113,7 @@ public class PlayerBallController {
         return removalBalls;
     }
 
-    private boolean fillEmptyCell(int index) {
+    public boolean fillEmptyCell(int index) {
         for (Cell c : grid.getOccupiedCells().get(index).getAdjacentCells()) {
             if (c.getElement().getSprite() == null) {
                 String color = GameConfiguration.colors.get(Util.randomBetween(0,
@@ -132,7 +132,7 @@ public class PlayerBallController {
 
     // this method removes the balls that the method checkRemovalBalls returns and adds the points
     // to the score
-    private void removeBalls(ArrayList<Cell> toRemove) {
+    public void removeBalls(ArrayList<Cell> toRemove) {
         if (toRemove.size() > 2) {
             for (Cell cell : toRemove) {
                 if (cell.getElement() instanceof Ball) {
@@ -153,7 +153,7 @@ public class PlayerBallController {
 
     }
 
-    private ArrayList<Cell> notConnectedBalls() {
+    public ArrayList<Cell> notConnectedBalls() {
         ArrayList<Cell> visited = new ArrayList<>();
         ArrayList<Cell> notConnected = new ArrayList<>();
         Queue<Cell> queue = new LinkedList<>();
@@ -185,7 +185,7 @@ public class PlayerBallController {
     }
 
     // this method adds balls to the hexagon every time the player misses more than 6 times
-    private void appendAdditionalBalls() {
+    public void appendAdditionalBalls() {
         int numberBalls = Util.randomBetween(5, 15);
         int randomIndex;
         ArrayList<Integer> randomIndexes = new ArrayList<Integer>();
@@ -201,7 +201,7 @@ public class PlayerBallController {
     }
 
     // this method takes care of the situation in which the shot ball hits the hexagon
-    private void ballCollisionHandler() {
+    public void ballCollisionHandler() {
         //put ball in cell
         //collidedCell.setElement(new Ball(player.getPlayerBall().getColor(), collidedCell));
 
@@ -246,8 +246,11 @@ public class PlayerBallController {
         player.getPlayerBall().setColor(player.getNextBall().getColor());
         player.getPlayerBall().setImage(new Image(
                 "images/" + player.getPlayerBall().getColor() + " ball.png"));
-        player.setNextBall(new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, false));
+        Ball ball = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
+                GameConfiguration.colors.size() - 1)), null, false);
+        ball.updateBall();
+        player.setNextBall(ball);
+
         this.setMouseY(0);
         this.setMouseX(0);
         this.setDeltaX(0);

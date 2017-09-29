@@ -1,54 +1,63 @@
-package Model;
+package UnitTests.Model;
 
+import Model.GameData;
+import Model.Grid;
+import Model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * This class provides test cases for the GameData class
  */
-class GameDataTest {
+public class GameDataTest {
 
 
-/*    private GameData gameData;
+    private GameData gameData;
 
     @BeforeEach
     public void setUp() {
         gameData = new GameData();
     }
-    @Test
-    private void getScore() {
-        gameData.setScore(20);
-        assertThat(gameData.getScore()).isEqualTo(20);
-    }
 
     @Test
-    private void setScore() {
-        gameData.setScore(20);
-        assertThat(gameData.getScore()).isEqualTo(20);
-
-    }
-
-    @Test
-    private void getGrid() {
+    void getGridTest() {
         Grid grid = mock(Grid.class);
         gameData.setGrid(grid);
         assertThat(gameData.getGrid()).isEqualTo(grid);
     }
 
     @Test
-    private void setGrid() {
+    void setGrid() {
         Grid grid = mock(Grid.class);
         gameData.setGrid(grid);
         assertThat(gameData.getGrid()).isEqualTo(grid);
     }
 
     @Test
-    private void getInitialBallAmount() {
-        gameData.setInitialBallAmount(20);
-        assertThat(gameData.getInitialBallAmount()).isEqualTo(20);
-    }*/
+    void getInitialBallAmount() {
+        gameData.setInitialBallAmount(10);
+        assertThat(gameData.getInitialBallAmount()).isEqualTo(10);
+
+    }
+
+    @Test
+    void setInitialBallAmount() {
+        gameData.setInitialBallAmount(10);
+        assertThat(gameData.getInitialBallAmount()).isEqualTo(10);
+    }
+
+    @Test
+    void getPlayer() {
+        Player player = mock(Player.class);
+        gameData.setPlayer(player);
+        assertThat(gameData.getPlayer()).isEqualTo(player);
+    }
+
+
+
 
 }

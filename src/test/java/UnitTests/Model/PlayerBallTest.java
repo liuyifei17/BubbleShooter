@@ -105,6 +105,9 @@ public class PlayerBallTest {
         assertThat(pb.getCellCollision(grid, 1, 1)).isEqualTo(null);
     }
 
+    /**
+     *
+     */
     @Test
     void getCollisionTest_forced() {
         Grid grid = Mockito.mock(Grid.class);
