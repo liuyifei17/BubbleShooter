@@ -28,6 +28,7 @@ public class GameConfiguration {
     public static List<Integer> leftRotation;
     public static List<Integer> rightRotation;
     public static List<String> colors;
+    public static boolean isColor;
 
     /**
      * Intialize the api by reading the file.
@@ -61,6 +62,7 @@ public class GameConfiguration {
             leftRotation = api.getListIntValueOf("leftRotation");
             colors = api.getListStringValueOf("colors");
             edgeToDistance = api.getRealValueOf("edgeToDistance");
+            isColor = api.getBooleanValueOf("isColor");
         } catch (NotExistingVariableException e) {
             e.printStackTrace();
         }

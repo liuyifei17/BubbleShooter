@@ -59,7 +59,7 @@ public class Ball extends Element {
      */
     public static boolean colorExists(String color) {
         for (String s : GameConfiguration.colors) {
-            if (s.equalsIgnoreCase(color)) {
+            if (s.equalsIgnoreCase(color) && GameConfiguration.isColor) {
                 return true;
             }
         }
