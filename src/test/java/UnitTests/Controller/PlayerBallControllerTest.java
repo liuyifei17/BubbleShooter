@@ -3,10 +3,10 @@ package UnitTests.Controller;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Controller.PlayerBallController;
+import Model.Cell;
 import Model.Grid;
 import Model.Player;
 import Model.PlayerBall;
-import javafx.scene.image.Image;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +23,7 @@ public class PlayerBallControllerTest {
     Player player;
     GameController gameController;
     PlayerBallController pbc;
+    PlayerBall playerBall;
 
     @BeforeEach
     void setUp() {
@@ -78,16 +79,18 @@ public class PlayerBallControllerTest {
     }
 
     @Test
-    void launchBallTest1() {
+    void launchBallTest_invalidClick() {
         gameController = new GameController(null);
         grid = new Grid(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
         player = new Player();
+        playerBall = new PlayerBall(100, 100);
+        player.setPlayerBall(playerBall);
         pbc = new PlayerBallController(gameController, player, grid);
 
         pbc.launchBall();
 
+        assertThat(pbc.getStopWatch()).isEqualTo(0);
     }
-
 
 }

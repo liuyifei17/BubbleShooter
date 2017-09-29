@@ -97,4 +97,16 @@ public class Player {
         this.missCounter = missCounter;
     }
 
+    public void nextBall() {
+        playerBall = new PlayerBall(GameConfiguration.stageWidth / 2,
+                GameConfiguration.topBarHeight);
+        playerBall.setColor(nextBall.getColor());
+        playerBall.setImage(new Image(
+                "images/" + playerBall.getColor() + " ball.png"));
+        Ball ball = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
+                GameConfiguration.colors.size() - 1)), null, false);
+        ball.updateBall();
+        nextBall = ball;
+    }
+
 }

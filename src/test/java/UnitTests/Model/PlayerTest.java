@@ -40,13 +40,6 @@ public class PlayerTest {
     }
 
     @Test
-    void testNextBall() {
-        Ball ball = mock(Ball.class);
-        player.setNextBall(ball);
-        assertThat(player.getNextBall()).isEqualTo(ball);
-    }
-
-    @Test
     void testMissCounter() {
         player.setMissCounter(2);
         assertThat(player.getMissCounter()).isEqualTo(2);
