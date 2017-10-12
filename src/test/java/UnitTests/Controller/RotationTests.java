@@ -7,6 +7,7 @@ import Model.Cell;
 import Model.Grid;
 import Model.Player;
 import Model.PlayerBall;
+import View.View;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -21,6 +22,7 @@ public class RotationTests {
     private Grid grid;
     private Player player;
     private GameController gameController;
+    private View view;
     private PlayerBallController pbc;
     private PlayerBall playerBall;
 
@@ -29,17 +31,17 @@ public class RotationTests {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
 
-        gameController = Mockito.mock(GameController.class);
         grid = new Grid(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
         player = Mockito.mock(Player.class);
         playerBall = Mockito.mock(PlayerBall.class);
+        view = Mockito.mock(View.class);
+        GameController.setView(view);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
         pbc = new PlayerBallController(gameController, player, grid);
-
     }
 
-    /*@Test
+    @Test
     void launchBallTest_normalCollision_noRotation() {
         gameController = Mockito.mock(GameController.class);
         grid = new Grid(GameConfiguration.stageWidth / 2,
@@ -159,5 +161,5 @@ public class RotationTests {
 
         assertThat(grid.getRotationDifference())
                 .isEqualTo(GameConfiguration.leftRotation.get(2));
-    }*/
+    }
 }
