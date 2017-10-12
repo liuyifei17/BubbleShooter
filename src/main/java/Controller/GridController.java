@@ -1,6 +1,5 @@
 package Controller;
 
-import Model.Ball;
 import Model.Cell;
 import Model.Grid;
 import Utility.Util;
@@ -43,8 +42,7 @@ public class GridController {
                 c.setCurrentX(newCoords[0]);
                 c.setCurrentY(newCoords[1]);
 
-                if (c.getElement() instanceof Ball && !((Ball) c.getElement()).isCenterPiece()
-                        && c.getElement().getSprite() != null) {
+                if (c.getBall() != null && c.getBall().isCenterPiece()) {
                     if (c.hasCollidedWithWall()) {
                         gc.gameOver();
                     }

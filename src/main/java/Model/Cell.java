@@ -13,7 +13,7 @@ public class Cell {
     private double initialY;
     private double currentX;
     private double currentY;
-    private Element element;
+    private Ball ball;
     private ArrayList<Cell> adjacentCells;
 
     /**
@@ -25,25 +25,23 @@ public class Cell {
         initialY = y;
         currentX = x;
         currentY = y;
-        element = new Ball(null, null, false);
-        ((Ball) element).updateBall();
-        element.setCell(this);
+        ball = null;
         adjacentCells = new ArrayList<Cell>();
     }
 
     /**
-     * Getter for the element field.
-     * @return the element that is associated with this cell
+     * Getter for the ball field.
+     * @return the ball that is associated with this cell
      */
-    public Element getElement() {
-        return element;
+    public Ball getBall() {
+        return this.ball;
     }
 
     /**
-     * @param element sets the element
+     * @param ball sets the element
      */
-    public void setElement(Element element) {
-        this.element = element;
+    public void setBall(Ball ball) {
+        this.ball = ball;
     }
 
     /**

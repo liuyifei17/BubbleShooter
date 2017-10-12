@@ -2,7 +2,6 @@ package Model;
 
 import Controller.GameConfiguration;
 import Utility.Util;
-import javafx.scene.image.Image;
 
 /**
  * The player class is keeps track of the players attributes.
@@ -18,25 +17,12 @@ public class Player {
      * ball.
      */
     public Player() {
-        nextBall = null;
-        playerBall = null;
-        missCounter = 0;
-        score = 0;
-    }
-
-    /**
-     *
-     */
-    public void updatePlayer() {
         nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)), null, false);
-        nextBall.updateBall();
-        playerBall = new PlayerBall(GameConfiguration.stageWidth / 2,
-                GameConfiguration.topBarHeight);
-        playerBall.setColor(GameConfiguration.colors.get(Util.randomBetween(0,
+        playerBall = new PlayerBall(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)));
-        playerBall.setImage(new Image(
-                "images/" + playerBall.getColor() + " ball.png"));
+        missCounter = 0;
+        score = 0;
     }
 
     /**
@@ -102,15 +88,9 @@ public class Player {
      * This method gives the player new balls.
      */
     public void nextBall() {
-        playerBall = new PlayerBall(GameConfiguration.stageWidth / 2,
-                GameConfiguration.topBarHeight);
-        playerBall.setColor(nextBall.getColor());
-        playerBall.setImage(new Image(
-                "images/" + playerBall.getColor() + " ball.png"));
-        Ball ball = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
+        playerBall = new PlayerBall(nextBall.getColor());
+        nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)), null, false);
-        ball.updateBall();
-        nextBall = ball;
     }
 
 }

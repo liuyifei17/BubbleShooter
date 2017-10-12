@@ -10,7 +10,7 @@ import Utility.Util;
 import java.util.ArrayList;
 
 /**
- * Created by jur on 9/5/2017.
+ * This class splits the class into cells and creates the grid.
  */
 public class GameDataLoader {
 
@@ -27,7 +27,6 @@ public class GameDataLoader {
         data.setInitialBallAmount(90);
         data.setGrid(new Grid(centerX, centerY));
         data.setPlayer(new Player());
-        data.getPlayer().updatePlayer();
         loadElements();
     }
 
@@ -38,8 +37,7 @@ public class GameDataLoader {
     private void loadElements() {
         //create the centerpiece
         Ball center = new Ball("center", data.getGrid().getCenterCell(), true);
-        center.updateBall();
-        data.getGrid().getCenterCell().setElement(center);
+        data.getGrid().getCenterCell().setBall(center);
 
         //add an x amount of random colored balls to start
         ArrayList<Cell> emptyCells = new ArrayList<Cell>();
@@ -59,9 +57,7 @@ public class GameDataLoader {
             String color = GameConfiguration.colors.get(Util.randomBetween(0,
                     GameConfiguration.colors.size() - 1));
             Ball b = new Ball(color, c, false);
-            b.updateBall();
-            c.setElement(b);
-            b.setCell(c);
+            c.setBall(b);
         }
 
         data.getGrid().getOccupiedCells().add(data.getGrid().getCenterCell());
