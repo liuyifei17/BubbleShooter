@@ -2,27 +2,37 @@ package Model;
 
 import Controller.GameConfiguration;
 import Utility.Util;
-import javafx.scene.image.Image;
 
 /**
  * PlayerBall is the ball with which the player shoots.
  */
 public class PlayerBall {
-    private Image image;
     private String color;
     private double x;
     private double y;
     private int counter;
 
+
     /**
      * Initiate a ball with a random image.
-     *
+     * @param color the random selected color of the ball;
+     */
+    public PlayerBall(String color) {
+        this.color = color;
+        counter = 0;
+        this.x = GameConfiguration.stageWidth / 2;
+        this.y = GameConfiguration.topBarHeight;
+
+    }
+
+    /**
+     * Initiate a ball with a random image.
+     * @param color the random selected color of the ball;
      * @param x the x coordinate of the ball.
      * @param y the y coordinate of the ball.
      */
-    public PlayerBall(double x, double y) {
-        this.color = null;
-        image = null;
+    public PlayerBall(String color, double x, double y) {
+        this.color = color;
         counter = 0;
         this.x = x;
         this.y = y;
@@ -63,21 +73,6 @@ public class PlayerBall {
      */
     public void setColor(String color) {
         this.color = color;
-    }
-
-    /**
-     * This method is the setter for the Image field.
-     * @param im the image to replace the value stored in the Image field
-     */
-    public void setImage(Image im) {
-        this.image = im;
-    }
-
-    /**
-     * @return the current image.
-     */
-    public Image getImage() {
-        return image;
     }
 
     /**
