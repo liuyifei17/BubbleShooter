@@ -1,5 +1,6 @@
 package UnitTests.Model;
 
+import Controller.GameConfiguration;
 import Model.Ball;
 import Model.Cell;
 import Model.Grid;
@@ -12,79 +13,54 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by Henks Laptop on 28/09/2017.
+ * This class provides test cases for the Grid class.
  */
 class GridTest {
-    Grid grid;
-    double Horizontal = 10;
-    double Vertical = 20;
+    private Grid grid;
 
     @BeforeEach
     void setUp() {
-        grid = new Grid(Horizontal, Vertical);
+        GameConfiguration.setApi();
+        GameConfiguration.isApi();
+        grid = new Grid(GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+    }
+
+    @Test
+    void testConstructor() {
+        assertThat(grid.getCells()).isNotNull();
+        assertThat(grid.getOccupiedCells()).isNotNull();
+        assertThat(grid.getCenterX()).isEqualTo(GameConfiguration.stageWidth / 2);
+        assertThat(grid.getCenterY()).isEqualTo((GameConfiguration.stageHeight
+                + GameConfiguration.topBarHeight) / 2);
+    }
+
+    @Test
+    void testConstructor_rotation() {
+        assertThat(grid.getRotationDifference()).isEqualTo(0);
+        assertThat(grid.getRotationSpeed()).isEqualTo(5);
+        assertThat(grid.getRotation()).isEqualTo(180);
+    }
+
+    @Test
+    void setRotationDifferenceTest() {
+        grid.setRotationDifference(100);
+
+        assertThat(grid.getRotationDifference()).isEqualTo(100);
+    }
+
+    @Test
+    void setRotation() {
+        grid.setRotation(100);
+
+        assertThat(grid.getRotation()).isEqualTo(100);
     }
 
     @Test
     void closestCellToLocation() {
         Cell cell = grid.getCenterCell();
-        assertThat(grid.closestCellToLocation(Horizontal, Vertical)).isEqualTo(cell);
+        assertThat(grid.closestEmptyCellToLocation(GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2))
+                .isEqualTo(cell);
     }
-
-    /*@Test
-    void closestEmptyCellToLocation() {
-        Cell someCell = mock(Cell.class);
-        Ball someElement = mock(Ball.class);
-        when(someCell.getBall()).thenReturn(someElement);
-        //when(someElement.getSprite()).thenReturn(null);
-        Cell cell = grid.closestEmptyCellToLocation(Horizontal, Horizontal);
-
-        assertThat(cell.getElement().getSprite()).isNull();
-    }
-
-    @Test
-    void closestFullCellToLocation() {
-        Cell someCell = mock(Cell.class);
-        Element someElement = mock(Element.class);
-        when(someCell.getElement()).thenReturn(someElement);
-        when(someElement.getSprite()).thenReturn(mock(Image.class));
-
-        grid.getCells().add(someCell);
-        Cell cell = grid.closestFullCellToLocation(Horizontal, Vertical);
-        assertThat(cell).isNotNull();
-    }*/
-
-    @Test
-    void getCells() {
-    }
-
-    @Test
-    void getCenterCell() {
-    }
-
-    @Test
-    void getRotation() {
-    }
-
-    @Test
-    void setRotation() {
-    }
-
-    @Test
-    void getRotationDifference() {
-        grid.setRotationDifference(20);
-        assertThat(grid.getRotationDifference()).isEqualTo(20);
-    }
-
-
-    @Test
-    void getRotationSpeed() {
-        assertThat(grid.getRotationSpeed()).isEqualTo(grid.getRotationSpeed());
-    }
-
-    @Test
-    void getOccupiedCells() {
-
-        grid.getOccupiedCells();
-    }
-
 }
