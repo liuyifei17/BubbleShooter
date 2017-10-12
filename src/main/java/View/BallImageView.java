@@ -11,15 +11,17 @@ import javafx.scene.image.ImageView;
 public class BallImageView extends ImageView {
 
     private Cell cell;
+    private boolean isPlus1Icon;
 
     /**
      * This creates a new instance of this class.
      * @param im the image
      * @param c the cell that is associated with the image
      */
-    public BallImageView(Image im, Cell c) {
+    public BallImageView(Image im, Cell c, boolean isPlus1Icon) {
         super(im);
         this.cell = c;
+        this.isPlus1Icon = isPlus1Icon;
     }
 
     /**
@@ -28,5 +30,12 @@ public class BallImageView extends ImageView {
      */
     public Cell getCell() {
         return this.cell;
+    }
+
+    /**
+     * @return true or false whether the BallImageView is a plus 1 icon
+     */
+    public boolean isPlus1Icon() {
+        return this.isPlus1Icon;
     }
 }
