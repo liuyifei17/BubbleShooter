@@ -3,7 +3,6 @@ package UnitTests.Model;
 import Controller.GameConfiguration;
 import Model.Ball;
 import Model.Cell;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +19,8 @@ class CellTest {
 
     @BeforeEach
     void setUp() {
+        GameConfiguration.setApi();
+        GameConfiguration.isApi();
         cell = new Cell(initialX, initialY);
     }
 
@@ -54,34 +55,44 @@ class CellTest {
         assertThat(cell.getCurrentY()).isEqualTo(3);
     }
 
-
-    /**
-     *
-     */
     @Test
     void getY() {
         assertThat(cell.getCurrentY()).isEqualTo(initialY);
     }
 
 
-    @org.junit.jupiter.api.Test
-    void AdjecentCellsEmpty() {
+    @Test
+    void ddjecentCellsEmpty() {
         assertThat(cell.getAdjacentCells().size()).isEqualTo(0);
     }
 
-    @org.junit.jupiter.api.Test
-    void AdjecentCellsOtherCell() {
+    @Test
+    void adjecentCellsOtherCell() {
         Cell otherCell = new Cell(initialX, initialY);
         cell.getAdjacentCells().add(otherCell);
         assertThat(cell.getAdjacentCells().get(0)).isEqualTo(otherCell);
     }
-    @org.junit.jupiter.api.Test
-    void AdjecentCellsFilled() {
+
+    @Test
+    void adjecentCellsFilled() {
         Cell otherCell = new Cell(initialX, initialY);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
         assertThat(cell.getAdjacentCells().size()).isEqualTo(4);
+    }
+
+    @Test
+    void hasCollidedWithWallTest_true() {
+        assertThat(cell.hasCollidedWithWall()).isTrue();
+    }
+
+    @Test
+    void hasCollidedWithWallTest_false() {
+        cell.setCurrentX(GameConfiguration.stageWidth / 2);
+        cell.setCurrentY(
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        assertThat(cell.hasCollidedWithWall()).isFalse();
     }
 }

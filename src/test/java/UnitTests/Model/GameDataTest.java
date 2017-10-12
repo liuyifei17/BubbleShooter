@@ -56,8 +56,4 @@ public class GameDataTest {
         gameData.setPlayer(player);
         assertThat(gameData.getPlayer()).isEqualTo(player);
     }
-
-
-
-
 }
