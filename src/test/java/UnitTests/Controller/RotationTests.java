@@ -39,7 +39,7 @@ public class RotationTests {
 
     }
 
-    @Test
+    /*@Test
     void launchBallTest_normalCollision_noRotation() {
         gameController = Mockito.mock(GameController.class);
         grid = new Grid(GameConfiguration.stageWidth / 2,
@@ -159,5 +159,5 @@ public class RotationTests {
 
         assertThat(grid.getRotationDifference())
                 .isEqualTo(GameConfiguration.leftRotation.get(2));
-    }
+    }*/
 }

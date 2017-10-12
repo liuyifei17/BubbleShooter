@@ -54,8 +54,10 @@ public class GameRunner {
     /**
      * @param gridController sets the grid controller.
      * @param ballController sets the ball conrollers.
+     * @param timer a timer
      */
-    public GameRunner(GridController gridController, PlayerBallController ballController, Timer timer) {
+    public GameRunner(GridController gridController, PlayerBallController ballController,
+                      Timer timer) {
         this.gridController = gridController;
         this.ballController = ballController;
         this.timer = timer;

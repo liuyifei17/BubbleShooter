@@ -27,8 +27,8 @@ class CellTest {
     @Test
     void testElement() {
         Ball ball = mock(Ball.class);
-        cell.setElement(ball);
-        assertThat(cell.getElement()).isEqualTo(ball);
+        cell.setBall(ball);
+        assertThat(cell.getBall()).isEqualTo(ball);
     }
 
     @Test
