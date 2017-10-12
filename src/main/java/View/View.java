@@ -191,8 +191,6 @@ public class View {
      */
     public void redraw() {
         Platform.runLater(() -> {
-            //check for changed cells and update children
-            ArrayList<Cell> cells = data.getGrid().getOccupiedCells();
 
             //relocate elements
             for (Node node : gamePane.getChildren()) {
@@ -200,7 +198,9 @@ public class View {
                     BallImageView biv = (BallImageView) node;
                     biv.relocate(getScreenX(biv.getCell(), biv.getImage()),
                             getScreenY(biv.getCell(), biv.getImage()));
-                    biv.rotateProperty().setValue(data.getGrid().getRotation());
+                    if (!biv.isPlus1Icon()) {
+                        biv.rotateProperty().setValue(data.getGrid().getRotation());
+                    }
                 }
             }
 
@@ -241,7 +241,7 @@ public class View {
      */
     public void displayPlus1(Cell c) {
         Platform.runLater(() -> {
-            ImageView plusOne = new ImageView(new Image("images/plus1.png"));
+            BallImageView plusOne = new BallImageView(new Image("images/plus1.png"), c, true);
             plusOne.relocate(c.getCurrentX(), c.getCurrentY());
 
             gamePane.getChildren().add(plusOne);
@@ -262,9 +262,9 @@ public class View {
                 String color = c.getBall().getColor();
                 BallImageView biv;
                 if (color != null && color.equals("center")) {
-                    biv = new BallImageView(new Image("images/center.png"), c);
+                    biv = new BallImageView(new Image("images/center.png"), c, false);
                 } else {
-                    biv = new BallImageView(new Image("images/" + color + " ball.png"), c);
+                    biv = new BallImageView(new Image("images/" + color + " ball.png"), c, false);
                 }
                 gamePane.getChildren().add(biv);
                 biv.relocate(getScreenX(c, biv.getImage()), getScreenY(c, biv.getImage()));
