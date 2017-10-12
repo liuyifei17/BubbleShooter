@@ -50,10 +50,6 @@ public class Grid {
      * @param y the y coord of the center of the grid.
      */
     private void initializeCells(double x, double y) {
-        edgeToDistance = 15;
-        topBarHeight = 70;
-        stageWidth = 600;
-        stageHeight = 700;
         //set center cell
         centerCell = new Cell(x, y);
         cells.add(centerCell);
@@ -136,24 +132,6 @@ public class Grid {
                 }
             }
         }
-    }
-
-    /**
-     * finds the closest cell to a certain location (x, y).
-     * @param locX coord x of location.
-     * @param locY coord y of location.
-     * @return null if no empty cell found or an empty cell if found.
-     */
-    public Cell closestCellToLocation(double locX, double locY) {
-        Cell closestCell = centerCell;
-        for (Cell c : cells) {
-            if (Util.getDistance(c.getInitialX(), c.getInitialY(), locX, locY)
-                    < Util.getDistance(closestCell.getInitialX(),
-                    closestCell.getInitialY(), locX, locY)) {
-                closestCell = c;
-            }
-        }
-        return closestCell;
     }
 
     /**

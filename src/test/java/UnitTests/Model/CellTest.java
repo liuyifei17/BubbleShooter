@@ -15,12 +15,12 @@ import static org.mockito.Mockito.mock;
  */
 class CellTest {
     private Cell cell;
-    private double INITIALX = 4.0;
-    private double INITIALY = 3.0;
+    private double initialX = 4.0;
+    private double initialY = 3.0;
 
     @BeforeEach
     void setUp() {
-        cell = new Cell(INITIALX, INITIALY);
+        cell = new Cell(initialX, initialY);
     }
 
 
@@ -33,13 +33,13 @@ class CellTest {
 
     @Test
     void testInitialX() {
-        assertThat(cell.getInitialX()).isEqualTo(INITIALX);
+        assertThat(cell.getInitialX()).isEqualTo(initialX);
     }
 
 
     @Test
     void testInitialY() {
-        assertThat(cell.getInitialY()).isEqualTo(INITIALY);
+        assertThat(cell.getInitialY()).isEqualTo(initialY);
     }
 
     @Test
@@ -60,7 +60,7 @@ class CellTest {
      */
     @Test
     void getY() {
-        assertThat(cell.getCurrentY()).isEqualTo(INITIALY);
+        assertThat(cell.getCurrentY()).isEqualTo(initialY);
     }
 
 
@@ -71,57 +71,17 @@ class CellTest {
 
     @org.junit.jupiter.api.Test
     void AdjecentCellsOtherCell() {
-        Cell otherCell = new Cell(INITIALX, INITIALY);
+        Cell otherCell = new Cell(initialX, initialY);
         cell.getAdjacentCells().add(otherCell);
         assertThat(cell.getAdjacentCells().get(0)).isEqualTo(otherCell);
     }
     @org.junit.jupiter.api.Test
     void AdjecentCellsFilled() {
-        Cell otherCell = new Cell(INITIALX, INITIALY);
+        Cell otherCell = new Cell(initialX, initialY);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
         assertThat(cell.getAdjacentCells().size()).isEqualTo(4);
-    }
-
-    /**
-     * Created by Henks Laptop on 28/09/2017.
-     */
-    static class BallTest {
-
-        Ball ball;
-        String color = "Red";
-        Cell cell = mock(Cell.class);
-
-        @Test
-        void getColor() {
-            ball = new Ball(color, cell, false);
-            ball.setColor("green");
-            AssertionsForClassTypes.assertThat(ball.getColor()).isEqualTo("green");
-        }
-
-
-        @Test
-        void colorExists() {
-            GameConfiguration.setApi();
-            GameConfiguration.isApi();
-            ball = new Ball("GREEN", cell, false);
-            AssertionsForClassTypes.assertThat(ball.colorExists(color)).isTrue();
-
-        }
-
-        @Test
-        void isCenterPiece() {
-            ball = new Ball(color, cell, true);
-            AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isTrue();
-        }
-
-        @Test
-        void isNotCenterPiece() {
-            ball = new Ball(color, cell, false);
-            AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isFalse();
-        }
-
     }
 }
