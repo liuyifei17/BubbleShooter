@@ -57,9 +57,18 @@ class GridTest {
     }
 
     @Test
-    void closestCellToLocation() {
+    void closestEmptyCellToLocation() {
         Cell cell = grid.getCenterCell();
         assertThat(grid.closestEmptyCellToLocation(GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2))
+                .isEqualTo(cell);
+    }
+
+    @Test
+    void closestFullCellToLocation() {
+        Cell cell = grid.getCenterCell();
+        cell.setBall(new Ball("blue", cell, true));
+        assertThat(grid.closestFullCellToLocation(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2))
                 .isEqualTo(cell);
     }
