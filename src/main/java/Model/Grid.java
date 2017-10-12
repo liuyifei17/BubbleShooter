@@ -165,7 +165,7 @@ public class Grid {
     public Cell closestEmptyCellToLocation(double locX, double locY) {
         Cell closestCell = null;
         for (Cell c : cells) {
-            if (c.getElement().getSprite() == null) {
+            if (c.getBall() == null) {
                 if (closestCell == null) {
                     closestCell = c;
                 }
@@ -189,7 +189,7 @@ public class Grid {
     public Cell closestFullCellToLocation(double locX, double locY) {
         Cell closestCell = null;
         for (Cell c : cells) {
-            if (c.getElement().getSprite() != null) {
+            if (c.getBall() != null) {
                 if (closestCell == null) {
                     closestCell = c;
                 }

@@ -1,14 +1,14 @@
 package Model;
 
 import Controller.GameConfiguration;
-import javafx.scene.image.Image;
 
 /**
  * This class represents the ball entity.
  */
-public class Ball extends Element {
+public class Ball {
 
     private String color;
+    private Cell cell;
     private boolean isCenterPiece;
 
     /**
@@ -18,22 +18,9 @@ public class Ball extends Element {
      * @param isCP  is the current ball the center piece
      */
     public Ball(String color, Cell cell, boolean isCP) {
-        super(cell, null);
         this.color = color;
+        this.cell = cell;
         this.isCenterPiece = isCP;
-
-    }
-
-    /**
-     * updates ball values.
-     */
-    public void updateBall() {
-        if (this.color != null && this.color.equals("center")) {
-            super.setImage(new Image("images/center.png"));
-        }
-        else if (color != null) {
-            super.setImage(new Image("images/" + color + " ball.png"));
-        }
     }
 
     /**
@@ -71,6 +58,22 @@ public class Ball extends Element {
      */
     public boolean isCenterPiece() {
         return isCenterPiece;
+    }
+
+    /**
+     * This is the setter for cell field.
+     * @param cell the cell to occupy to cell field
+     */
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
+    /**
+     * This is the getter for the cell field.
+     * @return the cell in which the ball is located.
+     */
+    public Cell getCell() {
+        return this.cell;
     }
 
 }

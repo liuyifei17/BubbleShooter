@@ -1,10 +1,11 @@
 package View;
 
 import Controller.GameConfiguration;
-import Model.Ball;
 import Model.Cell;
 import Model.GameData;
 import Utility.SetTimeout;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class View {
 
     private GameData data;
-    private Pane gamePane;
+    protected Pane gamePane;
     private Pane mainMenuPane;
     private ImageView gameSettingsIcon;
     private ImageView gamePauseIcon;
@@ -42,8 +43,8 @@ public class View {
     private Text popupScore;
     private ImageView popupRestartButton;
     private ImageView popupHomeButton;
-    private ImageView playerBall;
-    private ImageView nextBall;
+    private ImageView playerBallImageView;
+    private ImageView nextBallImageView;
     private Pane pausePopup;
     private ImageView popupContinueButton;
     private ImageView popupMainMenuButton;
@@ -147,22 +148,24 @@ public class View {
 
         //draw entities
         for (Cell c : data.getGrid().getOccupiedCells()) {
-            c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
+            display(c);
         }
 
-        nextBall = new ImageView(data.getPlayer().getNextBall().getSprite());
-        nextBall.relocate(GameConfiguration.stageWidth / 2
-                        - data.getPlayer().getNextBall().getSprite().getWidth() / 4,
-                GameConfiguration.topBarHeight - 30);
-        nextBall.setFitWidth(data.getPlayer().getNextBall().getSprite().getWidth() / 2);
-        nextBall.setFitHeight(data.getPlayer().getNextBall().getSprite().getHeight() / 2);
+        Image spriteNextBall =
+                new Image("images/" + data.getPlayer().getNextBall().getColor() + " ball.png");
+        nextBallImageView = new ImageView(spriteNextBall);
+        nextBallImageView.relocate(GameConfiguration.stageWidth / 2
+                        - spriteNextBall.getWidth() / 4, GameConfiguration.topBarHeight - 30);
+        nextBallImageView.setFitWidth(spriteNextBall.getWidth() / 2);
+        nextBallImageView.setFitHeight(spriteNextBall.getHeight() / 2);
 
-        playerBall = new ImageView(data.getPlayer().getPlayerBall().getImage());
-        playerBall.relocate(data.getPlayer().getPlayerBall().getX()
-                        - data.getPlayer().getPlayerBall().getImage().getWidth()
-                        / 2,
-                data.getPlayer().getPlayerBall().getY()
-                        - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
+
+        Image spritePlayerBall =
+                new Image("images/" + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+        playerBallImageView = new ImageView(spritePlayerBall);
+        playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
+                        - spritePlayerBall.getWidth() / 2,
+                data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
 
         //create popup menu's
         createGameOverPopup();
@@ -171,11 +174,9 @@ public class View {
         //add components to game pane
         gamePane.getChildren().add(topBar);
         //gamePane.getChildren().add(scoreBar);
-        for (Cell c : data.getGrid().getCells()) {
-            gamePane.getChildren().add(c.getElement().getImageView());
-        }
-        gamePane.getChildren().add(playerBall);
-        gamePane.getChildren().add(nextBall);
+
+        gamePane.getChildren().add(playerBallImageView);
+        gamePane.getChildren().add(nextBallImageView);
         gamePane.getChildren().add(scoreBarScore);
         gamePane.getChildren().add(gamePauseIcon);
         gamePane.getChildren().add(gameSettingsIcon);
@@ -189,27 +190,34 @@ public class View {
      * redraws the screen elements, which is mainly used for animations.
      */
     public void redraw() {
-        //check for changed cells and update children
-        ArrayList<Cell> cells = data.getGrid().getOccupiedCells();
+        Platform.runLater(() -> {
+            //check for changed cells and update children
+            ArrayList<Cell> cells = data.getGrid().getOccupiedCells();
 
-        //relocate elements
-        for (Cell c : cells) {
-            if (c.getElement().getSprite() == null) {
-                continue;
+            //relocate elements
+            for (Node node : gamePane.getChildren()) {
+                if (node instanceof BallImageView) {
+                    BallImageView biv = (BallImageView) node;
+                    biv.relocate(getScreenX(biv.getCell(), biv.getImage()),
+                            getScreenY(biv.getCell(), biv.getImage()));
+                    biv.rotateProperty().setValue(data.getGrid().getRotation());
+                }
             }
-            c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
-            c.getElement().getImageView().rotateProperty().setValue(data.getGrid().getRotation());
-        }
 
-        playerBall.setImage(data.getPlayer().getPlayerBall().getImage());
-        nextBall.setImage(data.getPlayer().getNextBall().getSprite());
+            Image spritePlayerBall = new Image("images/"
+                    + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+            playerBallImageView.setImage(spritePlayerBall);
 
-        playerBall.relocate(data.getPlayer().getPlayerBall().getX()
-                        - data.getPlayer().getPlayerBall().getImage().getWidth() / 2,
-                data.getPlayer().getPlayerBall().getY()
-                        - data.getPlayer().getPlayerBall().getImage().getHeight() / 2);
+            Image spriteNextBall =
+                    new Image("images/" + data.getPlayer().getNextBall().getColor() + " ball.png");
+            nextBallImageView.setImage(spriteNextBall);
 
-        scoreBarScore.setText("Score: " + data.getPlayer().getScore());
+            playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
+                            - spritePlayerBall.getWidth() / 2,
+                    data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
+
+            scoreBarScore.setText("Score: " + data.getPlayer().getScore());
+        });
     }
 
     /**
@@ -217,15 +225,31 @@ public class View {
      * @param c the cell whose image needs to be removed
      */
     public void removeBall(Cell c) {
-        c.getElement().setImage(new Image("images/plus1.png"));
-        if (c.getElement() instanceof Ball) {
-            ((Ball) c.getElement()).setColor(null);
-        }
+        Platform.runLater(() -> {
+            for (Node e : gamePane.getChildren()) {
+                if (e instanceof BallImageView && ((BallImageView) e).getCell().equals(c)) {
+                    gamePane.getChildren().remove(e);
+                    break;
+                }
+            }
+        });
+    }
 
-        RemovePlusOneIcon r = new RemovePlusOneIcon(c);
+    /**
+     * This method displays a plus 1 icon in the places where balls have been removed.
+     * @param c the cell where a plus 1 should be displayed
+     */
+    public void displayPlus1(Cell c) {
+        Platform.runLater(() -> {
+            ImageView plusOne = new ImageView(new Image("images/plus1.png"));
+            plusOne.relocate(c.getCurrentX(), c.getCurrentY());
 
-        SetTimeout t = new SetTimeout("Timeout Thread", 1000, r);
-        t.start();
+            gamePane.getChildren().add(plusOne);
+            RemovePlusOneIcon r = new RemovePlusOneIcon(plusOne, gamePane);
+
+            SetTimeout t = new SetTimeout("Timeout Thread", 1000, r);
+            t.start();
+        });
     }
 
     /**
@@ -233,7 +257,19 @@ public class View {
      * @param c the cell in which the ball is located
      */
     public void display(Cell c) {
-        c.getElement().getImageView().relocate(getScreenX(c), getScreenY(c));
+        Platform.runLater(() -> {
+            if (c.getBall() != null) {
+                String color = c.getBall().getColor();
+                BallImageView biv;
+                if (color != null && color.equals("center")) {
+                    biv = new BallImageView(new Image("images/center.png"), c);
+                } else {
+                    biv = new BallImageView(new Image("images/" + color + " ball.png"), c);
+                }
+                gamePane.getChildren().add(biv);
+                biv.relocate(getScreenX(c, biv.getImage()), getScreenY(c, biv.getImage()));
+            }
+        });
     }
 
     /**
@@ -317,6 +353,7 @@ public class View {
         pausePopup.getChildren().add(popupExitButton);
     }
 
+
     /**
      * Sets the game over popup to being visible and updates the score.
      */
@@ -350,16 +387,16 @@ public class View {
      * @param cell the cell to calculate the screen coordinates of.
      * @return the calculate screen coordinate x.
      */
-    private double getScreenX(Cell cell) {
-        return (cell.getCurrentX() - (cell.getElement().getSprite().getWidth() / 2));
+    private double getScreenX(Cell cell, Image im) {
+        return (cell.getCurrentX() - (im.getWidth() / 2));
     }
 
     /**
      * @param cell the cell to calculate the screen coordinates of.
      * @return the calculate screen coordinate y.
      */
-    private double getScreenY(Cell cell) {
-        return (cell.getCurrentY() - (cell.getElement().getSprite().getHeight() / 2));
+    private double getScreenY(Cell cell, Image im) {
+        return (cell.getCurrentY() - (im.getHeight() / 2));
     }
 
     /**
@@ -451,30 +488,6 @@ public class View {
      */
     public ImageView getGamePauseIcon() {
         return gamePauseIcon;
-    }
-
-
-    /**
-     * This class creates an object that when executed removes the +1 icons in the game.
-     */
-    private class RemovePlusOneIcon implements Runnable {
-        private Cell cell;
-
-        /**
-         * This is the constructor of the class.
-         * @param c the cell where the +1 image should be removed
-         */
-        RemovePlusOneIcon(Cell c) {
-            this.cell = c;
-        }
-
-        /**
-         * The code that removes the +1 image from the cell stored in the cell field.
-         */
-        public void run() {
-            this.cell.getElement().setImage(null);
-            data.getGrid().getOccupiedCells().remove(this.cell);
-        }
     }
 
 }
