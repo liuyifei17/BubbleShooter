@@ -68,14 +68,6 @@ public class PlayerBall {
     }
 
     /**
-     * This method updates the color field and the image.
-     * @param color the color of the ball the user is going to shoot with
-     */
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    /**
      * @return count the times the ball has hit the wall.
      */
     public int getCounter() {

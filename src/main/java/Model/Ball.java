@@ -1,6 +1,5 @@
 package Model;
 
-import Controller.GameConfiguration;
 
 /**
  * This class represents the ball entity.
@@ -31,28 +30,6 @@ public class Ball {
      */
     public String getColor() {
         return this.color;
-    }
-
-
-    /**
-     * @param color sets the color
-     */
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    /**
-     * Checks if a ball with a certain color exists.
-     * @param color the color to check for
-     * @return true if color exists and false if it does not
-     */
-    public static boolean colorExists(String color) {
-        for (String s : GameConfiguration.colors) {
-            if (s.equalsIgnoreCase(color) && GameConfiguration.isColor) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

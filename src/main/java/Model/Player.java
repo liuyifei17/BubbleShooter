@@ -62,13 +62,6 @@ public class Player {
         return nextBall;
     }
 
-    /**
-     * @param n set next ball.
-     */
-    public void setNextBall(Ball n) {
-        this.nextBall = n;
-    }
-
 
     /**
      * @return get the amount of times u missed a ball.

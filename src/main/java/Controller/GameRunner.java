@@ -62,18 +62,4 @@ public class GameRunner {
         this.ballController = ballController;
         this.timer = timer;
     }
-
-    /**
-     * @param gridController sets the grid controller.
-     */
-    public void setGridController(GridController gridController) {
-        this.gridController = gridController;
-    }
-
-    /**
-     * @param ballController sets the ball controller.
-     */
-    public void setBallController(PlayerBallController ballController) {
-        this.ballController = ballController;
-    }
 }

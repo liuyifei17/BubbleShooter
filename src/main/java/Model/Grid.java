@@ -1,6 +1,7 @@
 package Model;
 
 import Controller.GameConfiguration;
+import Controller.GameController;
 import Utility.Util;
 
 import java.util.ArrayList;
@@ -50,10 +51,6 @@ public class Grid {
      * @param y the y coord of the center of the grid.
      */
     private void initializeCells(double x, double y) {
-        edgeToDistance = 15;
-        topBarHeight = 70;
-        stageWidth = 600;
-        stageHeight = 700;
         //set center cell
         centerCell = new Cell(x, y);
         cells.add(centerCell);
@@ -139,24 +136,6 @@ public class Grid {
     }
 
     /**
-     * finds the closest cell to a certain location (x, y).
-     * @param locX coord x of location.
-     * @param locY coord y of location.
-     * @return null if no empty cell found or an empty cell if found.
-     */
-    public Cell closestCellToLocation(double locX, double locY) {
-        Cell closestCell = centerCell;
-        for (Cell c : cells) {
-            if (Util.getDistance(c.getInitialX(), c.getInitialY(), locX, locY)
-                    < Util.getDistance(closestCell.getInitialX(),
-                    closestCell.getInitialY(), locX, locY)) {
-                closestCell = c;
-            }
-        }
-        return closestCell;
-    }
-
-    /**
      * finds the closest cell that does not contain an element to a certain location (x, y).
      * @param locX coord x of location.
      * @param locY coord y of location.
@@ -202,6 +181,29 @@ public class Grid {
 
         }
         return closestCell;
+    }
+
+
+
+    // this method adds balls to the hexagon every time the player misses more than 6 times
+    public void appendAdditionalBalls(int numberBalls) {
+        int randomIndex;
+        ArrayList<Integer> randomIndexes = new ArrayList<Integer>();
+        for (int i = 0; i < numberBalls; i++) {
+            while (true) {
+                randomIndex = Util.randomBetween(0, occupiedCells.size() - 1);
+                Cell c = occupiedCells.get(randomIndex).getEmptyAdjacentCell();
+                if (!randomIndexes.contains(randomIndex) && c != null) {
+                    String color = GameConfiguration.colors.get(Util.randomBetween(0,
+                            GameConfiguration.colors.size() - 1));
+                    occupiedCells.add(c);
+                    c.setBall(new Ball(color, c, 1));
+                    GameController.getView().display(c);
+                    randomIndexes.add(randomIndex);
+                    break;
+                }
+            }
+        }
     }
 
     /**

@@ -3,11 +3,9 @@ package UnitTests.Controller;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Controller.PlayerBallController;
-import Model.Cell;
 import Model.Grid;
 import Model.Player;
 import Model.PlayerBall;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,10 +29,6 @@ public class PlayerBallControllerTest {
         GameConfiguration.isApi();
     }
 
-    @AfterEach
-    void tearDown() {
-
-    }
 
     @Test
     void calculateDeltaTest_normal() {
@@ -92,5 +86,6 @@ public class PlayerBallControllerTest {
 
         assertThat(pbc.getStopWatch()).isEqualTo(0);
     }
+
 
 }
