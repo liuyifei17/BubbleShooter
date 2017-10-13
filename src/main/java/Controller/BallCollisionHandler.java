@@ -121,7 +121,7 @@ public class BallCollisionHandler {
     public void handleCollision(Cell collidedCell) {
         // display the ball that has collided with the hexagon
         grid.getOccupiedCells().add(collidedCell);
-        collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, false));
+        collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
         GameController.getView().display(collidedCell);
 
         // check whether the shot ball has hit at least 2 other balls of the same color

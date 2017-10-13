@@ -18,7 +18,7 @@ public class Player {
      */
     public Player() {
         nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, false);
+                GameConfiguration.colors.size() - 1)), null, -1);
         playerBall = new PlayerBall(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)));
         missCounter = 0;
@@ -83,7 +83,7 @@ public class Player {
     public void nextBall() {
         playerBall = new PlayerBall(nextBall.getColor());
         nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, false);
+                GameConfiguration.colors.size() - 1)), null, -1);
     }
 
 }

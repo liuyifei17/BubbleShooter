@@ -197,7 +197,7 @@ public class Grid {
                     String color = GameConfiguration.colors.get(Util.randomBetween(0,
                             GameConfiguration.colors.size() - 1));
                     occupiedCells.add(c);
-                    c.setBall(new Ball(color, c, false));
+                    c.setBall(new Ball(color, c, 1));
                     GameController.getView().display(c);
                     randomIndexes.add(randomIndex);
                     break;
