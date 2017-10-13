@@ -2,11 +2,6 @@ package Controller;
 
 
 import Model.*;
-import Utility.Util;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 
 /**
@@ -26,6 +21,7 @@ public class PlayerBallController {
     private int counter;
     private int stopWatch;
     private Cell collidedCell;
+    private BallCollisionHandler ballCollisionHandler;
 
 
     /**
@@ -47,6 +43,7 @@ public class PlayerBallController {
         this.deltaY = 0;
         this.mouseX = 0;
         this.mouseY = 0;
+        this.ballCollisionHandler = new BallCollisionHandler(grid, player);
     }
 
     /**
@@ -71,153 +68,10 @@ public class PlayerBallController {
         counter++;
     }
 
-    // this method checks after the shot ball has reached the hexagon if any balls should be removed
-    private ArrayList<Cell> checkRemovalBalls() {
-        //initialise an arrayList which will contain all possible removedBalls
-        ArrayList<Cell> removalBalls = new ArrayList<Cell>();
-        removalBalls.add(collidedCell);
-
-        //initialise a queue for BFS
-        LinkedList<Cell> queue = new LinkedList<Cell>();
-        queue.add(collidedCell);
-
-        // initialise a list which keeps the visited cells
-        ArrayList<Cell> visited = new ArrayList<Cell>();
-        visited.add(collidedCell);
-        Cell current;
-
-        // loop through the queue
-        while (!queue.isEmpty()) {
-
-            current = queue.remove();
-
-            //loop through all neighbors
-            for (Cell adjacentCell : current.getAdjacentCells()) {
-                if (adjacentCell.getBall() != null) {
-
-                    Ball ball = adjacentCell.getBall();
-
-                    boolean sameColour = player.getPlayerBall().getColor().equals(ball.getColor());
-
-
-                    //if never visited and both cells contains same colour ball
-                    if (!visited.contains(adjacentCell) && sameColour) {
-                        //add the cell into the queue and removalBallsList
-                        queue.add(adjacentCell);
-                        removalBalls.add(adjacentCell);
-                    }
-
-                    //this adjacentCell is visited
-                    visited.add(adjacentCell);
-                }
-            }
-        }
-        return removalBalls;
-    }
-
-    private boolean fillEmptyCell(int index) {
-        for (Cell c : grid.getOccupiedCells().get(index).getAdjacentCells()) {
-            if (c.getBall() == null) {
-                String color = GameConfiguration.colors.get(Util.randomBetween(0,
-                        GameConfiguration.colors.size() - 1));
-                grid.getOccupiedCells().add(c);
-                c.setBall(new Ball(color, c, false));
-                GameController.getView().display(c);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // this method removes the balls that the method checkRemovalBalls returns and adds the points
-    // to the score
-    private void removeBalls(ArrayList<Cell> toRemove) {
-        for (Cell cell : toRemove) {
-            GameController.getView().removeBall(cell);
-            GameController.getView().displayPlus1(cell);
-            grid.getOccupiedCells().remove(cell);
-            cell.setBall(null);
-        }
-    }
-
-    private ArrayList<Cell> notConnectedBalls() {
-        ArrayList<Cell> visited = new ArrayList<>();
-        ArrayList<Cell> notConnected = new ArrayList<>();
-        Queue<Cell> queue = new LinkedList<>();
-
-        visited.add(grid.getCenterCell());
-        queue.add(grid.getCenterCell());
-        Cell current;
-
-        while (!queue.isEmpty()) {
-            current = queue.remove();
-
-            for (Cell adjacentCell : current.getAdjacentCells()) {
-                if (!visited.contains(adjacentCell) && adjacentCell.getBall() != null) {
-                    queue.add(adjacentCell);
-                    visited.add(adjacentCell);
-                }
-            }
-        }
-
-        for (Cell cell : grid.getOccupiedCells()) {
-            if (!visited.contains(cell) && cell.getBall() != null) {
-                notConnected.add(cell);
-            }
-        }
-
-        return notConnected;
-    }
-
-    // this method adds balls to the hexagon every time the player misses more than 6 times
-    private void appendAdditionalBalls() {
-        int numberBalls = Util.randomBetween(5, 15);
-        int randomIndex;
-        ArrayList<Integer> randomIndexes = new ArrayList<Integer>();
-        for (int i = 0; i < numberBalls; i++) {
-            while (true) {
-                randomIndex = Util.randomBetween(0, grid.getOccupiedCells().size() - 1);
-                if (!randomIndexes.contains(randomIndex) && fillEmptyCell(randomIndex)) {
-                    randomIndexes.add(randomIndex);
-                    break;
-                }
-            }
-        }
-    }
-
-    // this method takes care of the situation in which the shot ball hits the hexagon
-    private void ballCollisionHandler() {
-        //put ball in cell
-        //collidedCell.setElement(new Ball(player.getPlayerBall().getColor(), collidedCell));
-
-        // display the ball that has collided with the hexagon
-        grid.getOccupiedCells().add(collidedCell);
-        collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, false));
-        GameController.getView().display(collidedCell);
-
-        // check whether the shot ball has hit at least 2 other balls of the same color
-
-        ArrayList<Cell> ballsToBeRemoved = checkRemovalBalls();
-        if (ballsToBeRemoved.size() >= 3) {
-            player.setScore(player.getScore() + ballsToBeRemoved.size());
-            removeBalls(ballsToBeRemoved);
-            removeBalls(notConnectedBalls());
-        } else if (player.getMissCounter() >= 5) {
-            player.setMissCounter(0);
-            appendAdditionalBalls();
-        } else {
-            player.setMissCounter(player.getMissCounter() + 1);
-        }
-
-        //reset variables
-        mouseY = 0;
-        mouseX = 0;
+    // reset the player ball
+    private void resetBall() {
+        stopWatch = 0;
         collidedCell = null;
-
-        //set a rotation
-        calculateRotation();
-
-        //nextBall
         player.nextBall();
         this.setMouseY(0);
         this.setMouseX(0);
@@ -225,7 +79,6 @@ public class PlayerBallController {
         this.setDeltaY(0);
         counter = 0;
     }
-
 
 
     /**
@@ -243,20 +96,19 @@ public class PlayerBallController {
             collidedCell = player.getPlayerBall().getCellCollision(grid, deltaX, deltaY);
         }
         if (collidedCell != null) {
-            ballCollisionHandler();
+            ballCollisionHandler.handleCollision(collidedCell);
+
+            //set a rotation
+            calculateRotation();
+
+            resetBall();
             return;
         }
 
         // if the ball has collided with the wall for a maximum of 4 times then it will reset
         // the ball
         else if (player.getPlayerBall().getCounter() >= GameConfiguration.maximumTimesBallHit) {
-            stopWatch = 0;
-            player.nextBall();
-            this.setMouseY(0);
-            this.setMouseX(0);
-            this.setDeltaX(0);
-            this.setDeltaY(0);
-            counter = 0;
+            resetBall();
         }
 
         // if the ball has collided with the wall the deltaX or deltaY will become negative.
