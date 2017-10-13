@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
 
 /**
  * This class creates an object that when executed removes the +1 icons in the game.

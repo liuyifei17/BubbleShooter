@@ -15,18 +15,18 @@ import static org.mockito.Mockito.*;
 class GridControllerTest {
 
     private GameController gameController = mock(GameController.class);
-    private Grid grid = new Grid(300,350);
+    private Grid grid = new Grid(300, 350);
 
     private GridController gridController;
 
     @BeforeEach
     void setUp() {
-        gridController = new GridController(gameController,grid);
+        gridController = new GridController(gameController, grid);
     }
 
     @Test
     void constructorTest() {
-        Grid newGrid = new Grid(200,200);
+        Grid newGrid = new Grid(200, 200);
         gridController.setGrid(newGrid);
         assertTrue(gridController.getGrid().getCenterX() == 200);
         assertTrue(gridController.getGrid().getCenterY() == 200);
@@ -34,7 +34,7 @@ class GridControllerTest {
 
     @Test
     void setGridTest() {
-        Grid newGrid = new Grid(200,200);
+        Grid newGrid = new Grid(200, 200);
         gridController.setGrid(newGrid);
         assertTrue(gridController.getGrid().getCenterX() == 200);
     }
