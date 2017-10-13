@@ -371,6 +371,7 @@ public class View {
     public void showGameOverPopup() {
         popupScore.setText("Score: " + data.getPlayer().getScore());
         gameOverPopup.setVisible(true);
+        gameOverPopup.toFront();
     }
 
     /**
@@ -378,6 +379,7 @@ public class View {
      */
     public void showPausePopup() {
         pausePopup.setVisible(true);
+        pausePopup.toFront();
     }
 
     /**

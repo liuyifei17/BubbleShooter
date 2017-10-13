@@ -42,7 +42,7 @@ public class GridController {
                 c.setCurrentX(newCoords[0]);
                 c.setCurrentY(newCoords[1]);
 
-                if (c.getBall() != null && c.getBall().isCenterPiece()) {
+                if (c.getBall() != null && !c.getBall().isCenterPiece()) {
                     if (c.hasCollidedWithWall()) {
                         gc.gameOver();
                     }
