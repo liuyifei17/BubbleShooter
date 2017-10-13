@@ -1,6 +1,7 @@
 package Model;
 
 import Controller.GameConfiguration;
+import Controller.GameController;
 import Utility.Util;
 
 import java.util.ArrayList;
@@ -180,6 +181,36 @@ public class Grid {
 
         }
         return closestCell;
+    }
+
+    private boolean fillEmptyCell(int index) {
+        for (Cell c : occupiedCells.get(index).getAdjacentCells()) {
+            if (c.getBall() == null) {
+                String color = GameConfiguration.colors.get(Util.randomBetween(0,
+                        GameConfiguration.colors.size() - 1));
+                occupiedCells.add(c);
+                c.setBall(new Ball(color, c, false));
+                GameController.getView().display(c);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // this method adds balls to the hexagon every time the player misses more than 6 times
+    public void appendAdditionalBalls() {
+        int numberBalls = Util.randomBetween(5, 15);
+        int randomIndex;
+        ArrayList<Integer> randomIndexes = new ArrayList<Integer>();
+        for (int i = 0; i < numberBalls; i++) {
+            while (true) {
+                randomIndex = Util.randomBetween(0, occupiedCells.size() - 1);
+                if (!randomIndexes.contains(randomIndex) && fillEmptyCell(randomIndex)) {
+                    randomIndexes.add(randomIndex);
+                    break;
+                }
+            }
+        }
     }
 
     /**
