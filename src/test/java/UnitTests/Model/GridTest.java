@@ -1,11 +1,13 @@
 package UnitTests.Model;
 
 import Controller.GameConfiguration;
-import Model.Ball;
-import Model.Cell;
-import Model.Grid;
+import Controller.GameController;
+import Controller.PlayerBallController;
+import Model.*;
+import View.View;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -14,6 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  */
 class GridTest {
     private Grid grid;
+    private View view;
 
     @BeforeEach
     void setUp() {
@@ -21,6 +24,10 @@ class GridTest {
         GameConfiguration.isApi();
         grid = new Grid(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+
+
+        view = Mockito.mock(View.class);
+        GameController.setView(view);
     }
 
     @Test
@@ -68,5 +75,15 @@ class GridTest {
         assertThat(grid.closestFullCellToLocation(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2))
                 .isEqualTo(cell);
+    }
+
+    @Test
+    void appendAdditionalBallsTest() {
+        grid.getCenterCell().setBall(new Ball("center", grid.getCenterCell(), false));
+        grid.getOccupiedCells().add(grid.getCenterCell());
+
+        grid.appendAdditionalBalls(5);
+
+        assertThat(grid.getOccupiedCells().size()).isEqualTo(6);
     }
 }
