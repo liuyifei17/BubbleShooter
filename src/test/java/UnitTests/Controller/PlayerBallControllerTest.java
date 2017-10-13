@@ -3,7 +3,6 @@ package UnitTests.Controller;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Controller.PlayerBallController;
-import Model.Cell;
 import Model.Grid;
 import Model.Player;
 import Model.PlayerBall;

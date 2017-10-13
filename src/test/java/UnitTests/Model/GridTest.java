@@ -4,13 +4,10 @@ import Controller.GameConfiguration;
 import Model.Ball;
 import Model.Cell;
 import Model.Grid;
-import javafx.scene.image.Image;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * This class provides test cases for the Grid class.
