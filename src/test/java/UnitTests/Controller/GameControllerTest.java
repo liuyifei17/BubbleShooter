@@ -9,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
- * Created by Henks Laptop on 29/09/2017.
+ * This class provides test cases for
  */
 class GameControllerTest {
-    GameController gameController;
-    Stage stage;
+    private GameController gameController;
+    private Stage stage;
 
 
     @BeforeEach

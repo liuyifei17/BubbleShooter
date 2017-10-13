@@ -122,4 +122,7 @@
   <module name="SuppressionCommentFilter"/>
   <module name="SuppressWithNearbyCommentFilter"/>
   <module name="SuppressWarningsFilter" />
+  <module name="SuppressionFilter">
+    <property name="file" value="suppressions.xml"/>
+  </module>
 </module>

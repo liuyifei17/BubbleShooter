@@ -17,6 +17,7 @@ public class BallImageView extends ImageView {
      * This creates a new instance of this class.
      * @param im the image
      * @param c the cell that is associated with the image
+     * @param isPlus1Icon a boolean that specifies if the ImageView is a +1 icon
      */
     public BallImageView(Image im, Cell c, boolean isPlus1Icon) {
         super(im);

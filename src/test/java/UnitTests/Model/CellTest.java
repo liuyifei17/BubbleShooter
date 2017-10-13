@@ -3,7 +3,6 @@ package UnitTests.Model;
 import Controller.GameConfiguration;
 import Model.Ball;
 import Model.Cell;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,12 +14,14 @@ import static org.mockito.Mockito.mock;
  */
 class CellTest {
     private Cell cell;
-    private double INITIALX = 4.0;
-    private double INITIALY = 3.0;
+    private double initialX = 4.0;
+    private double initialY = 3.0;
 
     @BeforeEach
     void setUp() {
-        cell = new Cell(INITIALX, INITIALY);
+        GameConfiguration.setApi();
+        GameConfiguration.isApi();
+        cell = new Cell(initialX, initialY);
     }
 
 
@@ -33,13 +34,13 @@ class CellTest {
 
     @Test
     void testInitialX() {
-        assertThat(cell.getInitialX()).isEqualTo(INITIALX);
+        assertThat(cell.getInitialX()).isEqualTo(initialX);
     }
 
 
     @Test
     void testInitialY() {
-        assertThat(cell.getInitialY()).isEqualTo(INITIALY);
+        assertThat(cell.getInitialY()).isEqualTo(initialY);
     }
 
     @Test
@@ -54,30 +55,27 @@ class CellTest {
         assertThat(cell.getCurrentY()).isEqualTo(3);
     }
 
-
-    /**
-     *
-     */
     @Test
     void getY() {
-        assertThat(cell.getCurrentY()).isEqualTo(INITIALY);
+        assertThat(cell.getCurrentY()).isEqualTo(initialY);
     }
 
 
-    @org.junit.jupiter.api.Test
-    void AdjecentCellsEmpty() {
+    @Test
+    void ddjecentCellsEmpty() {
         assertThat(cell.getAdjacentCells().size()).isEqualTo(0);
     }
 
-    @org.junit.jupiter.api.Test
-    void AdjecentCellsOtherCell() {
-        Cell otherCell = new Cell(INITIALX, INITIALY);
+    @Test
+    void adjecentCellsOtherCell() {
+        Cell otherCell = new Cell(initialX, initialY);
         cell.getAdjacentCells().add(otherCell);
         assertThat(cell.getAdjacentCells().get(0)).isEqualTo(otherCell);
     }
-    @org.junit.jupiter.api.Test
-    void AdjecentCellsFilled() {
-        Cell otherCell = new Cell(INITIALX, INITIALY);
+
+    @Test
+    void adjacentCellsFilled() {
+        Cell otherCell = new Cell(initialX, initialY);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
@@ -85,43 +83,36 @@ class CellTest {
         assertThat(cell.getAdjacentCells().size()).isEqualTo(4);
     }
 
-    /**
-     * Created by Henks Laptop on 28/09/2017.
-     */
-    static class BallTest {
+    @Test
+    void hasCollidedWithWallTest_true() {
+        assertThat(cell.hasCollidedWithWall()).isTrue();
+    }
 
-        Ball ball;
-        String color = "Red";
-        Cell cell = mock(Cell.class);
-
-        @Test
-        void getColor() {
-            ball = new Ball(color, cell, 1);
-            ball.setColor("green");
-            AssertionsForClassTypes.assertThat(ball.getColor()).isEqualTo("green");
-        }
+    @Test
+    void hasCollidedWithWallTest_false() {
+        cell.setCurrentX(GameConfiguration.stageWidth / 2);
+        cell.setCurrentY(
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        assertThat(cell.hasCollidedWithWall()).isFalse();
+    }
 
 
-        @Test
-        void colorExists() {
-            GameConfiguration.setApi();
-            GameConfiguration.isApi();
-            ball = new Ball("GREEN", cell, 1);
-            AssertionsForClassTypes.assertThat(ball.colorExists(color)).isTrue();
+    @Test
+    void getEmptyAdjacentCellTest() {
+        Cell c = new Cell(10, 10);
 
-        }
+        cell.getAdjacentCells().add(c);
 
-        @Test
-        void isCenterPiece() {
-            ball = new Ball(color, cell, 0);
-            AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isTrue();
-        }
+        assertThat(cell.getEmptyAdjacentCell()).isEqualTo(c);
+    }
 
-        @Test
-        void isNotCenterPiece() {
-            ball = new Ball(color, cell, 1);
-            AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isFalse();
-        }
+    @Test
+    void getEmptyAdjacentCellTest_null() {
+        Cell c = new Cell(10, 10);
+        c.setBall(new Ball("blue", c, 1));
 
+        cell.getAdjacentCells().add(c);
+
+        assertThat(cell.getEmptyAdjacentCell()).isNull();
     }
 }

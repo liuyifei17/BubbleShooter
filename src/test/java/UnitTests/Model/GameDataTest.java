@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * This class provides test cases for the GameData class
@@ -56,8 +55,4 @@ public class GameDataTest {
         gameData.setPlayer(player);
         assertThat(gameData.getPlayer()).isEqualTo(player);
     }
-
-
-
-
 }

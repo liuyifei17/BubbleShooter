@@ -54,6 +54,13 @@ public class GameController {
     }
 
     /**
+     * This is the setter for the View field.
+     * @param v the view
+     */
+    public static void setView(View v) {
+        view = v;
+    }
+    /**
      * initializes the game.
      */
     public void setup() {
