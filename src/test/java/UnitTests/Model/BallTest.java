@@ -19,7 +19,7 @@ public class BallTest {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
 
-        ball = new Ball("blue", null, false);
+        ball = new Ball("blue", null, 1);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class BallTest {
 
     @Test
     void isCenterPieceTest_true() {
-        Ball newBall = new Ball("yellow", null, true);
+        Ball newBall = new Ball("yellow", null, 0);
 
         assertThat(newBall.isCenterPiece()).isTrue();
     }

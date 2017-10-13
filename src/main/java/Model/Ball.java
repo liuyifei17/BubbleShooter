@@ -8,18 +8,20 @@ public class Ball {
 
     private String color;
     private Cell cell;
-    private boolean isCenterPiece;
+    private int ballType;
+
 
     /**
      * creates a ball that is located inside a cell.
      * @param color the color of the ball
      * @param cell  the cell in which the ball is currently located
-     * @param isCP  is the current ball the center piece
+     * @param ballType  type of the ball: -1 for player ball, 0 for center, 1 for normal ball,
+     *                   2 for explosive, 3 for rainbow, 4 for multiplier.
      */
-    public Ball(String color, Cell cell, boolean isCP) {
+    public Ball(String color, Cell cell, int ballType) {
         this.color = color;
         this.cell = cell;
-        this.isCenterPiece = isCP;
+        this.ballType = ballType;
     }
 
     /**
@@ -31,10 +33,38 @@ public class Ball {
     }
 
     /**
-     * @return true if it is the centerpiece
+     * @return true if it is the centerpiece.
      */
     public boolean isCenterPiece() {
-        return isCenterPiece;
+        return ballType == 0;
+    }
+
+    /**
+     * @return true if it is a normal ball.
+     */
+    public boolean isNormalBall() {
+        return ballType == 1;
+    }
+
+    /**
+     * @return true if it is an explosive ball.
+     */
+    public boolean isExplosiveBall() {
+        return ballType == 2;
+    }
+
+    /**
+     * @return true if it is a rainbow ball.
+     */
+    public boolean isRainbowBall() {
+        return ballType == 3;
+    }
+
+    /**
+     * @return true if it is a multiplier ball.
+     */
+    public boolean isMultiplierBall() {
+        return ballType == 4;
     }
 
     /**
@@ -51,6 +81,13 @@ public class Ball {
      */
     public Cell getCell() {
         return this.cell;
+    }
+
+    /**
+     * @return ball type
+     */
+    public int getBallType() {
+        return ballType;
     }
 
 }

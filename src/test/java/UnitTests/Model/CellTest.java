@@ -96,6 +96,7 @@ class CellTest {
         assertThat(cell.hasCollidedWithWall()).isFalse();
     }
 
+
     @Test
     void getEmptyAdjacentCellTest() {
         Cell c = new Cell(10, 10);
@@ -108,7 +109,7 @@ class CellTest {
     @Test
     void getEmptyAdjacentCellTest_null() {
         Cell c = new Cell(10, 10);
-        c.setBall(new Ball("blue", c, false));
+        c.setBall(new Ball("blue", c, 1));
 
         cell.getAdjacentCells().add(c);
 
