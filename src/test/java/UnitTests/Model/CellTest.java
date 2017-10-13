@@ -74,7 +74,7 @@ class CellTest {
     }
 
     @Test
-    void adjecentCellsFilled() {
+    void adjacentCellsFilled() {
         Cell otherCell = new Cell(initialX, initialY);
         cell.getAdjacentCells().add(otherCell);
         cell.getAdjacentCells().add(otherCell);
@@ -94,5 +94,24 @@ class CellTest {
         cell.setCurrentY(
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
         assertThat(cell.hasCollidedWithWall()).isFalse();
+    }
+
+    @Test
+    void getEmptyAdjacentCellTest() {
+        Cell c = new Cell(10, 10);
+
+        cell.getAdjacentCells().add(c);
+
+        assertThat(cell.getEmptyAdjacentCell()).isEqualTo(c);
+    }
+
+    @Test
+    void getEmptyAdjacentCellTest_null() {
+        Cell c = new Cell(10, 10);
+        c.setBall(new Ball("blue", c, false));
+
+        cell.getAdjacentCells().add(c);
+
+        assertThat(cell.getEmptyAdjacentCell()).isNull();
     }
 }

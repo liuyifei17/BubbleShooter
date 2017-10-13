@@ -4,6 +4,7 @@ import Model.Ball;
 import Model.Cell;
 import Model.Grid;
 import Model.Player;
+import Utility.Util;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -132,7 +133,7 @@ public class BallCollisionHandler {
             removeBalls(notConnectedBalls());
         } else if (player.getMissCounter() >= 5) {
             player.setMissCounter(0);
-            grid.appendAdditionalBalls();
+            grid.appendAdditionalBalls(Util.randomBetween(5, 15));
         } else {
             player.setMissCounter(player.getMissCounter() + 1);
         }
