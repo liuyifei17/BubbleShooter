@@ -1,10 +1,12 @@
 package UnitTests.Controller;
 
+import Controller.GameConfiguration;
 import Controller.GameController;
 import Controller.GridController;
 import Model.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -15,12 +17,14 @@ import static org.mockito.Mockito.*;
 class GridControllerTest {
 
     private GameController gameController = mock(GameController.class);
-    private Grid grid = new Grid(300, 350);
+    private Grid grid = Mockito.mock(Grid.class);
 
     private GridController gridController;
 
     @BeforeEach
     void setUp() {
+        GameConfiguration.setApi();
+        GameConfiguration.isApi();
         gridController = new GridController(gameController, grid);
     }
 
