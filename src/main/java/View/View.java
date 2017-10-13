@@ -259,12 +259,24 @@ public class View {
     public void display(Cell c) {
         Platform.runLater(() -> {
             if (c.getBall() != null) {
-                String color = c.getBall().getColor();
                 BallImageView biv;
-                if (color != null && color.equals("center")) {
+                if (c.getBall().isCenterPiece()) {
                     biv = new BallImageView(new Image("images/center.png"), c, false);
-                } else {
-                    biv = new BallImageView(new Image("images/" + color + " ball.png"), c, false);
+                }
+                else if(c.getBall().isNormalBall()) {
+                    biv = new BallImageView(new Image("images/" + c.getBall().getColor() + " ball.png"), c, false);
+                }
+                else if(c.getBall().isExplosiveBall()) {
+                    biv = new BallImageView(new Image("images/explosive ball.png"), c, false);
+                }
+                else if(c.getBall().isRainbowBall()) {
+                    biv = new BallImageView(new Image("images/rainbow ball.png"), c, false);
+                }
+                else if(c.getBall().isMultiplierBall()) {
+                    biv = new BallImageView(new Image("images/multiplier ball.png"), c, false);
+                }
+                else {
+                    biv = new BallImageView(new Image("images/null.png"), c, false);
                 }
                 gamePane.getChildren().add(biv);
                 biv.relocate(getScreenX(c, biv.getImage()), getScreenY(c, biv.getImage()));

@@ -36,7 +36,7 @@ public class GameDataLoader {
      */
     private void loadElements() {
         //create the centerpiece
-        Ball center = new Ball("center", data.getGrid().getCenterCell(), true);
+        Ball center = new Ball("center", data.getGrid().getCenterCell(), 0);
         data.getGrid().getCenterCell().setBall(center);
 
         //add an x amount of random colored balls to start
@@ -56,7 +56,7 @@ public class GameDataLoader {
             Cell c = emptyCells.get(i);
             String color = GameConfiguration.colors.get(Util.randomBetween(0,
                     GameConfiguration.colors.size() - 1));
-            Ball b = new Ball(color, c, false);
+            Ball b = new Ball(color, c, 1);
             c.setBall(b);
         }
 

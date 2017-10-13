@@ -121,7 +121,7 @@ public class PlayerBallController {
                 String color = GameConfiguration.colors.get(Util.randomBetween(0,
                         GameConfiguration.colors.size() - 1));
                 grid.getOccupiedCells().add(c);
-                c.setBall(new Ball(color, c, false));
+                c.setBall(new Ball(color, c, 1));
                 GameController.getView().display(c);
                 return true;
             }
@@ -192,7 +192,7 @@ public class PlayerBallController {
 
         // display the ball that has collided with the hexagon
         grid.getOccupiedCells().add(collidedCell);
-        collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, false));
+        collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
         GameController.getView().display(collidedCell);
 
         // check whether the shot ball has hit at least 2 other balls of the same color

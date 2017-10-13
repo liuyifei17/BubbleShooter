@@ -96,7 +96,7 @@ class CellTest {
 
         @Test
         void getColor() {
-            ball = new Ball(color, cell, false);
+            ball = new Ball(color, cell, 1);
             ball.setColor("green");
             AssertionsForClassTypes.assertThat(ball.getColor()).isEqualTo("green");
         }
@@ -106,20 +106,20 @@ class CellTest {
         void colorExists() {
             GameConfiguration.setApi();
             GameConfiguration.isApi();
-            ball = new Ball("GREEN", cell, false);
+            ball = new Ball("GREEN", cell, 1);
             AssertionsForClassTypes.assertThat(ball.colorExists(color)).isTrue();
 
         }
 
         @Test
         void isCenterPiece() {
-            ball = new Ball(color, cell, true);
+            ball = new Ball(color, cell, 0);
             AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isTrue();
         }
 
         @Test
         void isNotCenterPiece() {
-            ball = new Ball(color, cell, false);
+            ball = new Ball(color, cell, 1);
             AssertionsForClassTypes.assertThat(ball.isCenterPiece()).isFalse();
         }
 
