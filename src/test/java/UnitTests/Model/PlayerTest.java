@@ -2,8 +2,8 @@ package UnitTests.Model;
 
 import Controller.GameConfiguration;
 import Model.Ball;
+import Model.NormalBall;
 import Model.Player;
-import Model.PlayerBall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ import static org.mockito.Mockito.mock;
 
 public class PlayerTest {
 
-    Player player;
+    private Player player;
 
     @BeforeEach
     void setUp() {
@@ -31,7 +31,7 @@ public class PlayerTest {
 
     @Test
     void testPlayerBall() {
-        PlayerBall playerBall = mock(PlayerBall.class);
+        NormalBall playerBall = mock(NormalBall.class);
         player.setPlayerBall(playerBall);
         assertThat(player.getPlayerBall()).isEqualTo(playerBall);
     }
@@ -43,12 +43,10 @@ public class PlayerTest {
 
     @Test
     void testNextBall() {
-        PlayerBall playerBall = player.getPlayerBall();
+        NormalBall playerBall = (NormalBall) player.getPlayerBall();
         Ball nextBall = player.getNextBall();
-
         player.nextBall();
 
-        assertThat(player.getPlayerBall().getColor()).isEqualTo(nextBall.getColor());
         assertThat(player.getPlayerBall()).isNotEqualTo(playerBall);
         assertThat(player.getNextBall()).isNotEqualTo(nextBall);
     }

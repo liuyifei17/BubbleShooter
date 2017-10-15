@@ -6,6 +6,7 @@ import Controller.PlayerBallController;
 import Model.Grid;
 import Model.Player;
 import Model.PlayerBall;
+import Model.PlayerBallFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,16 +18,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PlayerBallControllerTest {
 
-    Grid grid;
-    Player player;
-    GameController gameController;
-    PlayerBallController pbc;
-    PlayerBall playerBall;
+    private Grid grid;
+    private Player player;
+    private GameController gameController;
+    private PlayerBallController pbc;
+    private PlayerBall playerBall;
+    private PlayerBallFactory playerBallFactory;
 
     @BeforeEach
     void setUp() {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
+        playerBallFactory = new PlayerBallFactory();
     }
 
 
@@ -36,7 +39,7 @@ public class PlayerBallControllerTest {
         player = Mockito.mock(Player.class);
         gameController = Mockito.mock(GameController.class);
         pbc = new PlayerBallController(gameController, player, grid);
-        PlayerBall playerBall = new PlayerBall("yellow", 50.0, 50.0);
+        PlayerBall playerBall = playerBallFactory.createBall("Normal Ball", 50.0, 50.0);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
         pbc.setMouseX(200);
@@ -55,7 +58,7 @@ public class PlayerBallControllerTest {
         player = Mockito.mock(Player.class);
         gameController = Mockito.mock(GameController.class);
         pbc = new PlayerBallController(gameController, player, grid);
-        PlayerBall playerBall = new PlayerBall("red", 50.0, 50.0);
+        PlayerBall playerBall = playerBallFactory.createBall("Normal Ball", 50.0, 50.0);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
         pbc.setMouseX(200);
@@ -78,7 +81,7 @@ public class PlayerBallControllerTest {
         grid = new Grid(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
         player = new Player();
-        playerBall = new PlayerBall("blue", 100, 100);
+        playerBall = playerBallFactory.createBall("Normal Ball", 100, 100);
         player.setPlayerBall(playerBall);
         pbc = new PlayerBallController(gameController, player, grid);
 

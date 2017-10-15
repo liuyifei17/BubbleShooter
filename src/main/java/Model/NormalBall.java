@@ -6,19 +6,35 @@ import Utility.Util;
 /**
  * normal playerBall class, implements playerBall.
  */
-public class NormalBall extends PlayerBall {
+public class NormalBall implements PlayerBall{
     private String color;
     private double x;
     private double y;
     private int counter;
-
 
     /**
      * Initiate a ball with a random image.
      * @param color the random selected color of the ball;
      */
     public NormalBall(String color) {
-        super(color);
+        this.color = color;
+        counter = 0;
+        this.x = GameConfiguration.stageWidth / 2;
+        this.y = GameConfiguration.topBarHeight;
+
+    }
+
+    /**
+     * Initiate a ball with a random image.
+     * @param color the random selected color of the ball;
+     * @param x the x coordinate of the ball.
+     * @param y the y coordinate of the ball.
+     */
+    public NormalBall(String color, double x, double y) {
+        this.color = color;
+        counter = 0;
+        this.x = x;
+        this.y = y;
     }
 
 
