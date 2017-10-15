@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 /**
  * PlayerBall interface.
  */
@@ -21,4 +23,5 @@ public interface PlayerBall {
 
     int getCounter();
 
+    ArrayList<Cell> checkRemovalBalls(Cell collidedCell);
 }

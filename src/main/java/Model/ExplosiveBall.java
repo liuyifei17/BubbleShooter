@@ -3,10 +3,13 @@ package Model;
 import Controller.GameConfiguration;
 import Utility.Util;
 
+import java.util.ArrayList;
+
 /**
  * A special playerBall, explosive ball.
  */
 public class ExplosiveBall implements PlayerBall{
+
     private String color;
     private double x;
     private double y;
@@ -74,6 +77,27 @@ public class ExplosiveBall implements PlayerBall{
      */
     public int getCounter() {
         return counter;
+    }
+
+    @Override
+    public ArrayList<Cell> checkRemovalBalls(Cell collidedCell) {
+        //initialise an arrayList which will contain all possible removedBalls
+        ArrayList<Cell> removalBalls = new ArrayList<>();
+
+        Cell current = collidedCell;
+        while (removalBalls.size() < 4) {
+
+            //loop through all neighbors
+            for (Cell adjacentCell : current.getAdjacentCells()) {
+                if (adjacentCell.getBall() != null && !removalBalls.contains(adjacentCell)) {
+                    removalBalls.add(adjacentCell);
+                }
+            }
+
+            current = removalBalls.get(removalBalls.size() - 1);
+        }
+        removalBalls.add(collidedCell);
+        return removalBalls;
     }
 
     /**
