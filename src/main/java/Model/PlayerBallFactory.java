@@ -8,9 +8,9 @@ import java.util.Random;
 /**
  * Ball Factory class.
  */
-public abstract class PlayerBallFactory {
+public class PlayerBallFactory {
 
-    public PlayerBall createBall(String ballType){
+     PlayerBall createBall(String ballType){
         switch (ballType){
             case "Normal Ball":
                 Random random = new Random();
@@ -18,11 +18,26 @@ public abstract class PlayerBallFactory {
                 int index = random.nextInt(colors.size());
                 return new NormalBall(colors.get(index));
             case "Explosive Ball":
-                return new  ExplosiveBall(null);
+                return new  ExplosiveBall("Explosive");
             case "Rainbow Ball":
-                return new RainbowBall(null);
+                return new RainbowBall("Rainbow");
         }
         return null;
     }
 
+
+    public PlayerBall createBall(String ballType, double x, double y){
+        switch (ballType){
+            case "Normal Ball":
+                Random random = new Random();
+                List<String> colors = GameConfiguration.colors;
+                int index = random.nextInt(colors.size());
+                return new NormalBall(colors.get(index),x,y);
+            case "Explosive Ball":
+                return new  ExplosiveBall("Explosive", x, y);
+            case "Rainbow Ball":
+                return new RainbowBall("Rainbow", x, y);
+        }
+        return null;
+    }
 }

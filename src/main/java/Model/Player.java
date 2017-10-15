@@ -11,7 +11,7 @@ public class Player {
     private PlayerBall playerBall;
     private int missCounter;
     private int score;
-
+    private PlayerBallFactory playerBallFactory;
     /**
      * The player has a score, a ball with whom it shoots and a misscounter for each missed
      * ball.
@@ -19,8 +19,8 @@ public class Player {
     public Player() {
         nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)), null, -1);
-        playerBall = new PlayerBall(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)));
+        playerBallFactory = new PlayerBallFactory();
+        playerBall = playerBallFactory.createBall("Normal Ball");
         missCounter = 0;
         score = 0;
     }
@@ -81,7 +81,7 @@ public class Player {
      * This method gives the player new balls.
      */
     public void nextBall() {
-        playerBall = new PlayerBall(nextBall.getColor());
+        playerBall = playerBallFactory.createBall("Normal Ball");
         nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
                 GameConfiguration.colors.size() - 1)), null, -1);
     }

@@ -5,8 +5,8 @@ import Controller.GameController;
 import Controller.PlayerBallController;
 import Model.Cell;
 import Model.Grid;
+import Model.NormalBall;
 import Model.Player;
-import Model.PlayerBall;
 import View.View;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ public class RotationTests {
     private GameController gameController;
     private View view;
     private PlayerBallController pbc;
-    private PlayerBall playerBall;
+    private NormalBall playerBall;
 
     @BeforeEach
     void setUp() {
@@ -34,7 +34,7 @@ public class RotationTests {
         grid = new Grid(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
         player = Mockito.mock(Player.class);
-        playerBall = Mockito.mock(PlayerBall.class);
+        playerBall = Mockito.mock(NormalBall.class);
         view = Mockito.mock(View.class);
         GameController.setView(view);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
@@ -47,7 +47,7 @@ public class RotationTests {
         grid = new Grid(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
         player = Mockito.mock(Player.class);
-        playerBall = Mockito.mock(PlayerBall.class);
+        playerBall = Mockito.mock(NormalBall.class);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
         Mockito.when(playerBall.getCellCollision(grid, 0, 0)).thenReturn(new Cell(102, 102));
         pbc = new PlayerBallController(gameController, player, grid);
