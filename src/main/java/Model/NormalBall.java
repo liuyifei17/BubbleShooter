@@ -3,6 +3,9 @@ package Model;
 import Controller.GameConfiguration;
 import Utility.Util;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 /**
  * normal playerBall class, implements playerBall.
  */
@@ -124,5 +127,49 @@ public class NormalBall implements PlayerBall{
         }
 
         return null;
+    }
+
+
+    public ArrayList<Cell> checkRemovalBalls(Cell collidedCell) {
+        //initialise an arrayList which will contain all possible removedBalls
+        ArrayList<Cell> removalBalls = new ArrayList<>();
+        removalBalls.add(collidedCell);
+
+        //initialise a queue for BFS
+        LinkedList<Cell> queue = new LinkedList<>();
+        queue.add(collidedCell);
+
+        // initialise a list which keeps the visited cells
+        ArrayList<Cell> visited = new ArrayList<>();
+        visited.add(collidedCell);
+        Cell current;
+
+        // loop through the queue
+        while (!queue.isEmpty()) {
+
+            current = queue.remove();
+
+            //loop through all neighbors
+            for (Cell adjacentCell : current.getAdjacentCells()) {
+                if (adjacentCell.getBall() != null) {
+
+                    Ball ball = adjacentCell.getBall();
+
+                    boolean sameColour = getColor().equals(ball.getColor());
+
+
+                    //if never visited and both cells contains same colour ball
+                    if (!visited.contains(adjacentCell) && sameColour) {
+                        //add the cell into the queue and removalBallsList
+                        queue.add(adjacentCell);
+                        removalBalls.add(adjacentCell);
+                    }
+
+                    //this adjacentCell is visited
+                    visited.add(adjacentCell);
+                }
+            }
+        }
+        return removalBalls;
     }
 }

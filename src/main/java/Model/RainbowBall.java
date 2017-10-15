@@ -3,6 +3,11 @@ package Model;
 import Controller.GameConfiguration;
 import Utility.Util;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * A rainbow playerBall, it's a special ball.
  */
@@ -71,6 +76,77 @@ public class RainbowBall implements PlayerBall{
      */
     public int getCounter() {
         return counter;
+    }
+
+    @Override
+    public ArrayList<Cell> checkRemovalBalls(Cell collidedCell) {
+        //initialise an arrayList which will contain all possible removedBalls
+        ArrayList<Cell> removalBalls = new ArrayList<>();
+        removalBalls.add(collidedCell);
+        ArrayList<String> colors = new ArrayList<>();
+
+        for(Cell adjacentCell : collidedCell.getAdjacentCells() ){
+            if(adjacentCell.getBall().getColor() !=  null){
+                colors.add(adjacentCell.getBall().getColor());
+            }
+        }
+
+        Map<Integer,ArrayList<Cell>> map = new TreeMap<>();
+
+        // create a treeMap of arrayLists, the key is the size of returned cell.
+        for(String color : colors) {
+            map.put(checkColorRemoval(color, collidedCell).size(),checkColorRemoval(color, collidedCell));
+        }
+
+        Map.Entry<Integer,ArrayList<Cell>> entry =map.entrySet().iterator().next();
+
+        return entry.getValue();
+    }
+
+    /**
+     * HelperMethod for checkRemovalBalls().Return for each color the cell that contains should be removed balls
+     * @param color an input color, must be the color of the neighbor of rainbow Ball
+     * @param collidedCell  the collided cell.
+     * @return a list of cells
+     */
+    private ArrayList<Cell> checkColorRemoval(String color, Cell collidedCell){
+        ArrayList<Cell> removalBalls = new ArrayList<>();
+        //initialise a queue for BFS
+        LinkedList<Cell> queue = new LinkedList<>();
+        queue.add(collidedCell);
+
+        // initialise a list which keeps the visited cells
+        ArrayList<Cell> visited = new ArrayList<>();
+        visited.add(collidedCell);
+        Cell current;
+
+        // loop through the queue
+        while (!queue.isEmpty()) {
+            removalBalls.add(collidedCell);
+
+            current = queue.remove();
+
+            //loop through all neighbors
+            for (Cell adjacentCell : current.getAdjacentCells()) {
+                if (adjacentCell.getBall() != null) {
+
+                    Ball ball = adjacentCell.getBall();
+
+                    boolean sameColour = color.equals(ball.getColor());
+
+                    //if never visited and both cells contains same colour ball
+                    if (!visited.contains(adjacentCell) && sameColour) {
+                        //add the cell into the queue and removalBallsList
+                        queue.add(adjacentCell);
+                        removalBalls.add(adjacentCell);
+                    }
+
+                    //this adjacentCell is visited
+                    visited.add(adjacentCell);
+                }
+            }
+        }
+        return removalBalls;
     }
 
     /**
