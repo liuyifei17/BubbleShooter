@@ -1,9 +1,9 @@
 package UnitTests.Model;
 
 import Controller.GameConfiguration;
-import Model.Ball;
 import Model.NormalBall;
 import Model.Player;
+import Model.PlayerBall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,13 +38,13 @@ public class PlayerTest {
 
     @Test
     void testGetNextBall() {
-        assertThat(player.getNextBall()).isInstanceOf(Ball.class);
+        assertThat(player.getNextBall()).isInstanceOf(PlayerBall.class);
     }
 
     @Test
     void testNextBall() {
         NormalBall playerBall = (NormalBall) player.getPlayerBall();
-        Ball nextBall = player.getNextBall();
+        PlayerBall nextBall = player.getNextBall();
         player.nextBall();
 
         assertThat(player.getPlayerBall()).isNotEqualTo(playerBall);
