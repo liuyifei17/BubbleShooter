@@ -3,6 +3,7 @@ package View;
 import Controller.GameConfiguration;
 import Model.Cell;
 import Model.GameData;
+import Model.Player;
 import Utility.SetTimeout;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -14,13 +15,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.util.Observable;
+import java.util.Observer;
+
 
 /**
  * The view class.
  */
-public class View {
+public class View implements Observer {
 
     private GameData data;
+    private Player player;
     protected Pane gamePane;
     private Pane mainMenuPane;
     private ImageView gameSettingsIcon;
@@ -54,10 +59,28 @@ public class View {
      * @param gamePane sets the game pane
      * @param data sets the game data
      */
-    public View(Pane mainMenuPane, Pane gamePane, GameData data) {
+    public View(Pane mainMenuPane, Pane gamePane, GameData data, Player player) {
         this.mainMenuPane = mainMenuPane;
         this.gamePane = gamePane;
         this.data = data;
+        this.player = player;
+    }
+
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if(o == player){
+            popupScore.setText("Score: " + player.getScore());
+            scoreBarScore.setText("Score: " + player.getScore());
+        }
     }
 
     /**
@@ -214,8 +237,6 @@ public class View {
             playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
                             - spritePlayerBall.getWidth() / 2,
                     data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
-
-            scoreBarScore.setText("Score: " + data.getPlayer().getScore());
         });
     }
 
@@ -369,17 +390,20 @@ public class View {
      * Sets the game over popup to being visible and updates the score.
      */
     public void showGameOverPopup() {
-        popupScore.setText("Score: " + data.getPlayer().getScore());
-        gameOverPopup.setVisible(true);
-        gameOverPopup.toFront();
+        Platform.runLater(() -> {
+            gameOverPopup.setVisible(true);
+            gameOverPopup.toFront();
+        });
     }
 
     /**
      * Sets the pause popup to being visible.
      */
     public void showPausePopup() {
-        pausePopup.setVisible(true);
-        pausePopup.toFront();
+        Platform.runLater(() -> {
+            pausePopup.setVisible(true);
+            pausePopup.toFront();
+        });
     }
 
     /**
@@ -462,6 +486,13 @@ public class View {
     }
 
     /**
+     * @param player sets the player.
+     */
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    /**
      * @param gamePane sets a new Pane.
      */
     public void setGamePane(Pane gamePane) {
@@ -502,5 +533,4 @@ public class View {
     public ImageView getGamePauseIcon() {
         return gamePauseIcon;
     }
-
 }

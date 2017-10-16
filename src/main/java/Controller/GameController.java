@@ -115,7 +115,8 @@ public class GameController {
         gamePane = new Pane();
 
         //Draw elements on pane
-        view = new View(mainMenuPane, gamePane, data);
+        view = new View(mainMenuPane, gamePane, data, data.getPlayer());
+        data.getPlayer().addObserver(view);
         view.drawMainMenu();
         view.drawGame();
 
@@ -260,6 +261,8 @@ public class GameController {
         //reset view
         gamePane = new Pane();
         view.setData(data);
+        view.setPlayer(data.getPlayer());
+        data.getPlayer().addObserver(view);
         view.setGamePane(gamePane);
         view.drawGame();
         gameScreen = new Scene(gamePane, GameConfiguration.stageWidth,
