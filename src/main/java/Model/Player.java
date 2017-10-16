@@ -1,9 +1,11 @@
 package Model;
 
+import java.util.Observable;
+
 /**
  * The player class is keeps track of the players attributes.
  */
-public class Player {
+public class Player  extends Observable{
     private PlayerBall nextBall;
     private PlayerBall playerBall;
     private int missCounter;
@@ -35,6 +37,8 @@ public class Player {
      */
     public void setScore(int score) {
         this.score = score;
+        setChanged();
+        notifyObservers();
     }
 
     /**
