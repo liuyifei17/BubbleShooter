@@ -1,13 +1,10 @@
 package Model;
 
-import Controller.GameConfiguration;
-import Utility.Util;
-
 /**
  * The player class is keeps track of the players attributes.
  */
 public class Player {
-    private Ball nextBall;
+    private PlayerBall nextBall;
     private PlayerBall playerBall;
     private int missCounter;
     private int score;
@@ -17,10 +14,9 @@ public class Player {
      * ball.
      */
     public Player() {
-        nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, -1);
         playerBallFactory = new PlayerBallFactory();
         playerBall = playerBallFactory.createBall("Normal Ball");
+        nextBall = playerBallFactory.createBall("Normal Ball");
         missCounter = 0;
         score = 0;
     }
@@ -58,7 +54,7 @@ public class Player {
     /**
      * @return get the next ball.
      */
-    public Ball getNextBall() {
+    public PlayerBall getNextBall() {
         return nextBall;
     }
 
@@ -82,8 +78,7 @@ public class Player {
      */
     public void nextBall() {
         playerBall = playerBallFactory.createBall("Normal Ball");
-        nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, -1);
+        nextBall = playerBallFactory.createBall("Normal Ball");
     }
 
 }
