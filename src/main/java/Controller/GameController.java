@@ -150,6 +150,9 @@ public class GameController {
 
         // play button event
         view.getPlayButton().setOnMouseReleased(event -> {
+            if (gamePaused) {
+                resumeGame();
+            }
             primaryStage.setScene(gameScreen);
         });
 
@@ -181,19 +184,19 @@ public class GameController {
         });
 
         //continue playing the game
-        view.getPopupContinueButton().setOnMouseReleased(event -> {
+        view.getPausePopupContinueButton().setOnMouseReleased(event -> {
             clickDelay = System.currentTimeMillis();
             view.closePausePopup();
             resumeGame();
         });
 
         //continue playing the game
-        view.getPopupExitButton().setOnMouseReleased(event -> {
+        view.getPausePopupExitButton().setOnMouseReleased(event -> {
             System.exit(0);
         });
 
         //return to main menu
-        view.getPopupMainMenuButton().setOnMouseReleased(event -> {
+        view.getPausePopupMainMenuButton().setOnMouseReleased(event -> {
             clickDelay = System.currentTimeMillis();
             primaryStage.setScene(mainMenu);
             view.closePausePopup();
@@ -201,8 +204,17 @@ public class GameController {
 
         //
         view.getGamePauseIcon().setOnMouseReleased(event -> {
-            view.showPausePopup();
-            pauseGame();
+            if(!gamePaused) {
+                view.showPausePopup();
+                pauseGame();
+            }
+        });
+
+        view.getGameSettingsIcon().setOnMouseReleased(event -> {
+            if(!gamePaused) {
+                view.showSettingsPopup();
+                pauseGame();
+            }
         });
     }
 
@@ -229,6 +241,7 @@ public class GameController {
                     view.showPausePopup();
                     pauseGame();
                 } else {
+                    view.closeSettingsPopup();
                     view.closePausePopup();
                     resumeGame();
                 }
