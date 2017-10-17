@@ -28,50 +28,6 @@ public class BallCollisionHandler {
         this.player = player;
     }
 
-    // this method checks after the shot ball has reached the hexagon if any balls should be removed
-    private ArrayList<Cell> checkRemovalBalls(Cell collidedCell) {
-        //initialise an arrayList which will contain all possible removedBalls
-        ArrayList<Cell> removalBalls = new ArrayList<Cell>();
-        removalBalls.add(collidedCell);
-
-        //initialise a queue for BFS
-        LinkedList<Cell> queue = new LinkedList<Cell>();
-        queue.add(collidedCell);
-
-        // initialise a list which keeps the visited cells
-        ArrayList<Cell> visited = new ArrayList<Cell>();
-        visited.add(collidedCell);
-        Cell current;
-
-        // loop through the queue
-        while (!queue.isEmpty()) {
-
-            current = queue.remove();
-
-            //loop through all neighbors
-            for (Cell adjacentCell : current.getAdjacentCells()) {
-                if (adjacentCell.getBall() != null) {
-
-                    Ball ball = adjacentCell.getBall();
-
-                    boolean sameColour = player.getPlayerBall().getColor().equals(ball.getColor());
-
-
-                    //if never visited and both cells contains same colour ball
-                    if (!visited.contains(adjacentCell) && sameColour) {
-                        //add the cell into the queue and removalBallsList
-                        queue.add(adjacentCell);
-                        removalBalls.add(adjacentCell);
-                    }
-
-                    //this adjacentCell is visited
-                    visited.add(adjacentCell);
-                }
-            }
-        }
-        return removalBalls;
-    }
-
     // this method removes the balls that the method checkRemovalBalls returns and adds the points
     // to the score
     private void removeBalls(ArrayList<Cell> toRemove) {
@@ -126,7 +82,7 @@ public class BallCollisionHandler {
 
         // check whether the shot ball has hit at least 2 other balls of the same color
 
-        ArrayList<Cell> ballsToBeRemoved = checkRemovalBalls(collidedCell);
+        ArrayList<Cell> ballsToBeRemoved = player.getPlayerBall().checkRemovalBalls(collidedCell);
         if (ballsToBeRemoved.size() >= 3) {
             player.setScore(player.getScore() + ballsToBeRemoved.size());
             removeBalls(ballsToBeRemoved);

@@ -1,29 +1,24 @@
 package Model;
 
-import Controller.GameConfiguration;
-import Utility.Util;
-
 import java.util.Observable;
 
 /**
  * The player class is keeps track of the players attributes.
  */
-public class Player extends Observable {
-
-    private Ball nextBall;
+public class Player  extends Observable{
+    private PlayerBall nextBall;
     private PlayerBall playerBall;
     private int missCounter;
     private int score;
-
+    private PlayerBallFactory playerBallFactory;
     /**
      * The player has a score, a ball with whom it shoots and a misscounter for each missed
      * ball.
      */
     public Player() {
-        nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, -1);
-        playerBall = new PlayerBall(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)));
+        playerBallFactory = new PlayerBallFactory();
+        playerBall = playerBallFactory.createBall("Normal Ball");
+        nextBall = playerBallFactory.createBall("Normal Ball");
         missCounter = 0;
         score = 0;
     }
@@ -63,7 +58,7 @@ public class Player extends Observable {
     /**
      * @return get the next ball.
      */
-    public Ball getNextBall() {
+    public PlayerBall getNextBall() {
         return nextBall;
     }
 
@@ -86,9 +81,8 @@ public class Player extends Observable {
      * This method gives the player new balls.
      */
     public void nextBall() {
-        playerBall = new PlayerBall(nextBall.getColor());
-        nextBall = new Ball(GameConfiguration.colors.get(Util.randomBetween(0,
-                GameConfiguration.colors.size() - 1)), null, -1);
+        playerBall = playerBallFactory.createBall("Normal Ball");
+        nextBall = playerBallFactory.createBall("Normal Ball");
     }
 
 }
