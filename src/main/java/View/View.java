@@ -6,7 +6,9 @@ import Model.GameData;
 import Model.Player;
 import Utility.SetTimeout;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -50,9 +52,10 @@ public class View implements Observer {
     private ImageView playerBallImageView;
     private ImageView nextBallImageView;
     private Pane pausePopup;
-    private ImageView popupContinueButton;
-    private ImageView popupMainMenuButton;
-    private ImageView popupExitButton;
+    private Button pausePopupContinueButton;
+    private Button pausePopupMainMenuButton;
+    private Button pausePopupExitButton;
+    private Pane settingsPopup;
 
     /**
      * @param mainMenuPane sets the main menu pane
@@ -192,6 +195,7 @@ public class View implements Observer {
         //create popup menu's
         createGameOverPopup();
         createPausePopup();
+        createSettingsPopup();
 
         //add components to game pane
         gamePane.getChildren().add(topBar);
@@ -204,8 +208,10 @@ public class View implements Observer {
         gamePane.getChildren().add(gameSettingsIcon);
         gamePane.getChildren().add(gameOverPopup);
         gamePane.getChildren().add(pausePopup);
+        gamePane.getChildren().add(settingsPopup);
         gameOverPopup.setVisible(false);
         pausePopup.setVisible(false);
+        settingsPopup.setVisible(false);
     }
 
     /**
@@ -328,7 +334,7 @@ public class View implements Observer {
         gameOverPopup.setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
         gameOverPopup.relocate(GameConfiguration.popupX, GameConfiguration.popupY);
         gameOverPopup.setBackground(new Background(new BackgroundImage(
-                new Image("images/gameOverPopupBg.png", GameConfiguration.popupWidth,
+                new Image("images/popupBackground.png", GameConfiguration.popupWidth,
                         GameConfiguration.popupHeight, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
@@ -355,7 +361,7 @@ public class View implements Observer {
     }
 
     /**
-     * Creates a game over popup menu.
+     * Creates a pause popup menu.
      */
     private void createPausePopup() {
         //create popup container
@@ -363,28 +369,68 @@ public class View implements Observer {
         pausePopup.setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
         pausePopup.relocate(GameConfiguration.popupX, GameConfiguration.popupY);
         pausePopup.setBackground(new Background(new BackgroundImage(
-                new Image("images/gameOverPopupBg.png", GameConfiguration.popupWidth,
+                new Image("images/popupBackground.png", GameConfiguration.popupWidth,
                         GameConfiguration.popupHeight, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 
         //create graphical elements
         ImageView pauseMessage = new ImageView("images/pauseMessage.png");
-        pauseMessage.relocate(0, 20);
-        popupContinueButton = new ImageView("images/restart-icon.png");
-        popupContinueButton.relocate(5, 260);
-        popupExitButton = new ImageView("images/exit-icon.png");
-        popupExitButton.relocate(100, 260);
-        popupMainMenuButton = new ImageView("images/home-icon.png");
-        popupMainMenuButton.relocate(198, 260);
+        pauseMessage.relocate(3, 20);
+        pausePopupMainMenuButton = new Button();
+        pausePopupMainMenuButton.backgroundProperty().setValue(null);
+        pausePopupMainMenuButton.graphicProperty().bind(
+                Bindings.when(pausePopupMainMenuButton.hoverProperty())
+                        .then(new ImageView("images/popup-home-button-hovered.png"))
+                        .otherwise(new ImageView("images/popup-home-button.png"))
+        );
+        pausePopupMainMenuButton.relocate(40, 100);
+        pausePopupExitButton = new Button();
+        pausePopupExitButton.backgroundProperty().setValue(null);
+        pausePopupExitButton.graphicProperty().bind(
+                Bindings.when(pausePopupExitButton.hoverProperty())
+                        .then(new ImageView("images/popup-exit-button-hovered.png"))
+                        .otherwise(new ImageView("images/popup-exit-button.png"))
+        );
+        pausePopupExitButton.relocate(40, 170);
+        pausePopupContinueButton = new Button();
+        pausePopupContinueButton.backgroundProperty().setValue(null);
+        pausePopupContinueButton.graphicProperty().bind(
+                Bindings.when(pausePopupContinueButton.hoverProperty())
+                        .then(new ImageView("images/popup-continue-button-hovered.png"))
+                        .otherwise(new ImageView("images/popup-continue-button.png"))
+        );
+        pausePopupContinueButton.relocate(40, 240);
 
         //add graphical elements to popup container
         pausePopup.getChildren().add(pauseMessage);
-        pausePopup.getChildren().add(popupContinueButton);
-        pausePopup.getChildren().add(popupMainMenuButton);
-        pausePopup.getChildren().add(popupExitButton);
+        pausePopup.getChildren().add(pausePopupContinueButton);
+        pausePopup.getChildren().add(pausePopupMainMenuButton);
+        pausePopup.getChildren().add(pausePopupExitButton);
     }
 
+    /**
+     * Creates a settings popup menu.
+     */
+    private void createSettingsPopup() {
+        //create popup container
+        settingsPopup = new Pane();
+        settingsPopup.setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
+        settingsPopup.relocate(GameConfiguration.popupX, GameConfiguration.popupY);
+        settingsPopup.setBackground(new Background(new BackgroundImage(
+                new Image("images/popupBackground.png", GameConfiguration.popupWidth,
+                        GameConfiguration.popupHeight, false, true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
+
+        //create graphical elements
+        ImageView settingsMessage = new ImageView("images/settingsMessage.png");
+        settingsMessage.relocate(0, 20);
+
+
+        //add graphical elements to popup container
+        settingsPopup.getChildren().add(settingsMessage);
+    }
 
     /**
      * Sets the game over popup to being visible and updates the score.
@@ -407,17 +453,40 @@ public class View implements Observer {
     }
 
     /**
+     * Sets the settings popup to being visible.
+     */
+    public void showSettingsPopup() {
+        Platform.runLater(() -> {
+            settingsPopup.setVisible(true);
+            settingsPopup.toFront();
+        });
+    }
+
+    /**
      * Sets the gam over popup to being invisible.
      */
     public void closeGameOverPopup() {
-        gameOverPopup.setVisible(false);
+        Platform.runLater(() -> {
+            gameOverPopup.setVisible(false);
+        });
     }
 
     /**
      * Sets the gam over popup to being invisible.
      */
     public void closePausePopup() {
-        pausePopup.setVisible(false);
+        Platform.runLater(() -> {
+            pausePopup.setVisible(false);
+        });
+    }
+
+    /**
+     * Sets the gam over popup to being invisible.
+     */
+    public void closeSettingsPopup() {
+        Platform.runLater(() -> {
+            settingsPopup.setVisible(false);
+        });
     }
 
     /**
@@ -502,22 +571,22 @@ public class View implements Observer {
     /**
      * @return popup continue game button
      */
-    public ImageView getPopupContinueButton() {
-        return popupContinueButton;
+    public Button getPausePopupContinueButton() {
+        return pausePopupContinueButton;
     }
 
     /**
      * @return popup main menu return button
      */
-    public ImageView getPopupMainMenuButton() {
-        return popupMainMenuButton;
+    public Button getPausePopupMainMenuButton() {
+        return pausePopupMainMenuButton;
     }
 
     /**
      * @return popup exit game button
      */
-    public ImageView getPopupExitButton() {
-        return popupExitButton;
+    public Button getPausePopupExitButton() {
+        return pausePopupExitButton;
     }
 
     /**
