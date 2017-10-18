@@ -1,10 +1,8 @@
 package Controller;
 
 import Model.Ball;
-import Model.Player;
 import Model.Cell;
 import Model.GameData;
-import Model.Grid;
 import Utility.Util;
 
 import java.util.ArrayList;

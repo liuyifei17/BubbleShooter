@@ -15,6 +15,13 @@ public abstract class PlayerBall {
     private double y;
     private int counter;
 
+    /**
+     * This is the constructor of the class.
+     * @param color the color of the ball
+     * @param x the x coordinate
+     * @param y the y coordiante
+     * @param counter the counter of how many times it has hit the wall
+     */
     public PlayerBall(String color, double x, double y, int counter) {
         this.x = x;
         this.y = y;
@@ -110,5 +117,10 @@ public abstract class PlayerBall {
         return false;
     }
 
+    /**
+     * This is an abstract method that checks which balls should be removed.
+     * @param collidedCell the cell the playerball has collided with
+     * @return an arraylist of balls that will be removed
+     */
     public abstract ArrayList<Cell> checkRemovalBalls(Cell collidedCell);
 }

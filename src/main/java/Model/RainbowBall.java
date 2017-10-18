@@ -1,7 +1,6 @@
 package Model;
 
 import Controller.GameConfiguration;
-import Utility.Util;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
