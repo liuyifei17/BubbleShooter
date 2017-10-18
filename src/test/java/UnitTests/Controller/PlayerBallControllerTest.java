@@ -39,7 +39,8 @@ public class PlayerBallControllerTest {
         dataLoader.initialize(gameData);
         playerBall = playerBallFactory.createBall("Normal Ball", 100, 100);
         player.setPlayerBall(playerBall);
-        pbc = new PlayerBallController(gameController, gameData.getPlayer(), gameData.getGrid());
+        pbc = new PlayerBallController(gameController, gameData.getPlayer(), null);
+        pbc.setGrid(gameData.getGrid());
     }
 
 
@@ -115,6 +116,25 @@ public class PlayerBallControllerTest {
 
         assertThat(pbc.getDeltaX()).isEqualTo(1);
         assertThat(pbc.getDeltaY()).isEqualTo(-1);
+    }
+
+    @Test
+    void launchBallTest_wallCollsion_4times() {
+        pbc.setMouseY(1);
+
+        for (int i = 0; i < 4; i++) {
+            playerBall.setX(GameConfiguration.stageWidth / 2);
+            playerBall.setY(GameConfiguration.stageHeight + GameConfiguration.topBarHeight);
+            pbc.setDeltaX(1);
+            pbc.setDeltaY(1);
+            pbc.launchBall();
+        }
+        pbc.launchBall();
+
+        assertThat(pbc.getDeltaX()).isEqualTo(0);
+        assertThat(pbc.getDeltaY()).isEqualTo(0);
+        assertThat(player.getPlayerBall()).isNotEqualTo(playerBall);
+        assertThat(pbc.getStopWatch()).isEqualTo(0);
     }
 
 
