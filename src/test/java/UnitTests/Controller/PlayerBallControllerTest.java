@@ -2,11 +2,9 @@ package UnitTests.Controller;
 
 import Controller.GameConfiguration;
 import Controller.GameController;
+import Controller.GameDataLoader;
 import Controller.PlayerBallController;
-import Model.Grid;
-import Model.Player;
-import Model.PlayerBall;
-import Model.PlayerBallFactory;
+import Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -90,5 +88,27 @@ public class PlayerBallControllerTest {
         assertThat(pbc.getStopWatch()).isEqualTo(0);
     }
 
+    @Test
+    void launchBallTest_noCollision() {
+        gameController = new GameController(null);
+        GameDataLoader dataLoader = new GameDataLoader();
+        player = new Player();
+        Grid grid = new Grid(GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        GameData gameData = new GameData(grid, player, 90);
+        dataLoader.initialize(gameData);
+        playerBall = playerBallFactory.createBall("Normal Ball", 100, 100);
+        player.setPlayerBall(playerBall);
+        double initialX = playerBall.getX();
+        double initialY = playerBall.getY();
+        pbc = new PlayerBallController(gameController, gameData.getPlayer(), gameData.getGrid());
+        pbc.setMouseX(GameConfiguration.stageWidth);
+        pbc.setMouseY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+
+        pbc.launchBall();
+
+        assertThat(playerBall.getX()).isEqualTo(initialX + pbc.getDeltaX());
+        assertThat(playerBall.getY()).isEqualTo(initialY + pbc.getDeltaY());
+    }
 
 }

@@ -10,6 +10,18 @@ public class GameData {
     private Player player;
 
     /**
+     * This is the constructor.
+     * @param grid the grid of the game
+     * @param player the player
+     * @param initialBallAmount the initial ball amount
+     */
+    public GameData(Grid grid, Player player, int initialBallAmount) {
+        this.grid = grid;
+        this.player = player;
+        this.initialBallAmount = initialBallAmount;
+    }
+
+    /**
      * @return grid.
      */
     public Grid getGrid() {

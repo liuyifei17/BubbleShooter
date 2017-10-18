@@ -5,7 +5,7 @@ import java.util.Observable;
 /**
  * The player class is keeps track of the players attributes.
  */
-public class Player  extends Observable{
+public class Player  extends Observable {
     private PlayerBall nextBall;
     private PlayerBall playerBall;
     private int missCounter;
@@ -81,7 +81,7 @@ public class Player  extends Observable{
      * This method gives the player new balls.
      */
     public void nextBall() {
-        playerBall = playerBallFactory.createBall("Normal Ball");
+        playerBall = nextBall;
         nextBall = playerBallFactory.createBall("Normal Ball");
     }
 

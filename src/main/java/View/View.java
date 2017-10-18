@@ -58,6 +58,7 @@ public class View implements Observer {
      * @param mainMenuPane sets the main menu pane
      * @param gamePane sets the game pane
      * @param data sets the game data
+     * @param player sets the player
      */
     public View(Pane mainMenuPane, Pane gamePane, GameData data, Player player) {
         this.mainMenuPane = mainMenuPane;
@@ -77,7 +78,7 @@ public class View implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if(o == player){
+        if (o == player) {
             popupScore.setText("Score: " + player.getScore());
             scoreBarScore.setText("Score: " + player.getScore());
         }
@@ -91,7 +92,8 @@ public class View implements Observer {
         mainMenuBg = new Image("images/main-menu-bg.png");
         mainMenuPane.setBackground(new Background(
                 new BackgroundImage(mainMenuBg, BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+                        BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                        BackgroundSize.DEFAULT)));
 
         //draw buttons
         playButton = new ImageView("images/play-button.png");
@@ -138,7 +140,7 @@ public class View implements Observer {
         gameBg = new Image("images/background1.png");
         gamePane.setBackground(new Background(
                 new BackgroundImage(gameBg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+                        BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 
         //draw top bar
         topBar = new ImageView("images/topBar1.png");
@@ -177,7 +179,7 @@ public class View implements Observer {
                 new Image("images/" + data.getPlayer().getNextBall().getColor() + " ball.png");
         nextBallImageView = new ImageView(spriteNextBall);
         nextBallImageView.relocate(GameConfiguration.stageWidth / 2
-                        - spriteNextBall.getWidth() / 4, GameConfiguration.topBarHeight - 30);
+                - spriteNextBall.getWidth() / 4, GameConfiguration.topBarHeight - 30);
         nextBallImageView.setFitWidth(spriteNextBall.getWidth() / 2);
         nextBallImageView.setFitHeight(spriteNextBall.getHeight() / 2);
 
@@ -283,20 +285,25 @@ public class View implements Observer {
                 if (c.getBall().isCenterPiece()) {
                     biv = new BallImageView(new Image("images/center.png"), c, false);
                 }
-                else if(c.getBall().isNormalBall()) {
-                    biv = new BallImageView(new Image("images/" + c.getBall().getColor() + " ball.png"), c, false);
+                else if (c.getBall().isNormalBall()) {
+                    biv = new BallImageView(new Image("images/" + c.getBall().getColor()
+                            + " ball.png"), c, false);
                 }
-                else if(c.getBall().isExplosiveBall()) {
-                    biv = new BallImageView(new Image("images/explosive ball.png"), c, false);
+                else if (c.getBall().isExplosiveBall()) {
+                    biv = new BallImageView(new Image("images/explosive ball.png"),
+                            c, false);
                 }
-                else if(c.getBall().isRainbowBall()) {
-                    biv = new BallImageView(new Image("images/rainbow ball.png"), c, false);
+                else if (c.getBall().isRainbowBall()) {
+                    biv = new BallImageView(new Image("images/rainbow ball.png"),
+                            c, false);
                 }
-                else if(c.getBall().isMultiplierBall()) {
-                    biv = new BallImageView(new Image("images/multiplier ball.png"), c, false);
+                else if (c.getBall().isMultiplierBall()) {
+                    biv = new BallImageView(new Image("images/multiplier ball.png"),
+                            c, false);
                 }
                 else {
-                    biv = new BallImageView(new Image("images/null.png"), c, false);
+                    biv = new BallImageView(new Image("images/null.png"),
+                            c, false);
                 }
                 gamePane.getChildren().add(biv);
                 biv.relocate(getScreenX(c, biv.getImage()), getScreenY(c, biv.getImage()));
