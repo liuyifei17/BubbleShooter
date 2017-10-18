@@ -163,16 +163,6 @@ public class GameController {
             System.exit(0);
         });
 
-        //sound button event
-        view.getMusicButton().setOnMouseReleased(event -> {
-            handleMusicButtonClick();
-        });
-
-        //sound button event
-        view.getMusicIcon().setOnMouseReleased(event -> {
-            handleMusicButtonClick();
-        });
-
         //popup home button event
         view.getPopupHomeButton().setOnMouseReleased(event -> {
             resetGame();
@@ -247,7 +237,6 @@ public class GameController {
         if (mediaPlayer == null) {
             return;
         }
-
         if (GameConfiguration.sounds) {
             GameConfiguration.sounds = false;
             mediaPlayer.pause();
@@ -255,7 +244,6 @@ public class GameController {
             GameConfiguration.sounds = true;
             mediaPlayer.play();
         }
-        view.changeMusicButtons();
     }
 
     private void setKeyboardControllers() {
