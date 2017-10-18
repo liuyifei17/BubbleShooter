@@ -1,6 +1,7 @@
 package Model;
 
 import Controller.GameConfiguration;
+import Utility.Util;
 
 import java.util.ArrayList;
 
@@ -122,5 +123,23 @@ public class Cell {
             }
         }
         return null;
+    }
+
+    /**
+     * This method gets the adjacent cell in a certain direction.
+     * @param dx the direction in the x axis
+     * @param dy the direction in the y axis
+     * @return the adjacent cell in that direction
+     */
+    public Cell getAdjacentCellInDirection(int dx, int dy) {
+        Cell adjacentCell = adjacentCells.get(0);
+        for (Cell c : adjacentCells) {
+            if (Util.getDistance(c.getCurrentX(), c.getCurrentY(), currentX + dx, currentY + dy)
+                    <= Util.getDistance(adjacentCell.getCurrentX(), adjacentCell.getCurrentY(),
+                    currentX + dx, currentY + dy)) {
+                adjacentCell = c;
+            }
+        }
+        return adjacentCell;
     }
 }

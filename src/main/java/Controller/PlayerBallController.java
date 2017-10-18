@@ -233,15 +233,6 @@ public class PlayerBallController {
         this.deltaY = deltaY;
     }
 
-    /**
-     * This is the setter for the grid field.
-     *
-     * @param grid the grid object that is associated with this controller
-     */
-    public void setGrid(Grid grid) {
-        this.grid = grid;
-    }
-
 
     /**
      * This method is the getter for the stopWatch field.
