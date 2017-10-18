@@ -52,15 +52,24 @@ public class View implements Observer {
     private ImageView playerBallImageView;
     private ImageView nextBallImageView;
     private Pane pausePopup;
-    private Button pausePopupContinueButton;
+    private Button pausePopupRestartButton;
     private Button pausePopupMainMenuButton;
     private Button pausePopupExitButton;
+    private Button pausePopupCloseButton;
     private Pane settingsPopup;
+    private Text audioText;
+    private ImageView audioToggle;
+    private Text wallText;
+    private ImageView wallToggle;
+    private Text specialText;
+    private ImageView specialToggle;
+    private Button settingsPopupCloseButton;
 
     /**
      * @param mainMenuPane sets the main menu pane
      * @param gamePane sets the game pane
      * @param data sets the game data
+     * @param player sets the game player
      */
     public View(Pane mainMenuPane, Pane gamePane, GameData data, Player player) {
         this.mainMenuPane = mainMenuPane;
@@ -80,7 +89,7 @@ public class View implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if(o == player){
+        if (o == player) {
             popupScore.setText("Score: " + player.getScore());
             scoreBarScore.setText("Score: " + player.getScore());
         }
@@ -289,16 +298,17 @@ public class View implements Observer {
                 if (c.getBall().isCenterPiece()) {
                     biv = new BallImageView(new Image("images/center.png"), c, false);
                 }
-                else if(c.getBall().isNormalBall()) {
-                    biv = new BallImageView(new Image("images/" + c.getBall().getColor() + " ball.png"), c, false);
+                else if (c.getBall().isNormalBall()) {
+                    biv = new BallImageView(new Image("images/" + c.getBall().getColor()
+                            + " ball.png"), c, false);
                 }
-                else if(c.getBall().isExplosiveBall()) {
+                else if (c.getBall().isExplosiveBall()) {
                     biv = new BallImageView(new Image("images/explosive ball.png"), c, false);
                 }
-                else if(c.getBall().isRainbowBall()) {
+                else if (c.getBall().isRainbowBall()) {
                     biv = new BallImageView(new Image("images/rainbow ball.png"), c, false);
                 }
-                else if(c.getBall().isMultiplierBall()) {
+                else if (c.getBall().isMultiplierBall()) {
                     biv = new BallImageView(new Image("images/multiplier ball.png"), c, false);
                 }
                 else {
@@ -311,14 +321,14 @@ public class View implements Observer {
     }
 
     /**
-     * @param volume the music volume based on which the music icon is changed
+     * Changes the music button icons based on the sound settings.
      */
-    public void changeMusicButton(int volume) {
-        if (volume == 100) {
-            musicIcon.setImage(musicIconMin);
-        }
-        else if (volume == 0) {
+    public void changeMusicButtons() {
+        if (GameConfiguration.sounds) {
             musicIcon.setImage(musicIconMax);
+        }
+        else {
+            musicIcon.setImage(musicIconMin);
         }
         musicIcon.relocate(510, 620);
         musicIcon.fitWidthProperty().setValue(60);
@@ -341,9 +351,10 @@ public class View implements Observer {
 
         //create graphical elements
         ImageView gameOverMessage = new ImageView("images/gameOverMessage.png");
-        gameOverMessage.relocate(0, 20);
+        gameOverMessage.relocate(0, 5);
         popupScore = new Text("Score: 0");
         popupScore.setFont(Font.font("Arial", 35));
+        popupScore.setFill(Color.YELLOW);
         popupScore.setWrappingWidth(GameConfiguration.popupWidth);
         popupScore.setTextAlignment(TextAlignment.CENTER);
         popupScore.setUnderline(true);
@@ -376,7 +387,7 @@ public class View implements Observer {
 
         //create graphical elements
         ImageView pauseMessage = new ImageView("images/pauseMessage.png");
-        pauseMessage.relocate(3, 20);
+        pauseMessage.relocate(0, 5);
         pausePopupMainMenuButton = new Button();
         pausePopupMainMenuButton.backgroundProperty().setValue(null);
         pausePopupMainMenuButton.graphicProperty().bind(
@@ -393,20 +404,29 @@ public class View implements Observer {
                         .otherwise(new ImageView("images/popup-exit-button.png"))
         );
         pausePopupExitButton.relocate(40, 170);
-        pausePopupContinueButton = new Button();
-        pausePopupContinueButton.backgroundProperty().setValue(null);
-        pausePopupContinueButton.graphicProperty().bind(
-                Bindings.when(pausePopupContinueButton.hoverProperty())
-                        .then(new ImageView("images/popup-continue-button-hovered.png"))
-                        .otherwise(new ImageView("images/popup-continue-button.png"))
+        pausePopupRestartButton = new Button();
+        pausePopupRestartButton.backgroundProperty().setValue(null);
+        pausePopupRestartButton.graphicProperty().bind(
+                Bindings.when(pausePopupRestartButton.hoverProperty())
+                        .then(new ImageView("images/popup-restart-button-hovered.png"))
+                        .otherwise(new ImageView("images/popup-restart-button.png"))
         );
-        pausePopupContinueButton.relocate(40, 240);
+        pausePopupRestartButton.relocate(40, 240);
+        pausePopupCloseButton = new Button();
+        pausePopupCloseButton.backgroundProperty().setValue(null);
+        pausePopupCloseButton.graphicProperty().bind(
+                Bindings.when(pausePopupCloseButton.hoverProperty())
+                        .then(new ImageView("images/close-button-hovered.png"))
+                        .otherwise(new ImageView("images/close-button.png"))
+        );
+        pausePopupCloseButton.relocate(260, 5);
 
         //add graphical elements to popup container
         pausePopup.getChildren().add(pauseMessage);
-        pausePopup.getChildren().add(pausePopupContinueButton);
+        pausePopup.getChildren().add(pausePopupRestartButton);
         pausePopup.getChildren().add(pausePopupMainMenuButton);
         pausePopup.getChildren().add(pausePopupExitButton);
+        pausePopup.getChildren().add(pausePopupCloseButton);
     }
 
     /**
@@ -425,11 +445,97 @@ public class View implements Observer {
 
         //create graphical elements
         ImageView settingsMessage = new ImageView("images/settingsMessage.png");
-        settingsMessage.relocate(0, 20);
-
+        settingsMessage.relocate(0, 5);
+        audioText = new Text("Sounds on/off: ");
+        audioText.setFont(Font.font("Arial", 22));
+        audioText.setFill(Color.YELLOW);
+        audioText.setWrappingWidth(GameConfiguration.popupWidth);
+        audioText.setTextAlignment(TextAlignment.LEFT);
+        audioText.relocate(10, 80);
+        specialText = new Text("Special balls on/off: ");
+        specialText.setFont(Font.font("Arial", 22));
+        specialText.setFill(Color.YELLOW);
+        specialText.setWrappingWidth(GameConfiguration.popupWidth);
+        specialText.setTextAlignment(TextAlignment.LEFT);
+        specialText.relocate(10, 110);
+        wallText = new Text("Asteroids on/off: ");
+        wallText.setFont(Font.font("Arial", 22));
+        wallText.setFill(Color.YELLOW);
+        wallText.setWrappingWidth(GameConfiguration.popupWidth);
+        wallText.setTextAlignment(TextAlignment.LEFT);
+        wallText.relocate(10, 140);
+        audioToggle = new ImageView("images/toggleOff.png");
+        audioToggle.relocate(275, 86);
+        specialToggle = new ImageView("images/toggleOff.png");
+        specialToggle.relocate(275, 116);
+        wallToggle = new ImageView("images/toggleOff.png");
+        wallToggle.relocate(275, 146);
+        settingsPopupCloseButton = new Button();
+        settingsPopupCloseButton.backgroundProperty().setValue(null);
+        settingsPopupCloseButton.graphicProperty().bind(
+                Bindings.when(settingsPopupCloseButton.hoverProperty())
+                        .then(new ImageView("images/close-button-hovered.png"))
+                        .otherwise(new ImageView("images/close-button.png"))
+        );
+        settingsPopupCloseButton.relocate(260, 5);
 
         //add graphical elements to popup container
         settingsPopup.getChildren().add(settingsMessage);
+        settingsPopup.getChildren().add(audioText);
+        settingsPopup.getChildren().add(specialText);
+        settingsPopup.getChildren().add(wallText);
+        settingsPopup.getChildren().add(audioToggle);
+        settingsPopup.getChildren().add(specialToggle);
+        settingsPopup.getChildren().add(wallToggle);
+        settingsPopup.getChildren().add(settingsPopupCloseButton);
+
+        //checks for toggle sprites
+        checkAllSettingsToggles();
+    }
+
+    /**
+     * Checks all the settings option toggle and sets the sprites accordingly.
+     */
+    public void checkAllSettingsToggles() {
+        checkSettingsAudioToggle();
+        checkSettingsSpecialBallToggle();
+        checkSettingsWallToggle();
+    }
+
+    /**
+     * Checks whether a setting is toggled and not and updates toggle sprite accordingly.
+     */
+    public void checkSettingsAudioToggle() {
+        if (GameConfiguration.sounds) {
+            audioToggle.setImage(new Image("images/toggleOn.png"));
+        }
+        else {
+            audioToggle.setImage(new Image("images/toggleOff.png"));
+        }
+    }
+
+    /**
+     * Checks whether a setting is toggled and not and updates toggle sprite accordingly.
+     */
+    public void checkSettingsWallToggle() {
+        if (GameConfiguration.walls) {
+            wallToggle.setImage(new Image("images/toggleOn.png"));
+        }
+        else {
+            wallToggle.setImage(new Image("images/toggleOff.png"));
+        }
+    }
+
+    /**
+     * Checks whether a setting is toggled and not and updates toggle sprite accordingly.
+     */
+    public void checkSettingsSpecialBallToggle() {
+        if (GameConfiguration.specialBalls) {
+            specialToggle.setImage(new Image("images/toggleOn.png"));
+        }
+        else {
+            specialToggle.setImage(new Image("images/toggleOff.png"));
+        }
     }
 
     /**
@@ -571,8 +677,8 @@ public class View implements Observer {
     /**
      * @return popup continue game button
      */
-    public Button getPausePopupContinueButton() {
-        return pausePopupContinueButton;
+    public Button getPausePopupRestartButton() {
+        return pausePopupRestartButton;
     }
 
     /**
@@ -601,5 +707,40 @@ public class View implements Observer {
      */
     public ImageView getGamePauseIcon() {
         return gamePauseIcon;
+    }
+
+    /**
+     * @return audio toggle button
+     */
+    public ImageView getAudioToggle() {
+        return audioToggle;
+    }
+
+    /**
+     * @return wall toggle button
+     */
+    public ImageView getWallToggle() {
+        return wallToggle;
+    }
+
+    /**
+     * @return special balls toggle button
+     */
+    public ImageView getSpecialToggle() {
+        return specialToggle;
+    }
+
+    /**
+     * @return settings popup menu close button
+     */
+    public Button getSettingsPopupCloseButton() {
+        return settingsPopupCloseButton;
+    }
+
+    /**
+     * @return pause popup menu close button
+     */
+    public Button getPausePopupCloseButton() {
+        return pausePopupCloseButton;
     }
 }
