@@ -1,7 +1,8 @@
 package Controller;
 
-import java.awt.event.*;
-import javax.swing.Timer;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * The Game runner class.
