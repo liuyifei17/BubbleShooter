@@ -48,6 +48,7 @@ public class PlayerTest {
         player.nextBall();
 
         assertThat(player.getPlayerBall()).isNotEqualTo(playerBall);
+        assertThat(player.getPlayerBall().getColor()).isEqualTo(nextBall.getColor());
         assertThat(player.getNextBall()).isNotEqualTo(nextBall);
     }
 

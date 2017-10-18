@@ -1,8 +1,6 @@
 package Model;
 
 import Controller.GameConfiguration;
-import Controller.GameController;
-import Utility.Util;
 
 import java.util.ArrayList;
 
@@ -115,6 +113,7 @@ public class Cell {
 
     /**
      * This method finds a adjacent cell that is empty.
+     * @return An empty adjacent cell
      */
     public Cell getEmptyAdjacentCell() {
         for (Cell c : adjacentCells) {
