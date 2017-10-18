@@ -109,6 +109,7 @@ public class PlayerBallController {
         // the ball
         else if (player.getPlayerBall().getCounter() >= GameConfiguration.maximumTimesBallHit) {
             resetBall();
+            return;
         }
 
         // if the ball has collided with the wall the deltaX or deltaY will become negative.
