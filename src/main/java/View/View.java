@@ -35,12 +35,6 @@ public class View implements Observer {
     private Image mainMenuBg;
     private ImageView playButton;
     private ImageView exitButton;
-    private ImageView musicButton;
-    private ImageView settingsButton;
-    private Image musicIconMax;
-    private Image musicIconMin;
-    private ImageView musicIcon;
-    private ImageView settingsIcon;
     private Image gameBg;
     private ImageView topBar;
     private ImageView scoreBar;
@@ -114,32 +108,10 @@ public class View implements Observer {
         exitButton.relocate(184, 370);
         exitButton.fitWidthProperty().setValue(250);
         exitButton.fitHeightProperty().setValue(80);
-        settingsButton = new ImageView("images/backButton.png");
-        settingsButton.relocate(20, 600);
-        settingsButton.fitWidthProperty().setValue(100);
-        settingsButton.fitHeightProperty().setValue(100);
-        musicButton = new ImageView("images/backButton.png");
-        musicButton.relocate(490, 600);
-        musicButton.fitWidthProperty().setValue(100);
-        musicButton.fitHeightProperty().setValue(100);
-        settingsIcon = new ImageView("images/settings-icon.png");
-        settingsIcon.relocate(40, 620);
-        settingsIcon.fitWidthProperty().setValue(60);
-        settingsIcon.fitHeightProperty().setValue(60);
-        musicIconMax = new Image("images/sound-icon-max.png");
-        musicIconMin = new Image("images/sound-icon-min.png");
-        musicIcon = new ImageView(musicIconMax);
-        musicIcon.relocate(510, 620);
-        musicIcon.fitWidthProperty().setValue(60);
-        musicIcon.fitHeightProperty().setValue(60);
 
         //add components to main menu
         mainMenuPane.getChildren().add(playButton);
         mainMenuPane.getChildren().add(exitButton);
-        mainMenuPane.getChildren().add(settingsButton);
-        mainMenuPane.getChildren().add(musicButton);
-        mainMenuPane.getChildren().add(settingsIcon);
-        mainMenuPane.getChildren().add(musicIcon);
     }
 
     /**
@@ -318,21 +290,6 @@ public class View implements Observer {
                 biv.relocate(getScreenX(c, biv.getImage()), getScreenY(c, biv.getImage()));
             }
         });
-    }
-
-    /**
-     * Changes the music button icons based on the sound settings.
-     */
-    public void changeMusicButtons() {
-        if (GameConfiguration.sounds) {
-            musicIcon.setImage(musicIconMax);
-        }
-        else {
-            musicIcon.setImage(musicIconMin);
-        }
-        musicIcon.relocate(510, 620);
-        musicIcon.fitWidthProperty().setValue(60);
-        musicIcon.fitHeightProperty().setValue(60);
     }
 
     /**
@@ -623,20 +580,6 @@ public class View implements Observer {
      */
     public ImageView getExitButton() {
         return exitButton;
-    }
-
-    /**
-     * @return music button.
-     */
-    public ImageView getMusicButton() {
-        return musicButton;
-    }
-
-    /**
-     * @return music icon.
-     */
-    public ImageView getMusicIcon() {
-        return musicIcon;
     }
 
     /**
