@@ -2,7 +2,6 @@ package UnitTests.Model;
 
 import Controller.GameConfiguration;
 import Controller.GameController;
-import Controller.PlayerBallController;
 import Model.*;
 import View.View;
 import org.junit.jupiter.api.BeforeEach;

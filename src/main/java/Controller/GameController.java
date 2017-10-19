@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.GameData;
+import Model.Grid;
+import Model.Player;
 import View.View;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -64,13 +66,15 @@ public class GameController {
      * initializes the game.
      */
     public void setup() {
-        //Initialize data
-        data = new GameData();
-        loader = new GameDataLoader();
         GameConfiguration.setApi();
         GameConfiguration.isApi();
-        loader.initialize(data, GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+
+        //Initialize data
+        data = new GameData(new Grid(GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2),
+                new Player(), 90);
+        loader = new GameDataLoader();
+        loader.initialize(data);
 
         //Initialize controllers
         gridController = new GridController(this, data.getGrid());
@@ -277,10 +281,11 @@ public class GameController {
         view.closeGameOverPopup();
 
         //reset data
-        data = new GameData();
+        data = new GameData(new Grid(GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2),
+                new Player(), 90);
         loader = new GameDataLoader();
-        loader.initialize(data, GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        loader.initialize(data);
         gridController = new GridController(this, data.getGrid());
         playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
 

@@ -1,7 +1,6 @@
 package Model;
 
 import Controller.GameConfiguration;
-import Controller.GameController;
 import Utility.Util;
 
 import java.util.ArrayList;
@@ -115,6 +114,7 @@ public class Cell {
 
     /**
      * This method finds a adjacent cell that is empty.
+     * @return An empty adjacent cell
      */
     public Cell getEmptyAdjacentCell() {
         for (Cell c : adjacentCells) {
@@ -123,5 +123,23 @@ public class Cell {
             }
         }
         return null;
+    }
+
+    /**
+     * This method gets the adjacent cell in a certain direction.
+     * @param dx the direction in the x axis
+     * @param dy the direction in the y axis
+     * @return the adjacent cell in that direction
+     */
+    public Cell getAdjacentCellInDirection(int dx, int dy) {
+        Cell adjacentCell = adjacentCells.get(0);
+        for (Cell c : adjacentCells) {
+            if (Util.getDistance(c.getCurrentX(), c.getCurrentY(), currentX + dx, currentY + dy)
+                    <= Util.getDistance(adjacentCell.getCurrentX(), adjacentCell.getCurrentY(),
+                    currentX + dx, currentY + dy)) {
+                adjacentCell = c;
+            }
+        }
+        return adjacentCell;
     }
 }
