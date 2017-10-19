@@ -184,8 +184,10 @@ public class Grid {
     }
 
 
-
-    // this method adds balls to the hexagon every time the player misses more than 6 times
+    /**
+     * This method adds balls to the hexagon every time the player misses more than 6 times.
+     * @param numberBalls the number of balls to add to the hexagon
+     */
     public void appendAdditionalBalls(int numberBalls) {
         int randomIndex;
         ArrayList<Integer> randomIndexes = new ArrayList<Integer>();

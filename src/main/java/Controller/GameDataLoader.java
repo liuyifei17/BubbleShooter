@@ -1,10 +1,8 @@
 package Controller;
 
 import Model.Ball;
-import Model.Player;
 import Model.Cell;
 import Model.GameData;
-import Model.Grid;
 import Utility.Util;
 
 import java.util.ArrayList;
@@ -19,14 +17,9 @@ public class GameDataLoader {
     /**
      * Initializes the game data.
      * @param data    the class in which the data is saved
-     * @param centerX the center coord X of the screen where the grid is initialized
-     * @param centerY the center coord Y of the screen where the grid is initialized
      */
-    public void initialize(GameData data, double centerX, double centerY) {
+    public void initialize(GameData data) {
         this.data = data;
-        data.setInitialBallAmount(90);
-        data.setGrid(new Grid(centerX, centerY));
-        data.setPlayer(new Player());
         loadElements();
     }
 
