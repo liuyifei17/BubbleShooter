@@ -28,7 +28,7 @@ public class NormalBallTest {
         GameConfiguration.isApi();
     }
 
-   @Test
+    @Test
     void testNormalBallConstructor() {
         PlayerBall pb = playerBallFactory.createBall("Normal Ball",
                 GameConfiguration.ballRadius, GameConfiguration.stageWidth / 2);
@@ -51,7 +51,8 @@ public class NormalBallTest {
 
     @Test
     void hasCollidedWithWallTest_false() {
-        PlayerBall pb = playerBallFactory.createBall("Normal Ball", GameConfiguration.ballRadius + 1,
+        PlayerBall pb = playerBallFactory.createBall("Normal Ball",
+                GameConfiguration.ballRadius + 1,
                 GameConfiguration.stageHeight / 2);
 
         assertThat(pb.hasCollidedWithWall()).isFalse();
@@ -59,7 +60,8 @@ public class NormalBallTest {
 
     @Test
     void hasCollidedWithWallTest_true() {
-        PlayerBall pb = playerBallFactory.createBall("Normal Ball", GameConfiguration.stageWidth, 0);
+        PlayerBall pb = playerBallFactory.createBall("Normal Ball",
+                GameConfiguration.stageWidth, 0);
 
         assertThat(pb.hasCollidedWithWall()).isTrue();
     }

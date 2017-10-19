@@ -19,7 +19,7 @@ public class GameDataTest {
 
     @BeforeEach
     public void setUp() {
-        gameData = new GameData();
+        gameData = new GameData(null, null, 0);
     }
 
     @Test

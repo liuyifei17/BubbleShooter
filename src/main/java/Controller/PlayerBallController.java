@@ -109,6 +109,7 @@ public class PlayerBallController {
         // the ball
         else if (player.getPlayerBall().getCounter() >= GameConfiguration.maximumTimesBallHit) {
             resetBall();
+            return;
         }
 
         // if the ball has collided with the wall the deltaX or deltaY will become negative.
@@ -230,15 +231,6 @@ public class PlayerBallController {
      */
     public void setDeltaY(double deltaY) {
         this.deltaY = deltaY;
-    }
-
-    /**
-     * This is the setter for the grid field.
-     *
-     * @param grid the grid object that is associated with this controller
-     */
-    public void setGrid(Grid grid) {
-        this.grid = grid;
     }
 
 
