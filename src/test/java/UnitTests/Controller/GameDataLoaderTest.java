@@ -21,7 +21,7 @@ class GameDataLoaderTest {
         gameDataLoader = new GameDataLoader();
         Grid grid = mock(Grid.class);
         when(gameData.getGrid()).thenReturn(grid);
-        gameDataLoader.initialize(gameData, 4, 3);
+        gameDataLoader.initialize(gameData);
         verify(gameData).getGrid();
 
     }

@@ -71,7 +71,6 @@ public class BallCollisionHandler {
 
 
     /** This method takes care of the situation in which the shot ball hits the hexagon.
-     *
      * @param collidedCell the cell from the hexagon that the ball collided with
      */
     public void handleCollision(Cell collidedCell) {
