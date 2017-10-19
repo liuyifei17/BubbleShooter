@@ -63,11 +63,7 @@ public class View implements Observer {
      * @param mainMenuPane sets the main menu pane
      * @param gamePane sets the game pane
      * @param data sets the game data
-<<<<<<< HEAD
      * @param player sets the player
-=======
-     * @param player sets the game player
->>>>>>> 67931ee6899b47e6f4a6f2a46149304969105c68
      */
     public View(Pane mainMenuPane, Pane gamePane, GameData data, Player player) {
         this.mainMenuPane = mainMenuPane;
