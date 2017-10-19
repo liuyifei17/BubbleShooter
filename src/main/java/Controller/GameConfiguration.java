@@ -23,6 +23,7 @@ public class GameConfiguration {
     public static int popupX;
     public static int popupY;
     public static int ballRadius;
+    public static int wallRadius;
     public static int speedup;
     public static int maximumTimesBallHit;
     public static List<Integer> leftRotation;
@@ -59,6 +60,7 @@ public class GameConfiguration {
             popupX = api.getIntegerValueOf("popupX");
             popupY = api.getIntegerValueOf("popupY");
             ballRadius = api.getIntegerValueOf("ballRadius");
+            wallRadius = api.getIntegerValueOf("wallRadius");
             speedup = api.getIntegerValueOf("speedup");
             maximumTimesBallHit = api.getIntegerValueOf("maximumTimesBallHit");
             rightRotation = api.getListIntValueOf("rightRotation");

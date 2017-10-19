@@ -25,6 +25,7 @@ int popupHeight = 360
 int popupX = 150
 int popupY = 200
 int ballRadius = 15
+int wallRadius = 32
 int speedup = 5
 int maximumTimesBallHit = 4
 
