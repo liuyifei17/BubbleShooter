@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.GameConfiguration;
 import Utility.Util;
 
 import java.util.Observable;
@@ -85,16 +86,22 @@ public class Player  extends Observable {
     public void nextBall() {
         playerBall = nextBall;
 
-        int random = Util.randomBetween(0, 15);
-        switch (random) {
-            case 1:
-                nextBall = playerBallFactory.createBall("Explosive Ball");
-                break;
-            case 2:
-                nextBall = playerBallFactory.createBall("Rainbow Ball");
-                break;
-            default:
-                nextBall = playerBallFactory.createBall("Normal Ball");
+        if (!GameConfiguration.specialBalls) {
+            nextBall = playerBallFactory.createBall("Normal Ball");
+        }
+        else {
+            int random = Util.randomBetween(0, 30);
+            switch (random) {
+                case 1://1 in 30 is an explosive ball.
+                    nextBall = playerBallFactory.createBall("Explosive Ball");
+                    break;
+                case 2:
+                case 3://2 in 30 is a rainbow ball.
+                    nextBall = playerBallFactory.createBall("Rainbow Ball");
+                    break;
+                default://in all other cases the next ball is a normal ball.
+                    nextBall = playerBallFactory.createBall("Normal Ball");
+            }
         }
     }
 

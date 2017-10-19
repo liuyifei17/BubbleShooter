@@ -38,7 +38,7 @@ public class RainbowBall extends PlayerBall {
         ArrayList<String> colors = new ArrayList<>();
 
         for (Cell adjacentCell : collidedCell.getAdjacentCells()) {
-            if (adjacentCell.getBall().getColor() !=  null) {
+            if (adjacentCell.getBall() !=  null) {
                 colors.add(adjacentCell.getBall().getColor());
             }
         }
