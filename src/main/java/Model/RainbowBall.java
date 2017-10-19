@@ -51,9 +51,9 @@ public class RainbowBall extends PlayerBall {
                     checkColorRemoval(color, collidedCell));
         }
 
-        Map.Entry<Integer, ArrayList<Cell>> entry = map.entrySet().iterator().next();
+        ArrayList<Cell> mostCells = new ArrayList<>(map.values()).get(map.values().size()-1);
 
-        return entry.getValue();
+        return mostCells;
     }
 
     /**
@@ -82,7 +82,7 @@ public class RainbowBall extends PlayerBall {
 
             //loop through all neighbors
             for (Cell adjacentCell : current.getAdjacentCells()) {
-                if (adjacentCell.getBall() != null) {
+                if (adjacentCell.getBall() != null && !adjacentCell.getBall().isCenterPiece()) {
 
                     Ball ball = adjacentCell.getBall();
 
