@@ -149,8 +149,8 @@ public class View implements Observer {
         gamePauseIcon.fitWidthProperty().setValue(48);
         gameSettingsIcon = new ImageView("images/settings-icon.png");
         gameSettingsIcon.relocate(550, 10);
-        gameSettingsIcon.fitHeightProperty().setValue(44);
-        gameSettingsIcon.fitWidthProperty().setValue(44);
+        gameSettingsIcon.fitHeightProperty().setValue(46);
+        gameSettingsIcon.fitWidthProperty().setValue(46);
 
         //draw entities
         for (Cell c : data.getGrid().getOccupiedCells()) {
