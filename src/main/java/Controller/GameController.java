@@ -32,7 +32,6 @@ public class GameController {
 
     private Media backgroundMusic;
     private MediaPlayer mediaPlayer;
-    private int backgroundMusicVolume;
 
     private boolean gamePaused;
     private long clickDelay;
@@ -60,6 +59,7 @@ public class GameController {
     public static void setView(View v) {
         view = v;
     }
+
     /**
      * initializes the game.
      */
@@ -96,13 +96,14 @@ public class GameController {
     }
 
     private void setupSound() {
-        backgroundMusicVolume = 100;
         try {
             backgroundMusic = new Media(
                     new File("src/main/resources/sounds/bgm1.mp3").toURI().toString());
             mediaPlayer = new MediaPlayer(backgroundMusic);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-            mediaPlayer.play();
+            if (GameConfiguration.sounds) {
+                mediaPlayer.play();
+            }
         }
         catch (Exception e) {
             System.out.println("Error loading sound...");
@@ -150,6 +151,9 @@ public class GameController {
 
         // play button event
         view.getPlayButton().setOnMouseReleased(event -> {
+            if (gamePaused) {
+                resumeGame();
+            }
             primaryStage.setScene(gameScreen);
         });
 
@@ -157,16 +161,6 @@ public class GameController {
         view.getExitButton().setOnMouseReleased(event -> {
             primaryStage.close();
             System.exit(0);
-        });
-
-        //sound button event
-        view.getMusicButton().setOnMouseReleased(event -> {
-            handleMusicButtonClick();
-        });
-
-        //sound button event
-        view.getMusicIcon().setOnMouseReleased(event -> {
-            handleMusicButtonClick();
         });
 
         //popup home button event
@@ -181,19 +175,18 @@ public class GameController {
         });
 
         //continue playing the game
-        view.getPopupContinueButton().setOnMouseReleased(event -> {
+        view.getPausePopupRestartButton().setOnMouseReleased(event -> {
             clickDelay = System.currentTimeMillis();
-            view.closePausePopup();
-            resumeGame();
+            resetGame();
         });
 
         //continue playing the game
-        view.getPopupExitButton().setOnMouseReleased(event -> {
+        view.getPausePopupExitButton().setOnMouseReleased(event -> {
             System.exit(0);
         });
 
         //return to main menu
-        view.getPopupMainMenuButton().setOnMouseReleased(event -> {
+        view.getPausePopupMainMenuButton().setOnMouseReleased(event -> {
             clickDelay = System.currentTimeMillis();
             primaryStage.setScene(mainMenu);
             view.closePausePopup();
@@ -201,8 +194,42 @@ public class GameController {
 
         //
         view.getGamePauseIcon().setOnMouseReleased(event -> {
-            view.showPausePopup();
-            pauseGame();
+            if (!gamePaused) {
+                view.showPausePopup();
+                pauseGame();
+            }
+        });
+
+        view.getGameSettingsIcon().setOnMouseReleased(event -> {
+            if (!gamePaused) {
+                view.showSettingsPopup();
+                pauseGame();
+            }
+        });
+
+        view.getSettingsPopupCloseButton().setOnMouseReleased(event -> {
+            view.closeSettingsPopup();
+            resumeGame();
+        });
+
+        view.getPausePopupCloseButton().setOnMouseReleased(event -> {
+            view.closePausePopup();
+            resumeGame();
+        });
+
+        view.getAudioToggle().setOnMouseReleased(event -> {
+            handleMusicButtonClick();
+            view.checkSettingsAudioToggle();
+        });
+
+        view.getWallToggle().setOnMouseReleased(event -> {
+            GameConfiguration.walls = !GameConfiguration.walls;
+            view.checkSettingsWallToggle();
+        });
+
+        view.getSpecialToggle().setOnMouseReleased(event -> {
+            GameConfiguration.specialBalls = !GameConfiguration.specialBalls;
+            view.checkSettingsSpecialBallToggle();
         });
     }
 
@@ -210,13 +237,11 @@ public class GameController {
         if (mediaPlayer == null) {
             return;
         }
-
-        view.changeMusicButton(backgroundMusicVolume);
-        if (backgroundMusicVolume == 100) {
-            backgroundMusicVolume = 0;
+        if (GameConfiguration.sounds) {
+            GameConfiguration.sounds = false;
             mediaPlayer.pause();
         } else {
-            backgroundMusicVolume = 100;
+            GameConfiguration.sounds = true;
             mediaPlayer.play();
         }
     }
@@ -229,6 +254,7 @@ public class GameController {
                     view.showPausePopup();
                     pauseGame();
                 } else {
+                    view.closeSettingsPopup();
                     view.closePausePopup();
                     resumeGame();
                 }
