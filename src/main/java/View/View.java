@@ -28,7 +28,7 @@ public class View implements Observer {
 
     private GameData data;
     private Player player;
-    protected Pane gamePane;
+    private Pane gamePane;
     private Pane mainMenuPane;
     private ImageView gameSettingsIcon;
     private ImageView gamePauseIcon;
@@ -46,10 +46,10 @@ public class View implements Observer {
     private ImageView playerBallImageView;
     private ImageView nextBallImageView;
     private Pane pausePopup;
-    private Button pausePopupRestartButton;
-    private Button pausePopupMainMenuButton;
-    private Button pausePopupExitButton;
-    private Button pausePopupCloseButton;
+    private ImageView pausePopupRestartButton;
+    private ImageView pausePopupMainMenuButton;
+    private ImageView pausePopupExitButton;
+    private ImageView pausePopupCloseButton;
     private Pane settingsPopup;
     private Text audioText;
     private ImageView audioToggle;
@@ -57,7 +57,7 @@ public class View implements Observer {
     private ImageView wallToggle;
     private Text specialText;
     private ImageView specialToggle;
-    private Button settingsPopupCloseButton;
+    private ImageView settingsPopupCloseButton;
 
     /**
      * @param mainMenuPane sets the main menu pane
@@ -361,38 +361,22 @@ public class View implements Observer {
         //create graphical elements
         ImageView pauseMessage = new ImageView("images/pauseMessage.png");
         pauseMessage.relocate(0, 5);
-        pausePopupMainMenuButton = new Button();
-        pausePopupMainMenuButton.backgroundProperty().setValue(null);
-        pausePopupMainMenuButton.graphicProperty().bind(
-                Bindings.when(pausePopupMainMenuButton.hoverProperty())
-                        .then(new ImageView("images/popup-home-button-hovered.png"))
-                        .otherwise(new ImageView("images/popup-home-button.png"))
-        );
-        pausePopupMainMenuButton.relocate(40, 100);
-        pausePopupExitButton = new Button();
-        pausePopupExitButton.backgroundProperty().setValue(null);
-        pausePopupExitButton.graphicProperty().bind(
-                Bindings.when(pausePopupExitButton.hoverProperty())
-                        .then(new ImageView("images/popup-exit-button-hovered.png"))
-                        .otherwise(new ImageView("images/popup-exit-button.png"))
-        );
-        pausePopupExitButton.relocate(40, 170);
-        pausePopupRestartButton = new Button();
-        pausePopupRestartButton.backgroundProperty().setValue(null);
-        pausePopupRestartButton.graphicProperty().bind(
-                Bindings.when(pausePopupRestartButton.hoverProperty())
-                        .then(new ImageView("images/popup-restart-button-hovered.png"))
-                        .otherwise(new ImageView("images/popup-restart-button.png"))
-        );
-        pausePopupRestartButton.relocate(40, 240);
-        pausePopupCloseButton = new Button();
-        pausePopupCloseButton.backgroundProperty().setValue(null);
-        pausePopupCloseButton.graphicProperty().bind(
-                Bindings.when(pausePopupCloseButton.hoverProperty())
-                        .then(new ImageView("images/close-button-hovered.png"))
-                        .otherwise(new ImageView("images/close-button.png"))
-        );
-        pausePopupCloseButton.relocate(260, 5);
+        pausePopupMainMenuButton = new ImageView("images/popup-home-button.png");
+        createHover(pausePopupMainMenuButton, new Image("images/popup-home-button.png"),
+                new Image("images/popup-home-button-hovered.png"));
+        pausePopupMainMenuButton.relocate(50, 105);
+        pausePopupExitButton = new ImageView("images/popup-exit-button.png");
+        createHover(pausePopupExitButton, new Image("images/popup-exit-button.png"),
+                new Image("images/popup-exit-button-hovered.png"));
+        pausePopupExitButton.relocate(50, 180);
+        pausePopupRestartButton = new ImageView("images/popup-restart-button.png");
+        createHover(pausePopupRestartButton, new Image("images/popup-restart-button.png"),
+                new Image("images/popup-restart-button-hovered.png"));
+        pausePopupRestartButton.relocate(50, 255);
+        pausePopupCloseButton = new ImageView("images/close-button.png");
+        createHover(pausePopupCloseButton, new Image("images/close-button.png"),
+                new Image("images/close-button-hovered.png"));
+        pausePopupCloseButton.relocate(270, 8);
 
         //add graphical elements to popup container
         pausePopup.getChildren().add(pauseMessage);
@@ -443,14 +427,10 @@ public class View implements Observer {
         specialToggle.relocate(275, 116);
         wallToggle = new ImageView("images/toggleOff.png");
         wallToggle.relocate(275, 146);
-        settingsPopupCloseButton = new Button();
-        settingsPopupCloseButton.backgroundProperty().setValue(null);
-        settingsPopupCloseButton.graphicProperty().bind(
-                Bindings.when(settingsPopupCloseButton.hoverProperty())
-                        .then(new ImageView("images/close-button-hovered.png"))
-                        .otherwise(new ImageView("images/close-button.png"))
-        );
-        settingsPopupCloseButton.relocate(260, 5);
+        settingsPopupCloseButton = new ImageView("images/close-button.png");
+        createHover(settingsPopupCloseButton, new Image("images/close-button.png"),
+                new Image("images/close-button-hovered.png"));
+        settingsPopupCloseButton.relocate(270, 8);
 
         //add graphical elements to popup container
         settingsPopup.getChildren().add(settingsMessage);
@@ -650,21 +630,21 @@ public class View implements Observer {
     /**
      * @return popup continue game button
      */
-    public Button getPausePopupRestartButton() {
+    public ImageView getPausePopupRestartButton() {
         return pausePopupRestartButton;
     }
 
     /**
      * @return popup main menu return button
      */
-    public Button getPausePopupMainMenuButton() {
+    public ImageView getPausePopupMainMenuButton() {
         return pausePopupMainMenuButton;
     }
 
     /**
      * @return popup exit game button
      */
-    public Button getPausePopupExitButton() {
+    public ImageView getPausePopupExitButton() {
         return pausePopupExitButton;
     }
 
@@ -706,14 +686,14 @@ public class View implements Observer {
     /**
      * @return settings popup menu close button
      */
-    public Button getSettingsPopupCloseButton() {
+    public ImageView getSettingsPopupCloseButton() {
         return settingsPopupCloseButton;
     }
 
     /**
      * @return pause popup menu close button
      */
-    public Button getPausePopupCloseButton() {
+    public ImageView getPausePopupCloseButton() {
         return pausePopupCloseButton;
     }
 }

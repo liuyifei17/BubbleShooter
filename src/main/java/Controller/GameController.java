@@ -212,11 +212,13 @@ public class GameController {
         });
 
         view.getSettingsPopupCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
             view.closeSettingsPopup();
             resumeGame();
         });
 
         view.getPausePopupCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
             view.closePausePopup();
             resumeGame();
         });
