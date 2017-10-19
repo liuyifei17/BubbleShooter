@@ -40,6 +40,33 @@ public class BallTest {
     }
 
     @Test
+    void isNormalBallTest() {
+        assertThat(ball.isNormalBall()).isTrue();
+    }
+
+    @Test
+    void isExplosiveBallTest() {
+        ball = new Ball("color", null, 2);
+        assertThat(ball.isExplosiveBall()).isTrue();
+    }
+
+    @Test
+    void isRainbowBallTest() {
+        ball = new Ball("color", null, 3);
+        assertThat(ball.isRainbowBall()).isTrue();
+    }
+
+    @Test
+    void isMultipleBallTest() {
+        ball = new Ball("color", null, 4);
+        assertThat(ball.isMultiplierBall()).isTrue();
+    }
+
+    @Test
+    void getBallTypeTest() {
+        assertThat(ball.getBallType()).isEqualTo(1);
+    }
+    @Test
     void getCellTest() {
         Cell cell = new Cell(1, 2);
 
