@@ -145,10 +145,14 @@ public class View implements Observer {
 
         //draw button icons
         gamePauseIcon = new ImageView("images/pause-icon.png");
+        createHover(gamePauseIcon, new Image("images/pause-icon.png"),
+                new Image("images/pause-icon-hovered.png"));
         gamePauseIcon.relocate(495, 10);
         gamePauseIcon.fitHeightProperty().setValue(48);
         gamePauseIcon.fitWidthProperty().setValue(48);
         gameSettingsIcon = new ImageView("images/settings-icon.png");
+        createHover(gameSettingsIcon, new Image("images/settings-icon.png"),
+                new Image("images/settings-icon-hovered.png"));
         gameSettingsIcon.relocate(550, 10);
         gameSettingsIcon.fitHeightProperty().setValue(46);
         gameSettingsIcon.fitWidthProperty().setValue(46);
@@ -460,6 +464,20 @@ public class View implements Observer {
 
         //checks for toggle sprites
         checkAllSettingsToggles();
+    }
+
+    /**
+     * @param icon the icon to be hovered
+     * @param normal the unhovered sprite of the icon
+     * @param hovered the hovered sprite of the icon
+     */
+    private void createHover(ImageView icon, Image normal, Image hovered) {
+        icon.setOnMouseEntered(event -> {
+            icon.setImage(hovered);
+        });
+        icon.setOnMouseExited(event -> {
+            icon.setImage(normal);
+        });
     }
 
     /**
