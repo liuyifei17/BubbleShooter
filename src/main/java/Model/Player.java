@@ -90,13 +90,13 @@ public class Player  extends Observable {
             nextBall = playerBallFactory.createBall("Normal Ball");
         }
         else {
-            int random = Util.randomBetween(0, 30);
+            int random = Util.randomBetween(0, 20);
             switch (random) {
-                case 1://1 in 30 is an explosive ball.
+                case 1://1 in 20 is an explosive ball.
                     nextBall = playerBallFactory.createBall("Explosive Ball");
                     break;
                 case 2:
-                case 3://2 in 30 is a rainbow ball.
+                case 3://2 in 20 is a rainbow ball.
                     nextBall = playerBallFactory.createBall("Rainbow Ball");
                     break;
                 default://in all other cases the next ball is a normal ball.
