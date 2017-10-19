@@ -1,6 +1,7 @@
 package Model;
 
 import Controller.GameConfiguration;
+import Utility.Util;
 
 import java.util.List;
 import java.util.Random;
@@ -18,10 +19,8 @@ public class PlayerBallFactory {
     PlayerBall createBall(String ballType) {
         switch (ballType) {
             case "Normal Ball":
-                Random random = new Random();
                 List<String> colors = GameConfiguration.colors;
-                int index = random.nextInt(colors.size());
-                return new NormalBall(colors.get(index));
+                return new NormalBall(colors.get(Util.randomBetween(0, colors.size() - 1)));
             case "Explosive Ball":
                 return new  ExplosiveBall("Explosive");
             case "Rainbow Ball":
@@ -42,10 +41,8 @@ public class PlayerBallFactory {
     public PlayerBall createBall(String ballType, double x, double y) {
         switch (ballType) {
             case "Normal Ball":
-                Random random = new Random();
                 List<String> colors = GameConfiguration.colors;
-                int index = random.nextInt(colors.size());
-                return new NormalBall(colors.get(index), x, y);
+                return new NormalBall(colors.get(Util.randomBetween(0, colors.size() - 1)));
             case "Explosive Ball":
                 return new  ExplosiveBall("Explosive", x, y);
             case "Rainbow Ball":

@@ -269,42 +269,37 @@ public class View implements Observer {
      * @param c the cell in which the ball is located
      */
     public void display(Cell c) {
-        Platform.runLater(() -> {
-            if (c.getBall() != null) {
-                BallImageView biv;
-                if (c.getBall().isCenterPiece()) {
-                    biv = new BallImageView(new Image("images/center.png"), c, false);
-                }
-                else if (c.getBall().isNormalBall()) {
-                    biv = new BallImageView(new Image("images/" + c.getBall().getColor()
-                            + " ball.png"), c, false);
-                }
-                else if (c.getBall().isExplosiveBall()) {
-                    biv = new BallImageView(new Image("images/explosive ball.png"),
-                            c, false);
-                }
-                else if (c.getBall().isRainbowBall()) {
-                    biv = new BallImageView(new Image("images/rainbow ball.png"),
-                            c, false);
-                }
-                else if (c.getBall().isMultiplierBall()) {
-                    biv = new BallImageView(new Image("images/multiplier ball.png"),
-                            c, false);
-                    biv = new BallImageView(new Image("images/explosive ball.png"), c, false);
-                }
-                else if (c.getBall().isRainbowBall()) {
-                    biv = new BallImageView(new Image("images/rainbow ball.png"), c, false);
-                }
-                else if (c.getBall().isMultiplierBall()) {
-                    biv = new BallImageView(new Image("images/multiplier ball.png"), c, false);
-                }
-                else {
-                    biv = new BallImageView(new Image("images/null.png"),
-                            c, false);
-                }
-                gamePane.getChildren().add(biv);
-                biv.relocate(getScreenX(c, biv.getImage()), getScreenY(c, biv.getImage()));
+        if (c != null && c.getBall() != null) {
+            if (c.getBall().isCenterPiece()) {
+                changePlayerBallImageView(new Image("images/center.png"), c);
             }
+            else if (c.getBall().isNormalBall()) {
+                changePlayerBallImageView(new Image("images/" + c.getBall().getColor()
+                        + " ball.png"), c);
+            }
+            else if (c.getBall().isExplosiveBall()) {
+                changePlayerBallImageView(new Image("images/explosive ball.png"), c);
+            }
+            else if (c.getBall().isRainbowBall()) {
+                changePlayerBallImageView(new Image("images/rainbow ball.png"), c);
+            }
+            else if (c.getBall().isMultiplierBall()) {
+                changePlayerBallImageView(new Image("images/multiplier " + c.getBall().getColor()
+                        + " ball.png"), c);
+            }
+        }
+    }
+
+    /**
+     * Sets a new player ball image view.
+     * @param image The image to set in the ball image view
+     * @param c the cell c in which the ball is cntained
+     */
+    private void changePlayerBallImageView(Image image, Cell c) {
+        Platform.runLater(() -> {
+            BallImageView biv = new BallImageView(image, c, false);
+            gamePane.getChildren().add(biv);
+            biv.relocate(getScreenX(c, biv.getImage()), getScreenY(c, biv.getImage()));
         });
     }
 

@@ -1,5 +1,7 @@
 package Model;
 
+import Utility.Util;
+
 import java.util.Observable;
 
 /**
@@ -82,7 +84,18 @@ public class Player  extends Observable {
      */
     public void nextBall() {
         playerBall = nextBall;
-        nextBall = playerBallFactory.createBall("Normal Ball");
+
+        int random = Util.randomBetween(0, 15);
+        switch (random) {
+            case 1:
+                nextBall = playerBallFactory.createBall("Explosive Ball");
+                break;
+            case 2:
+                nextBall = playerBallFactory.createBall("Rainbow Ball");
+                break;
+            default:
+                nextBall = playerBallFactory.createBall("Normal Ball");
+        }
     }
 
 }
