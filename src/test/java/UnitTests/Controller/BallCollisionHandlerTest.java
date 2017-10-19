@@ -98,7 +98,7 @@ public class BallCollisionHandlerTest {
 
         pbc.launchBall();
 
-        assertThat(grid.getOccupiedCells().size()).isBetween(12, 22);
+        assertThat(grid.getOccupiedCells().size()).isBetween(11, 23);
         assertThat(player.getScore()).isEqualTo(0);
     }
 }
