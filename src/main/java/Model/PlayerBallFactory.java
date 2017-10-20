@@ -43,7 +43,7 @@ public class PlayerBallFactory {
         switch (ballType) {
             case "Normal Ball":
                 List<String> colors = GameConfiguration.colors;
-                return new NormalBall(colors.get(Util.randomBetween(0, colors.size() - 1)));
+                return new NormalBall(colors.get(Util.randomBetween(0, colors.size() - 1)), x, y);
             case "Explosive Ball":
                 return new  ExplosiveBall("Explosive", x, y);
             case "Rainbow Ball":
