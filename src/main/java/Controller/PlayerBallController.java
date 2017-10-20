@@ -2,6 +2,7 @@ package Controller;
 
 
 import Model.*;
+import Utility.Util;
 
 
 /**
@@ -78,6 +79,7 @@ public class PlayerBallController {
         this.setDeltaX(0);
         this.setDeltaY(0);
         counter = 0;
+        gc.getWallController().placeWalls();
     }
 
 
@@ -119,6 +121,13 @@ public class PlayerBallController {
             deltaY = newDelta[1];
         }
 
+        for (Walls i: gc.getData().getRandomWalls()) {
+            if (player.getPlayerBall().hasCollidedWithRandomWall(i)) {
+                double[] wallDelta = reflectBack(deltaX, deltaY, i);
+                deltaX = wallDelta[0];
+                deltaY = wallDelta[1];
+            }
+        }
         // the new coordinate of the ball is the the previous one added with the delta.
         double newXCoord = player.getPlayerBall().getX() + deltaX;
         double newYCoord = player.getPlayerBall().getY() + deltaY;
@@ -149,10 +158,136 @@ public class PlayerBallController {
         return new double[]{deltaX, deltaY};
     }
 
+    private double[] reflectBack(double deltaX, double deltaY, Walls wall) {
+        double xLeft = wall.getX() - GameConfiguration.wallWidth;
+        double xRight = wall.getX() + GameConfiguration.wallWidth;
+        double yUp = wall.getY() + GameConfiguration.wallHeight;
+        double yDown = wall.getY() - GameConfiguration.wallHeight;
+        double xHalfLeft = wall.getX() - GameConfiguration.wallWidth / 2 ;
+        double xHalfRight = wall.getX() + GameConfiguration.wallWidth / 2;
+
+
+        double[] topLeft = Util.calculateRotatedCoordinates(xLeft, yUp, wall.getX(), wall.getY(),
+                wall.getRotation());
+        double[] topLeftHalf = Util.calculateRotatedCoordinates(xHalfLeft, yUp, wall.getX(),
+                wall.getY(), wall.getRotation());
+        double[] topRight = Util.calculateRotatedCoordinates(xRight, yUp, wall.getX(), wall.getY(),
+                wall.getRotation());
+        double[] topRightHalf = Util.calculateRotatedCoordinates(xHalfRight, yUp, wall.getX(), wall.getY(),
+                wall.getRotation());
+        double[] bottomLeft = Util.calculateRotatedCoordinates(xLeft, yDown, wall.getX(),
+                wall.getY(), wall.getRotation());
+        double[] bottomLeftHalf = Util.calculateRotatedCoordinates(xHalfLeft, yDown, wall.getX(),
+                wall.getY(), wall.getRotation());
+        double[] bottomRight = Util.calculateRotatedCoordinates(xRight, yDown, wall.getX(),
+                wall.getY(), wall.getRotation());
+        double[] bottomRightHalf = Util.calculateRotatedCoordinates(xHalfRight, yDown, wall.getX(),
+                wall.getY(), wall.getRotation());
+
+        double normalVectorUp = wall.getY() + 1;
+        double normalVectorDown = wall.getY() - 1;
+        double normalVectorRight = wall.getX() + 1;
+        double normalVectorLeft = wall.getX() - 1;
+
+        double[] upVector = Util.calculateRotatedCoordinates(wall.getX(), normalVectorUp,
+                wall.getX(), wall.getY(), wall.getRotation());
+        double[] downVector = Util.calculateRotatedCoordinates(wall.getX(), normalVectorDown,
+                wall.getX(), wall.getY(), wall.getRotation());
+        double[] rightVector = Util.calculateRotatedCoordinates(normalVectorRight, wall.getY(),
+                wall.getX(), wall.getY(), wall.getRotation());
+        double[] leftVector = Util.calculateRotatedCoordinates(normalVectorLeft, wall.getY(),
+                wall.getX(), wall.getY(), wall.getRotation());
+
+        double distanceToTop = Util.getDistance(topLeftHalf[0], topLeftHalf[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY())
+                + Util.getDistance(topRightHalf[0], topRightHalf[1], player.getPlayerBall().getX(),
+                        player.getPlayerBall().getY());
+        double distanceToTopHalfLeft = Util.getDistance(topLeft[0], topLeft[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY())
+                + Util.getDistance(topLeftHalf[0], topLeftHalf[1], player.getPlayerBall().getX(),
+                player.getPlayerBall().getY());
+        double distanceToTopHalfRight = Util.getDistance(topRight[0], topRight[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY())
+                + Util.getDistance(topRight[0], topRight[1], player.getPlayerBall().getX(),
+                player.getPlayerBall().getY());
+
+        double distanceToRight = Util.getDistance(bottomRight[0], bottomRight[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY())
+                + Util.getDistance(topRight[0], topRight[1], player.getPlayerBall().getX(),
+                player.getPlayerBall().getY());
+
+        double distanceToBottom = Util.getDistance(bottomRightHalf[0], bottomRightHalf[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY())
+                + Util.getDistance(bottomLeftHalf[0], bottomLeftHalf[1], player.getPlayerBall().getX(),
+                player.getPlayerBall().getY());
+        double distanceToBottomHalfLeft = Util.getDistance(bottomLeftHalf[0], bottomLeftHalf[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY())
+                + Util.getDistance(bottomLeft[0], bottomLeft[1], player.getPlayerBall().getX(),
+                player.getPlayerBall().getY());
+        double distanceToBottomHalfRight = Util.getDistance(bottomRight[0], bottomRight[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY())
+                + Util.getDistance(bottomRightHalf[0], bottomRightHalf[1], player.getPlayerBall().getX(),
+                player.getPlayerBall().getY());
+
+        double distanceToLeft = Util.getDistance(topLeft[0], topLeft[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY())
+                + Util.getDistance(bottomLeft[0], bottomLeft[1], player.getPlayerBall().getX(),
+                player.getPlayerBall().getY());
+
+        double[] reflectDeltas = new double[2];
+        if (((distanceToTop > distanceToBottom) || (distanceToTopHalfLeft > distanceToBottom)
+                || (distanceToTopHalfRight > distanceToBottom))
+                && ((distanceToTop > distanceToRight) || (distanceToTopHalfLeft > distanceToRight)
+                || (distanceToTopHalfRight > distanceToRight))
+                && ((distanceToTop > distanceToLeft) || (distanceToTopHalfLeft > distanceToLeft)
+                || (distanceToTopHalfRight > distanceToLeft))) {
+            System.out.println("A");
+            reflectDeltas = reflectionDeltas(deltaX, deltaY, (upVector[0] - wall.getX()),
+                    (upVector[1] - wall.getY()));
+        }
+        else if (((distanceToBottom > distanceToTop)
+                || (distanceToBottomHalfLeft > distanceToTop)
+                || (distanceToBottomHalfRight > distanceToTop))
+                && ((distanceToBottom > distanceToLeft)
+                || (distanceToBottomHalfLeft > distanceToLeft)
+                || (distanceToBottomHalfRight > distanceToLeft))
+                && ((distanceToBottom > distanceToRight)
+                || (distanceToBottomHalfLeft > distanceToRight)
+                || (distanceToBottomHalfRight > distanceToRight))) {
+            //System.out.println("C");
+            reflectDeltas = reflectionDeltas(deltaX, deltaY, (downVector[0] - wall.getX()),
+                    (downVector[1] - wall.getY()));
+        }
+        else if ((distanceToRight > distanceToBottomHalfRight) && (distanceToRight > distanceToLeft)
+                && (distanceToRight > distanceToTopHalfRight)) {
+            //System.out.println("B");
+            reflectDeltas = reflectionDeltas(deltaX, deltaY, (rightVector[0] - wall.getX()),
+                    (rightVector[1] - wall.getY()));
+        }
+        else if ((distanceToLeft > distanceToTopHalfLeft) && (distanceToLeft > distanceToBottom)
+                && (distanceToLeft > distanceToBottomHalfLeft)) {
+            //System.out.println("D");
+            reflectDeltas = reflectionDeltas(deltaX, deltaY, (leftVector[0] - wall.getX()),
+                    (leftVector[1] - wall.getY()));
+        }
+
+        return reflectDeltas;
+    }
+
+    private double[] reflectionDeltas(double deltaX, double deltaY, double normX, double normY) {
+
+        double dotX = 2 * (normX * deltaX +  normY * deltaY);
+        double reflectDeltaX = deltaX - dotX * normX;
+        double reflectDeltaY = deltaY - dotX * normY;
+
+        return new double[]{reflectDeltaX, reflectDeltaY};
+    }
+
     /**
      * Rotate a certain degree based on the time it takes to hit the grid.
      */
     private void calculateRotation() {
+        grid.setStillRotating(true);
         if (directionDeltaX > 0 && directionDeltaY > 0) {
             if (stopWatch < 70) {
                 grid.setRotationDifference(GameConfiguration.rightRotation.get(0));
