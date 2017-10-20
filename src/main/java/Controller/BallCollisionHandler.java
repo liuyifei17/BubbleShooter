@@ -1,13 +1,11 @@
 package Controller;
 
-import Model.Ball;
-import Model.Cell;
-import Model.Grid;
-import Model.Player;
+import Model.*;
 import Utility.Util;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -30,10 +28,10 @@ public class BallCollisionHandler {
 
     // this method removes the balls that the method checkRemovalBalls returns and adds the points
     // to the score
-    private void removeBalls(ArrayList<Cell> toRemove) {
+    private void removeBalls(ArrayList<Cell> toRemove, int multiplier) {
         for (Cell cell : toRemove) {
             GameController.getView().removeBall(cell);
-            GameController.getView().displayPlus1(cell);
+            GameController.getView().displayPlusIcon(cell, multiplier);
             grid.getOccupiedCells().remove(cell);
             cell.setBall(null);
         }
@@ -68,29 +66,72 @@ public class BallCollisionHandler {
         return notConnected;
     }
 
-
-
     /** This method takes care of the situation in which the shot ball hits the hexagon.
      * @param collidedCell the cell from the hexagon that the ball collided with
      */
     public void handleCollision(Cell collidedCell) {
         // display the ball that has collided with the hexagon
         grid.getOccupiedCells().add(collidedCell);
-        collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
+
+        if (player.getPlayerBall() instanceof NormalBall) {
+            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
+        } else if (player.getPlayerBall() instanceof ExplosiveBall) {
+            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 2));
+        } else if (player.getPlayerBall() instanceof RainbowBall) {
+            List<String> colors = GameConfiguration.colors;
+            String color = colors.get(Util.randomBetween(0, colors.size() - 1));
+            collidedCell.setBall(new Ball(color, collidedCell, 1));
+        } else if (player.getPlayerBall() instanceof MultiplierBall) {
+            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
+        }
+
         GameController.getView().display(collidedCell);
 
         // check whether the shot ball has hit at least 2 other balls of the same color
 
         ArrayList<Cell> ballsToBeRemoved = player.getPlayerBall().checkRemovalBalls(collidedCell);
-        if (ballsToBeRemoved.size() >= 3) {
+
+        if (player.getPlayerBall() instanceof NormalBall
+                || player.getPlayerBall() instanceof RainbowBall) {
+            if (ballsToBeRemoved.size() >= 3) {
+                player.setScore(player.getScore() + ballsToBeRemoved.size());
+                removeBalls(ballsToBeRemoved, 1);
+                removeBalls(notConnectedBalls(), 1);
+            } else {
+                player.setMissCounter(player.getMissCounter() + 1);
+            }
+        } else if (player.getPlayerBall() instanceof ExplosiveBall) {
             player.setScore(player.getScore() + ballsToBeRemoved.size());
-            removeBalls(ballsToBeRemoved);
-            removeBalls(notConnectedBalls());
-        } else if (player.getMissCounter() >= 5) {
+            removeBalls(ballsToBeRemoved, 1);
+            removeBalls(notConnectedBalls(), 1);
+        } else if (player.getPlayerBall() instanceof MultiplierBall) {
+            if (ballsToBeRemoved.size() >= 3) {
+                player.setScore(player.getScore() + ballsToBeRemoved.size() * 2);
+                removeBalls(ballsToBeRemoved, 2);
+                removeBalls(notConnectedBalls(), 2);
+            } else {
+                collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
+                player.setMissCounter(player.getMissCounter() + 1);
+            }
+        }
+
+        if (player.getMissCounter() >= 5) {
             player.setMissCounter(0);
             grid.appendAdditionalBalls(Util.randomBetween(5, 15));
-        } else {
-            player.setMissCounter(player.getMissCounter() + 1);
         }
+    }
+
+    /**
+     *
+     * @param cells cells that should be removed
+     * @return a boolean if there is a multiplier
+     */
+    private boolean hasMultiplier(ArrayList<Cell> cells) {
+        for (Cell cell : cells) {
+            if (cell.getBall().isMultiplierBall()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

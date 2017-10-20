@@ -41,7 +41,6 @@ public class PlayerBallControllerTest {
         pbc = new PlayerBallController(gameController, gameData.getPlayer(), gameData.getGrid());
     }
 
-
     @Test
     void calculateDeltaTest_normal() {
         pbc.setMouseX(200);
@@ -52,7 +51,6 @@ public class PlayerBallControllerTest {
         assertThat(pbc.getDeltaX()).isBetween(3.534, 3.536);
         assertThat(pbc.getDeltaY()).isBetween(3.534, 3.536);
     }
-
 
     @Test
     void calculateDeltaTest_secondTime() {

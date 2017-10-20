@@ -66,7 +66,6 @@ public class NormalBallTest {
         assertThat(pb.hasCollidedWithWall()).isTrue();
     }
 
-
     @Test
     void getCollisionTest_close() {
         Grid grid = Mockito.mock(Grid.class);
