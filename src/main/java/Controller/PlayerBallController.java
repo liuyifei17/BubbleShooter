@@ -208,7 +208,7 @@ public class PlayerBallController {
                 player.getPlayerBall().getY());
         double distanceToTopHalfRight = Util.getDistance(topRight[0], topRight[1],
                 player.getPlayerBall().getX(), player.getPlayerBall().getY())
-                + Util.getDistance(topRight[0], topRight[1], player.getPlayerBall().getX(),
+                + Util.getDistance(topRightHalf[0], topRightHalf[1], player.getPlayerBall().getX(),
                 player.getPlayerBall().getY());
 
         double distanceToRight = Util.getDistance(bottomRight[0], bottomRight[1],
@@ -241,7 +241,7 @@ public class PlayerBallController {
                 || (distanceToTopHalfRight > distanceToRight))
                 && ((distanceToTop > distanceToLeft) || (distanceToTopHalfLeft > distanceToLeft)
                 || (distanceToTopHalfRight > distanceToLeft))) {
-            System.out.println("A");
+            //System.out.println("A");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (upVector[0] - wall.getX()),
                     (upVector[1] - wall.getY()));
         }
@@ -260,11 +260,11 @@ public class PlayerBallController {
         }
         else if ((distanceToRight > distanceToBottomHalfRight) && (distanceToRight > distanceToLeft)
                 && (distanceToRight > distanceToTopHalfRight)) {
-            //System.out.println("B");
+           // System.out.println("B");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (rightVector[0] - wall.getX()),
                     (rightVector[1] - wall.getY()));
         }
-        else if ((distanceToLeft > distanceToTopHalfLeft) && (distanceToLeft > distanceToBottom)
+        else if ((distanceToLeft > distanceToTopHalfLeft) && (distanceToLeft > distanceToRight)
                 && (distanceToLeft > distanceToBottomHalfLeft)) {
             //System.out.println("D");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (leftVector[0] - wall.getX()),
@@ -276,9 +276,14 @@ public class PlayerBallController {
 
     private double[] reflectionDeltas(double deltaX, double deltaY, double normX, double normY) {
 
+        double distanceDelta = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+        deltaX = deltaX / distanceDelta;
+        deltaY = deltaY / distanceDelta;
         double dotX = 2 * (normX * deltaX +  normY * deltaY);
         double reflectDeltaX = deltaX - dotX * normX;
         double reflectDeltaY = deltaY - dotX * normY;
+        reflectDeltaX = reflectDeltaX * distanceDelta;
+        reflectDeltaY = reflectDeltaY * distanceDelta;
 
         return new double[]{reflectDeltaX, reflectDeltaY};
     }
