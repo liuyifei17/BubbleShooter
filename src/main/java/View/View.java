@@ -7,9 +7,7 @@ import Model.MultiplierBall;
 import Model.Player;
 import Utility.SetTimeout;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -268,7 +266,8 @@ public class View implements Observer {
      */
     public void displayPlusIcon(Cell c, int amount) {
         Platform.runLater(() -> {
-            BallImageView plusIcon = new BallImageView(new Image("images/plus" + amount + ".png"), c, true);
+            BallImageView plusIcon = new BallImageView(
+                    new Image("images/plus" + amount + ".png"), c, true);
             plusIcon.relocate(c.getCurrentX(), c.getCurrentY());
 
             gamePane.getChildren().add(plusIcon);

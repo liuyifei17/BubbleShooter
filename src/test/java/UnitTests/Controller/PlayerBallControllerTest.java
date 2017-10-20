@@ -41,7 +41,6 @@ public class PlayerBallControllerTest {
         pbc = new PlayerBallController(gameController, gameData.getPlayer(), gameData.getGrid());
     }
 
-    /*
     @Test
     void calculateDeltaTest_normal() {
         pbc.setMouseX(200);
@@ -52,9 +51,7 @@ public class PlayerBallControllerTest {
         assertThat(pbc.getDeltaX()).isBetween(3.534, 3.536);
         assertThat(pbc.getDeltaY()).isBetween(3.534, 3.536);
     }
-    */
 
-    /*
     @Test
     void calculateDeltaTest_secondTime() {
         pbc.setMouseX(200);
@@ -68,7 +65,6 @@ public class PlayerBallControllerTest {
         assertThat(pbc.getDeltaX()).isBetween(3.534, 3.536);
         assertThat(pbc.getDeltaY()).isBetween(3.534, 3.536);
     }
-    */
 
     @Test
     void launchBallTest_invalidClick() {
@@ -77,7 +73,6 @@ public class PlayerBallControllerTest {
         assertThat(pbc.getStopWatch()).isEqualTo(0);
     }
 
-    /*
     @Test
     void launchBallTest_noCollision() {
         pbc.setMouseX(GameConfiguration.stageWidth);
@@ -87,10 +82,9 @@ public class PlayerBallControllerTest {
 
         pbc.launchBall();
 
-        assertThat(playerBall.getX()).isEqualTo(301);
-        assertThat(playerBall.getY()).isEqualTo(301);
+        assertThat(playerBall.getX()).isEqualTo(101);
+        assertThat(playerBall.getY()).isEqualTo(101);
     }
-    */
 
     @Test
     void launchBallTest_wallCollision1() {

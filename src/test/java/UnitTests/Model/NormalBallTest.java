@@ -58,7 +58,6 @@ public class NormalBallTest {
         assertThat(pb.hasCollidedWithWall()).isFalse();
     }
 
-    /*
     @Test
     void hasCollidedWithWallTest_true() {
         PlayerBall pb = playerBallFactory.createBall("Normal Ball",
@@ -66,9 +65,7 @@ public class NormalBallTest {
 
         assertThat(pb.hasCollidedWithWall()).isTrue();
     }
-    */
 
-    /*
     @Test
     void getCollisionTest_close() {
         Grid grid = Mockito.mock(Grid.class);
@@ -82,7 +79,6 @@ public class NormalBallTest {
 
         assertThat(pb.getCellCollision(grid, 1, 1)).isEqualTo(emptyCell);
     }
-    */
 
     @Test
     void getCollisionTest_far() {
@@ -99,7 +95,6 @@ public class NormalBallTest {
         assertThat(pb.getCellCollision(grid, 1, 1)).isEqualTo(null);
     }
 
-    /*
     @Test
     void getCollisionTest_forced() {
         Grid grid = Mockito.mock(Grid.class);
@@ -114,5 +109,4 @@ public class NormalBallTest {
 
         assertThat(pb.getCellCollision(grid, 1, 1)).isEqualTo(emptyCell);
     }
-    */
 }
