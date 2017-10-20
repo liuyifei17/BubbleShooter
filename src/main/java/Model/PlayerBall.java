@@ -118,6 +118,28 @@ public abstract class PlayerBall {
     }
 
     /**
+     * Checks whether ball has collided with a random wall.
+     * @param wall that the ball has collided with.
+     * @return whether the ball has collided or not with the random wall.
+     */
+    public boolean hasCollidedWithRandomWall(Walls wall) {
+
+        double[] leftCoordinates = Util.calculateRotatedCoordinates(
+                wall.getX() - GameConfiguration.wallHeight, wall.getY(), wall.getX(),
+                wall.getY(), wall.getRotation());
+        double[] rightCoordinates = Util.calculateRotatedCoordinates(
+                wall.getX() + GameConfiguration.wallHeight, wall.getY(), wall.getX(),
+                wall.getY(), wall.getRotation());
+        if ((Util.getDistance(x, y, leftCoordinates[0], leftCoordinates[1])
+                <= GameConfiguration.wallHeight * 2) || (Util.getDistance(x, y, rightCoordinates[0],
+                rightCoordinates[1]) <= GameConfiguration.wallHeight * 2)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * This is an abstract method that checks which balls should be removed.
      * @param collidedCell the cell the playerball has collided with
      * @return an arraylist of balls that will be removed
