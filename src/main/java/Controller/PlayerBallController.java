@@ -121,7 +121,7 @@ public class PlayerBallController {
             deltaY = newDelta[1];
         }
 
-        for (Walls i: gc.getData().getRandomWalls()) {
+        for (Walls i : gc.getData().getRandomWalls()) {
             if (player.getPlayerBall().hasCollidedWithRandomWall(i)) {
                 double[] wallDelta = reflectBack(deltaX, deltaY, i);
                 deltaX = wallDelta[0];
@@ -201,7 +201,7 @@ public class PlayerBallController {
         double distanceToTop = Util.getDistance(topLeftHalf[0], topLeftHalf[1],
                 player.getPlayerBall().getX(), player.getPlayerBall().getY())
                 + Util.getDistance(topRightHalf[0], topRightHalf[1], player.getPlayerBall().getX(),
-                        player.getPlayerBall().getY());
+                player.getPlayerBall().getY());
         double distanceToTopHalfLeft = Util.getDistance(topLeft[0], topLeft[1],
                 player.getPlayerBall().getX(), player.getPlayerBall().getY())
                 + Util.getDistance(topLeftHalf[0], topLeftHalf[1], player.getPlayerBall().getX(),
@@ -244,8 +244,7 @@ public class PlayerBallController {
             //System.out.println("A");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (upVector[0] - wall.getX()),
                     (upVector[1] - wall.getY()));
-        }
-        else if (((distanceToBottom > distanceToTop)
+        } else if (((distanceToBottom > distanceToTop)
                 || (distanceToBottomHalfLeft > distanceToTop)
                 || (distanceToBottomHalfRight > distanceToTop))
                 && ((distanceToBottom > distanceToLeft)
@@ -257,14 +256,13 @@ public class PlayerBallController {
             //System.out.println("C");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (downVector[0] - wall.getX()),
                     (downVector[1] - wall.getY()));
-        }
-        else if ((distanceToRight > distanceToBottomHalfRight) && (distanceToRight > distanceToLeft)
+        } else if ((distanceToRight > distanceToBottomHalfRight)
+                && (distanceToRight > distanceToLeft)
                 && (distanceToRight > distanceToTopHalfRight)) {
-           // System.out.println("B");
+            // System.out.println("B");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (rightVector[0] - wall.getX()),
                     (rightVector[1] - wall.getY()));
-        }
-        else if ((distanceToLeft > distanceToTopHalfLeft) && (distanceToLeft > distanceToRight)
+        } else if ((distanceToLeft > distanceToTopHalfLeft) && (distanceToLeft > distanceToRight)
                 && (distanceToLeft > distanceToBottomHalfLeft)) {
             //System.out.println("D");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (leftVector[0] - wall.getX()),
@@ -274,12 +272,20 @@ public class PlayerBallController {
         return reflectDeltas;
     }
 
+    /**
+     * Calculate reflected deltas on the random wall.
+     * @param deltaX the x where the ball is traveling toward.
+     * @param deltaY the y where the ball is traveling toward.
+     * @param normX the normal x on the surface.
+     * @param normY the normal y on the surface.
+     * @return the reflected deltas.
+     */
     private double[] reflectionDeltas(double deltaX, double deltaY, double normX, double normY) {
 
-        double distanceDelta = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+        double distanceDelta = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         deltaX = deltaX / distanceDelta;
         deltaY = deltaY / distanceDelta;
-        double dotX = 2 * (normX * deltaX +  normY * deltaY);
+        double dotX = 2 * (normX * deltaX + normY * deltaY);
         double reflectDeltaX = deltaX - dotX * normX;
         double reflectDeltaY = deltaY - dotX * normY;
         reflectDeltaX = reflectDeltaX * distanceDelta;
@@ -342,6 +348,7 @@ public class PlayerBallController {
 
     /**
      * This method is the getter for the deltaX field.
+     *
      * @return the value stored in the field deltaX
      */
     public double getDeltaX() {
@@ -351,6 +358,7 @@ public class PlayerBallController {
 
     /**
      * This method is the getter for the deltaY field.
+     *
      * @return the value stored in the field deltaY
      */
     public double getDeltaY() {
@@ -376,6 +384,7 @@ public class PlayerBallController {
 
     /**
      * This method is the getter for the stopWatch field.
+     *
      * @return the value stored in the field stopWatch
      */
     public double getStopWatch() {
