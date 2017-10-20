@@ -220,7 +220,7 @@ public class Grid {
         for (Cell i : this.getEmptyCells()) {
             boolean canBeUsed = false;
             if ((i.getCurrentX() + GameConfiguration.wallWidth < GameConfiguration.stageWidth)
-                    && (i.getCurrentX() - GameConfiguration.wallWidth> 0)
+                    && (i.getCurrentX() - GameConfiguration.wallWidth > 0)
                     && (i.getCurrentY() + GameConfiguration.wallWidth
                     < GameConfiguration.stageHeight)
                     && (i.getCurrentY() - GameConfiguration.wallWidth

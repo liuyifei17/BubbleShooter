@@ -4,7 +4,6 @@ import Controller.GameConfiguration;
 import Model.Cell;
 import Model.GameData;
 import Model.Player;
-import Model.Walls;
 import Utility.SetTimeout;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -243,6 +242,9 @@ public class View implements Observer {
         });
     }
 
+    /**
+     * Place the wals based on the size on the screen.
+     */
     public void placeWalls() {
         if (data.getRandomWalls().size() == 3 && GameConfiguration.walls) {
             firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
@@ -283,6 +285,9 @@ public class View implements Observer {
         }
     }
 
+    /**
+     * remove the walls if they have been put off and some cant be used.
+     */
     public void removeWalls() {
         Platform.runLater(() -> {
             if ((data.getRandomWalls().size() == 0) || !(GameConfiguration.walls)) {

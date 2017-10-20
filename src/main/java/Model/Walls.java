@@ -18,6 +18,7 @@ public class Walls {
      * Create a random wall.
      * @param x the x coordinate
      * @param y the y coordinate
+     * @param rotation ratation of the wall
      */
     public Walls(double x, double y, int rotation) {
         this.x = x;
@@ -28,7 +29,6 @@ public class Walls {
     /**
      * Calculate how much the wall image has to rotate in order to be functional.
      * @param grid the hexagon
-     * @return rotation of the wall
      */
     public void calculateRotation(Grid grid) {
         double centerToWallX = grid.getCenterCell().getInitialX() - x;
@@ -50,7 +50,7 @@ public class Walls {
         int degreeInt = (int) degree;
         rotation = degreeInt;
 
-       if (x > GameConfiguration.stageWidth/2) {
+        if (x > GameConfiguration.stageWidth / 2) {
             rotation = degreeInt;
         }
         else {
@@ -86,6 +86,9 @@ public class Walls {
         this.y = y;
     }
 
+    /**
+     * @return the degree the wall has to be rotated.
+     */
     public int getRotation() {
         return rotation;
     }

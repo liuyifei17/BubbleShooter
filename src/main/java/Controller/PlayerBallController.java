@@ -163,7 +163,7 @@ public class PlayerBallController {
         double xRight = wall.getX() + GameConfiguration.wallWidth;
         double yUp = wall.getY() + GameConfiguration.wallHeight;
         double yDown = wall.getY() - GameConfiguration.wallHeight;
-        double xHalfLeft = wall.getX() - GameConfiguration.wallWidth / 2 ;
+        double xHalfLeft = wall.getX() - GameConfiguration.wallWidth / 2;
         double xHalfRight = wall.getX() + GameConfiguration.wallWidth / 2;
 
 
@@ -173,8 +173,8 @@ public class PlayerBallController {
                 wall.getY(), wall.getRotation());
         double[] topRight = Util.calculateRotatedCoordinates(xRight, yUp, wall.getX(), wall.getY(),
                 wall.getRotation());
-        double[] topRightHalf = Util.calculateRotatedCoordinates(xHalfRight, yUp, wall.getX(), wall.getY(),
-                wall.getRotation());
+        double[] topRightHalf = Util.calculateRotatedCoordinates(xHalfRight, yUp, wall.getX(),
+                wall.getY(), wall.getRotation());
         double[] bottomLeft = Util.calculateRotatedCoordinates(xLeft, yDown, wall.getX(),
                 wall.getY(), wall.getRotation());
         double[] bottomLeftHalf = Util.calculateRotatedCoordinates(xHalfLeft, yDown, wall.getX(),
@@ -218,16 +218,16 @@ public class PlayerBallController {
 
         double distanceToBottom = Util.getDistance(bottomRightHalf[0], bottomRightHalf[1],
                 player.getPlayerBall().getX(), player.getPlayerBall().getY())
-                + Util.getDistance(bottomLeftHalf[0], bottomLeftHalf[1], player.getPlayerBall().getX(),
-                player.getPlayerBall().getY());
+                + Util.getDistance(bottomLeftHalf[0], bottomLeftHalf[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY());
         double distanceToBottomHalfLeft = Util.getDistance(bottomLeftHalf[0], bottomLeftHalf[1],
                 player.getPlayerBall().getX(), player.getPlayerBall().getY())
                 + Util.getDistance(bottomLeft[0], bottomLeft[1], player.getPlayerBall().getX(),
                 player.getPlayerBall().getY());
         double distanceToBottomHalfRight = Util.getDistance(bottomRight[0], bottomRight[1],
                 player.getPlayerBall().getX(), player.getPlayerBall().getY())
-                + Util.getDistance(bottomRightHalf[0], bottomRightHalf[1], player.getPlayerBall().getX(),
-                player.getPlayerBall().getY());
+                + Util.getDistance(bottomRightHalf[0], bottomRightHalf[1],
+                player.getPlayerBall().getX(), player.getPlayerBall().getY());
 
         double distanceToLeft = Util.getDistance(topLeft[0], topLeft[1],
                 player.getPlayerBall().getX(), player.getPlayerBall().getY())

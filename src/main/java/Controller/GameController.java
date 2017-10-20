@@ -324,10 +324,16 @@ public class GameController {
         view.showGameOverPopup();
     }
 
+    /**
+     * @return the wallcontroller.
+     */
     public WallController getWallController() {
         return wallController;
     }
 
+    /**
+     * @return the data of the gamecontroller.
+     */
     public GameData getData() {
         return data;
     }
