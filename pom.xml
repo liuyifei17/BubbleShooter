@@ -63,6 +63,19 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>2.7</version>
+                <configuration>
+                    <check>
+                    </check>
+                    <instrumentation>
+                        <excludes>
+                            <exclude>View/View.class</exclude>
+                            <exclude>View/BallImageView.class</exclude>
+                            <exclude>View/RemovePlusOneIcon.class</exclude>
+                            <exclude>Controller/GameController.class</exclude>
+                            <exclude>Main.class</exclude>
+                        </excludes>
+                    </instrumentation>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
