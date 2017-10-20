@@ -4,6 +4,7 @@ import Controller.GameConfiguration;
 import Model.Cell;
 import Model.GameData;
 import Model.Player;
+import Model.Walls;
 import Utility.SetTimeout;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -45,6 +46,9 @@ public class View implements Observer {
     private ImageView popupHomeButton;
     private ImageView playerBallImageView;
     private ImageView nextBallImageView;
+    private ImageView firstWall;
+    private ImageView secondWall;
+    private ImageView thirdWall;
     private Pane pausePopup;
     private Button pausePopupRestartButton;
     private Button pausePopupMainMenuButton;
@@ -153,6 +157,11 @@ public class View implements Observer {
         gameSettingsIcon.fitHeightProperty().setValue(44);
         gameSettingsIcon.fitWidthProperty().setValue(44);
 
+        //draw walls
+        firstWall = new ImageView("images/asteroid.png");
+        secondWall = new ImageView("images/asteroid.png");
+        thirdWall = new ImageView("images/asteroid.png");
+
         //draw entities
         for (Cell c : data.getGrid().getOccupiedCells()) {
             display(c);
@@ -185,6 +194,9 @@ public class View implements Observer {
 
         gamePane.getChildren().add(playerBallImageView);
         gamePane.getChildren().add(nextBallImageView);
+        gamePane.getChildren().add(firstWall);
+        gamePane.getChildren().add(secondWall);
+        gamePane.getChildren().add(thirdWall);
         gamePane.getChildren().add(scoreBarScore);
         gamePane.getChildren().add(gamePauseIcon);
         gamePane.getChildren().add(gameSettingsIcon);
@@ -225,6 +237,66 @@ public class View implements Observer {
             playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
                             - spritePlayerBall.getWidth() / 2,
                     data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
+
+            removeWalls();
+            placeWalls();
+        });
+    }
+
+    public void placeWalls() {
+        if (data.getRandomWalls().size() == 3 && GameConfiguration.walls) {
+            firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
+                    data.getRandomWalls().get(0).getY() - GameConfiguration.wallHeight);
+            secondWall.relocate(data.getRandomWalls().get(1).getX() - GameConfiguration.wallWidth,
+                    data.getRandomWalls().get(1).getY() - GameConfiguration.wallHeight);
+            thirdWall.relocate(data.getRandomWalls().get(2).getX() - GameConfiguration.wallWidth,
+                    data.getRandomWalls().get(2).getY() - GameConfiguration.wallHeight);
+
+            firstWall.rotateProperty().setValue(data.getRandomWalls().get(0).getRotation());
+            secondWall.rotateProperty().setValue(data.getRandomWalls().get(1).getRotation());
+            thirdWall.rotateProperty().setValue(data.getRandomWalls().get(2).getRotation());
+
+            firstWall.setVisible(true);
+            secondWall.setVisible(true);
+            thirdWall.setVisible(true);
+
+        }
+        if (data.getRandomWalls().size() == 2 && GameConfiguration.walls) {
+            firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
+                    data.getRandomWalls().get(0).getY() - GameConfiguration.wallHeight);
+            secondWall.relocate(data.getRandomWalls().get(1).getX() - GameConfiguration.wallWidth,
+                    data.getRandomWalls().get(1).getY() - GameConfiguration.wallHeight);
+
+            firstWall.rotateProperty().setValue(data.getRandomWalls().get(0).getRotation());
+            secondWall.rotateProperty().setValue(data.getRandomWalls().get(1).getRotation());
+
+            firstWall.setVisible(true);
+            secondWall.setVisible(true);
+        }
+        if (data.getRandomWalls().size() == 1 && GameConfiguration.walls) {
+            firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
+                    data.getRandomWalls().get(0).getY() - GameConfiguration.wallHeight);
+
+            firstWall.rotateProperty().setValue(data.getRandomWalls().get(0).getRotation());
+
+            firstWall.setVisible(true);
+        }
+    }
+
+    public void removeWalls() {
+        Platform.runLater(() -> {
+            if ((data.getRandomWalls().size() == 0) || !(GameConfiguration.walls)) {
+                firstWall.setVisible(false);
+                secondWall.setVisible(false);
+                thirdWall.setVisible(false);
+            }
+            if (data.getRandomWalls().size() == 1) {
+                secondWall.setVisible(false);
+                thirdWall.setVisible(false);
+            }
+            if (data.getRandomWalls().size() == 2) {
+                thirdWall.setVisible(false);
+            }
         });
     }
 
