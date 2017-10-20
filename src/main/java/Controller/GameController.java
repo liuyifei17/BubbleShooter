@@ -102,7 +102,7 @@ public class GameController {
     private void setupSound() {
         try {
             backgroundMusic = new Media(
-                    new File("src/main/resources/sounds/bgm1.mp3").toURI().toString());
+                    new File("src/main/resources/sounds/track1.mp3").toURI().toString());
             mediaPlayer = new MediaPlayer(backgroundMusic);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             if (GameConfiguration.sounds) {
@@ -212,11 +212,13 @@ public class GameController {
         });
 
         view.getSettingsPopupCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
             view.closeSettingsPopup();
             resumeGame();
         });
 
         view.getPausePopupCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
             view.closePausePopup();
             resumeGame();
         });

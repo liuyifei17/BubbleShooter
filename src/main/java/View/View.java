@@ -3,6 +3,7 @@ package View;
 import Controller.GameConfiguration;
 import Model.Cell;
 import Model.GameData;
+import Model.MultiplierBall;
 import Model.Player;
 import Utility.SetTimeout;
 import javafx.application.Platform;
@@ -28,7 +29,7 @@ public class View implements Observer {
 
     private GameData data;
     private Player player;
-    protected Pane gamePane;
+    private Pane gamePane;
     private Pane mainMenuPane;
     private ImageView gameSettingsIcon;
     private ImageView gamePauseIcon;
@@ -46,10 +47,10 @@ public class View implements Observer {
     private ImageView playerBallImageView;
     private ImageView nextBallImageView;
     private Pane pausePopup;
-    private Button pausePopupRestartButton;
-    private Button pausePopupMainMenuButton;
-    private Button pausePopupExitButton;
-    private Button pausePopupCloseButton;
+    private ImageView pausePopupRestartButton;
+    private ImageView pausePopupMainMenuButton;
+    private ImageView pausePopupExitButton;
+    private ImageView pausePopupCloseButton;
     private Pane settingsPopup;
     private Text audioText;
     private ImageView audioToggle;
@@ -57,7 +58,7 @@ public class View implements Observer {
     private ImageView wallToggle;
     private Text specialText;
     private ImageView specialToggle;
-    private Button settingsPopupCloseButton;
+    private ImageView settingsPopupCloseButton;
 
     /**
      * @param mainMenuPane sets the main menu pane
@@ -145,13 +146,17 @@ public class View implements Observer {
 
         //draw button icons
         gamePauseIcon = new ImageView("images/pause-icon.png");
+        createHover(gamePauseIcon, new Image("images/pause-icon.png"),
+                new Image("images/pause-icon-hovered.png"));
         gamePauseIcon.relocate(495, 10);
         gamePauseIcon.fitHeightProperty().setValue(48);
         gamePauseIcon.fitWidthProperty().setValue(48);
         gameSettingsIcon = new ImageView("images/settings-icon.png");
+        createHover(gameSettingsIcon, new Image("images/settings-icon.png"),
+                new Image("images/settings-icon-hovered.png"));
         gameSettingsIcon.relocate(550, 10);
-        gameSettingsIcon.fitHeightProperty().setValue(44);
-        gameSettingsIcon.fitWidthProperty().setValue(44);
+        gameSettingsIcon.fitHeightProperty().setValue(46);
+        gameSettingsIcon.fitWidthProperty().setValue(46);
 
         //draw entities
         for (Cell c : data.getGrid().getOccupiedCells()) {
@@ -214,13 +219,26 @@ public class View implements Observer {
                 }
             }
 
-            Image spritePlayerBall = new Image("images/"
-                    + data.getPlayer().getPlayerBall().getColor() + " ball.png");
-            playerBallImageView.setImage(spritePlayerBall);
-
-            Image spriteNextBall =
-                    new Image("images/" + data.getPlayer().getNextBall().getColor() + " ball.png");
-            nextBallImageView.setImage(spriteNextBall);
+            Image spritePlayerBall;
+            Image spriteNextBall;
+            if (data.getPlayer().getPlayerBall() instanceof MultiplierBall) {
+                spritePlayerBall = new Image("images/multiplier "
+                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+                playerBallImageView.setImage(spritePlayerBall);
+            } else {
+                spritePlayerBall = new Image("images/"
+                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+                playerBallImageView.setImage(spritePlayerBall);
+            }
+            if (data.getPlayer().getNextBall() instanceof MultiplierBall) {
+                spriteNextBall = new Image("images/multiplier "
+                        + data.getPlayer().getNextBall().getColor() + " ball.png");
+                nextBallImageView.setImage(spriteNextBall);
+            } else {
+                spriteNextBall = new Image("images/"
+                        + data.getPlayer().getNextBall().getColor() + " ball.png");
+                nextBallImageView.setImage(spriteNextBall);
+            }
 
             playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
                             - spritePlayerBall.getWidth() / 2,
@@ -244,16 +262,17 @@ public class View implements Observer {
     }
 
     /**
-     * This method displays a plus 1 icon in the places where balls have been removed.
-     * @param c the cell where a plus 1 should be displayed
+     * This method displays a plus amount icon in the places where balls have been removed.
+     * @param c the cell where a plus amount should be displayed
+     * @param amount the amount to be displayed
      */
-    public void displayPlus1(Cell c) {
+    public void displayPlusIcon(Cell c, int amount) {
         Platform.runLater(() -> {
-            BallImageView plusOne = new BallImageView(new Image("images/plus1.png"), c, true);
-            plusOne.relocate(c.getCurrentX(), c.getCurrentY());
+            BallImageView plusIcon = new BallImageView(new Image("images/plus" + amount + ".png"), c, true);
+            plusIcon.relocate(c.getCurrentX(), c.getCurrentY());
 
-            gamePane.getChildren().add(plusOne);
-            RemovePlusOneIcon r = new RemovePlusOneIcon(plusOne, gamePane);
+            gamePane.getChildren().add(plusIcon);
+            RemovePlusOneIcon r = new RemovePlusOneIcon(plusIcon, gamePane);
 
             SetTimeout t = new SetTimeout("Timeout Thread", 1000, r);
             t.start();
@@ -265,42 +284,37 @@ public class View implements Observer {
      * @param c the cell in which the ball is located
      */
     public void display(Cell c) {
-        Platform.runLater(() -> {
-            if (c.getBall() != null) {
-                BallImageView biv;
-                if (c.getBall().isCenterPiece()) {
-                    biv = new BallImageView(new Image("images/center.png"), c, false);
-                }
-                else if (c.getBall().isNormalBall()) {
-                    biv = new BallImageView(new Image("images/" + c.getBall().getColor()
-                            + " ball.png"), c, false);
-                }
-                else if (c.getBall().isExplosiveBall()) {
-                    biv = new BallImageView(new Image("images/explosive ball.png"),
-                            c, false);
-                }
-                else if (c.getBall().isRainbowBall()) {
-                    biv = new BallImageView(new Image("images/rainbow ball.png"),
-                            c, false);
-                }
-                else if (c.getBall().isMultiplierBall()) {
-                    biv = new BallImageView(new Image("images/multiplier ball.png"),
-                            c, false);
-                    biv = new BallImageView(new Image("images/explosive ball.png"), c, false);
-                }
-                else if (c.getBall().isRainbowBall()) {
-                    biv = new BallImageView(new Image("images/rainbow ball.png"), c, false);
-                }
-                else if (c.getBall().isMultiplierBall()) {
-                    biv = new BallImageView(new Image("images/multiplier ball.png"), c, false);
-                }
-                else {
-                    biv = new BallImageView(new Image("images/null.png"),
-                            c, false);
-                }
-                gamePane.getChildren().add(biv);
-                biv.relocate(getScreenX(c, biv.getImage()), getScreenY(c, biv.getImage()));
+        if (c != null && c.getBall() != null) {
+            if (c.getBall().isCenterPiece()) {
+                changePlayerBallImageView(new Image("images/center.png"), c);
             }
+            else if (c.getBall().isNormalBall()) {
+                changePlayerBallImageView(new Image("images/" + c.getBall().getColor()
+                        + " ball.png"), c);
+            }
+            else if (c.getBall().isExplosiveBall()) {
+                changePlayerBallImageView(new Image("images/explosive ball.png"), c);
+            }
+            else if (c.getBall().isRainbowBall()) {
+                changePlayerBallImageView(new Image("images/rainbow ball.png"), c);
+            }
+            else if (c.getBall().isMultiplierBall()) {
+                changePlayerBallImageView(new Image("images/multiplier " + c.getBall().getColor()
+                        + " ball.png"), c);
+            }
+        }
+    }
+
+    /**
+     * Sets a new player ball image view.
+     * @param image The image to set in the ball image view
+     * @param c the cell c in which the ball is cntained
+     */
+    private void changePlayerBallImageView(Image image, Cell c) {
+        Platform.runLater(() -> {
+            BallImageView biv = new BallImageView(image, c, false);
+            gamePane.getChildren().add(biv);
+            biv.relocate(getScreenX(c, biv.getImage()), getScreenY(c, biv.getImage()));
         });
     }
 
@@ -357,38 +371,22 @@ public class View implements Observer {
         //create graphical elements
         ImageView pauseMessage = new ImageView("images/pauseMessage.png");
         pauseMessage.relocate(0, 5);
-        pausePopupMainMenuButton = new Button();
-        pausePopupMainMenuButton.backgroundProperty().setValue(null);
-        pausePopupMainMenuButton.graphicProperty().bind(
-                Bindings.when(pausePopupMainMenuButton.hoverProperty())
-                        .then(new ImageView("images/popup-home-button-hovered.png"))
-                        .otherwise(new ImageView("images/popup-home-button.png"))
-        );
-        pausePopupMainMenuButton.relocate(40, 100);
-        pausePopupExitButton = new Button();
-        pausePopupExitButton.backgroundProperty().setValue(null);
-        pausePopupExitButton.graphicProperty().bind(
-                Bindings.when(pausePopupExitButton.hoverProperty())
-                        .then(new ImageView("images/popup-exit-button-hovered.png"))
-                        .otherwise(new ImageView("images/popup-exit-button.png"))
-        );
-        pausePopupExitButton.relocate(40, 170);
-        pausePopupRestartButton = new Button();
-        pausePopupRestartButton.backgroundProperty().setValue(null);
-        pausePopupRestartButton.graphicProperty().bind(
-                Bindings.when(pausePopupRestartButton.hoverProperty())
-                        .then(new ImageView("images/popup-restart-button-hovered.png"))
-                        .otherwise(new ImageView("images/popup-restart-button.png"))
-        );
-        pausePopupRestartButton.relocate(40, 240);
-        pausePopupCloseButton = new Button();
-        pausePopupCloseButton.backgroundProperty().setValue(null);
-        pausePopupCloseButton.graphicProperty().bind(
-                Bindings.when(pausePopupCloseButton.hoverProperty())
-                        .then(new ImageView("images/close-button-hovered.png"))
-                        .otherwise(new ImageView("images/close-button.png"))
-        );
-        pausePopupCloseButton.relocate(260, 5);
+        pausePopupMainMenuButton = new ImageView("images/popup-home-button.png");
+        createHover(pausePopupMainMenuButton, new Image("images/popup-home-button.png"),
+                new Image("images/popup-home-button-hovered.png"));
+        pausePopupMainMenuButton.relocate(50, 105);
+        pausePopupExitButton = new ImageView("images/popup-exit-button.png");
+        createHover(pausePopupExitButton, new Image("images/popup-exit-button.png"),
+                new Image("images/popup-exit-button-hovered.png"));
+        pausePopupExitButton.relocate(50, 180);
+        pausePopupRestartButton = new ImageView("images/popup-restart-button.png");
+        createHover(pausePopupRestartButton, new Image("images/popup-restart-button.png"),
+                new Image("images/popup-restart-button-hovered.png"));
+        pausePopupRestartButton.relocate(50, 255);
+        pausePopupCloseButton = new ImageView("images/close-button.png");
+        createHover(pausePopupCloseButton, new Image("images/close-button.png"),
+                new Image("images/close-button-hovered.png"));
+        pausePopupCloseButton.relocate(270, 8);
 
         //add graphical elements to popup container
         pausePopup.getChildren().add(pauseMessage);
@@ -439,14 +437,10 @@ public class View implements Observer {
         specialToggle.relocate(275, 116);
         wallToggle = new ImageView("images/toggleOff.png");
         wallToggle.relocate(275, 146);
-        settingsPopupCloseButton = new Button();
-        settingsPopupCloseButton.backgroundProperty().setValue(null);
-        settingsPopupCloseButton.graphicProperty().bind(
-                Bindings.when(settingsPopupCloseButton.hoverProperty())
-                        .then(new ImageView("images/close-button-hovered.png"))
-                        .otherwise(new ImageView("images/close-button.png"))
-        );
-        settingsPopupCloseButton.relocate(260, 5);
+        settingsPopupCloseButton = new ImageView("images/close-button.png");
+        createHover(settingsPopupCloseButton, new Image("images/close-button.png"),
+                new Image("images/close-button-hovered.png"));
+        settingsPopupCloseButton.relocate(270, 8);
 
         //add graphical elements to popup container
         settingsPopup.getChildren().add(settingsMessage);
@@ -460,6 +454,20 @@ public class View implements Observer {
 
         //checks for toggle sprites
         checkAllSettingsToggles();
+    }
+
+    /**
+     * @param icon the icon to be hovered
+     * @param normal the unhovered sprite of the icon
+     * @param hovered the hovered sprite of the icon
+     */
+    private void createHover(ImageView icon, Image normal, Image hovered) {
+        icon.setOnMouseEntered(event -> {
+            icon.setImage(hovered);
+        });
+        icon.setOnMouseExited(event -> {
+            icon.setImage(normal);
+        });
     }
 
     /**
@@ -632,21 +640,21 @@ public class View implements Observer {
     /**
      * @return popup continue game button
      */
-    public Button getPausePopupRestartButton() {
+    public ImageView getPausePopupRestartButton() {
         return pausePopupRestartButton;
     }
 
     /**
      * @return popup main menu return button
      */
-    public Button getPausePopupMainMenuButton() {
+    public ImageView getPausePopupMainMenuButton() {
         return pausePopupMainMenuButton;
     }
 
     /**
      * @return popup exit game button
      */
-    public Button getPausePopupExitButton() {
+    public ImageView getPausePopupExitButton() {
         return pausePopupExitButton;
     }
 
@@ -688,14 +696,14 @@ public class View implements Observer {
     /**
      * @return settings popup menu close button
      */
-    public Button getSettingsPopupCloseButton() {
+    public ImageView getSettingsPopupCloseButton() {
         return settingsPopupCloseButton;
     }
 
     /**
      * @return pause popup menu close button
      */
-    public Button getPausePopupCloseButton() {
+    public ImageView getPausePopupCloseButton() {
         return pausePopupCloseButton;
     }
 }

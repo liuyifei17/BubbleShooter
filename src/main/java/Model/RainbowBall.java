@@ -35,13 +35,8 @@ public class RainbowBall extends PlayerBall {
         //initialise an arrayList which will contain all possible removedBalls
         ArrayList<Cell> removalBalls = new ArrayList<>();
         removalBalls.add(collidedCell);
-        ArrayList<String> colors = new ArrayList<>();
+        ArrayList<String> colors = checkColors(collidedCell);
 
-        for (Cell adjacentCell : collidedCell.getAdjacentCells()) {
-            if (adjacentCell.getBall().getColor() !=  null) {
-                colors.add(adjacentCell.getBall().getColor());
-            }
-        }
 
         Map<Integer, ArrayList<Cell>> map = new TreeMap<>();
 
@@ -50,12 +45,38 @@ public class RainbowBall extends PlayerBall {
             map.put(checkColorRemoval(color, collidedCell).size(),
                     checkColorRemoval(color, collidedCell));
         }
-
-        Map.Entry<Integer, ArrayList<Cell>> entry = map.entrySet().iterator().next();
-
-        return entry.getValue();
+        ArrayList<Cell> mostCells = new ArrayList<>(map.values()).get(map.values().size() - 1);
+        return mostCells;
     }
 
+    /**
+     * HelperMethod used to find the colors.
+     * @param collidedCell the cell where playerBall is collided
+     * @return a list of colors
+     */
+    private ArrayList<String> checkColors(Cell collidedCell) {
+        ArrayList<String> colors = new ArrayList<>();
+        Cell rainbow = new Cell(0, 0);
+
+        for (Cell adjacentCell : collidedCell.getAdjacentCells()) {
+            if (adjacentCell.getBall() != null && adjacentCell.getBall().isRainbowBall()) {
+                rainbow = adjacentCell;
+            } else if (adjacentCell.getBall() != null) {
+                colors.add(adjacentCell.getBall().getColor());
+            }
+        }
+
+        if (colors.size() == 0) {
+            for (Cell adjacentCell : rainbow.getAdjacentCells()) {
+                if (adjacentCell.getBall() != null && adjacentCell.getBall().isRainbowBall()) {
+                    rainbow = adjacentCell;
+                } else if (adjacentCell.getBall() != null) {
+                    colors.add(adjacentCell.getBall().getColor());
+                }
+            }
+        }
+        return colors;
+    }
     /**
      * HelperMethod for checkRemovalBalls().Return for each color the cell that contains should be
      * removed balls.
@@ -64,7 +85,10 @@ public class RainbowBall extends PlayerBall {
      * @return a list of cells
      */
     private ArrayList<Cell> checkColorRemoval(String color, Cell collidedCell) {
+        //initialise an arrayList which will contain all possible removedBalls
         ArrayList<Cell> removalBalls = new ArrayList<>();
+        removalBalls.add(collidedCell);
+
         //initialise a queue for BFS
         LinkedList<Cell> queue = new LinkedList<>();
         queue.add(collidedCell);
@@ -76,7 +100,6 @@ public class RainbowBall extends PlayerBall {
 
         // loop through the queue
         while (!queue.isEmpty()) {
-            removalBalls.add(collidedCell);
 
             current = queue.remove();
 
@@ -89,7 +112,8 @@ public class RainbowBall extends PlayerBall {
                     boolean sameColour = color.equals(ball.getColor());
 
                     //if never visited and both cells contains same colour ball
-                    if (!visited.contains(adjacentCell) && sameColour) {
+                    // or if it is a rainbowBall
+                    if (!visited.contains(adjacentCell) && (sameColour || ball.isRainbowBall())) {
                         //add the cell into the queue and removalBallsList
                         queue.add(adjacentCell);
                         removalBalls.add(adjacentCell);
