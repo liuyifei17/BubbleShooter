@@ -79,7 +79,7 @@ public class PlayerBallController {
         this.setDeltaX(0);
         this.setDeltaY(0);
         counter = 0;
-        gc.getWallController().placeWalls();
+        //gc.getWallController().placeWalls();
     }
 
 
