@@ -33,18 +33,18 @@ public class ExplosiveBall extends PlayerBall {
         ArrayList<Cell> removalBalls = new ArrayList<>();
 
         Cell current = collidedCell;
-        while (removalBalls.size() < 4) {
-
-            //loop through all neighbors
-            for (Cell adjacentCell : current.getAdjacentCells()) {
-                if (adjacentCell.getBall() != null && !removalBalls.contains(adjacentCell)) {
-                    removalBalls.add(adjacentCell);
-                }
+        removalBalls.add(current);
+        //loop through all neighbors
+        for (Cell adjacentCell : current.getAdjacentCells()) {
+            if (adjacentCell.getBall() != null && !removalBalls.contains(adjacentCell)
+                    && !adjacentCell.getBall().isCenterPiece()) {
+                removalBalls.add(adjacentCell);
             }
-
-            current = removalBalls.get(removalBalls.size() - 1);
         }
+
         removalBalls.add(collidedCell);
         return removalBalls;
+
+
     }
 }
