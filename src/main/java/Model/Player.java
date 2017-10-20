@@ -90,7 +90,7 @@ public class Player  extends Observable {
             nextBall = playerBallFactory.createBall("Normal Ball");
         }
         else {
-            int random = Util.randomBetween(0, 3);
+            int random = Util.randomBetween(0, 20);
             switch (random) {
                 case 1://1 in 20 is an explosive ball.
                     nextBall = playerBallFactory.createBall("Explosive Ball");
