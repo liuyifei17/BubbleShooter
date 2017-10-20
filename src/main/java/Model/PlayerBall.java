@@ -116,6 +116,23 @@ public abstract class PlayerBall {
 
         return false;
     }
+    
+    public boolean hasCollidedWithRandomWall(Walls wall) {
+
+        double[] leftCoordinates = Util.calculateRotatedCoordinates(
+                wall.getX() - GameConfiguration.wallHeight, wall.getY(), wall.getX(),
+                wall.getY(), wall.getRotation());
+        double[] rightCoordinates = Util.calculateRotatedCoordinates(
+                wall.getX() + GameConfiguration.wallHeight, wall.getY(), wall.getX(),
+                wall.getY(), wall.getRotation());
+        if ((Util.getDistance(x, y, leftCoordinates[0], leftCoordinates[1])
+                <= GameConfiguration.wallHeight * 2) || (Util.getDistance(x, y, rightCoordinates[0],
+                rightCoordinates[1]) <= GameConfiguration.wallHeight * 2)) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * This is an abstract method that checks which balls should be removed.
