@@ -26,6 +26,9 @@ public class GameConfiguration {
     public static int wallRadius;
     public static int speedup;
     public static int maximumTimesBallHit;
+    public static int amountOfWalls;
+    public static int wallHeight;
+    public static int wallWidth;
     public static List<Integer> leftRotation;
     public static List<Integer> rightRotation;
     public static List<String> colors;
@@ -63,6 +66,9 @@ public class GameConfiguration {
             wallRadius = api.getIntegerValueOf("wallRadius");
             speedup = api.getIntegerValueOf("speedup");
             maximumTimesBallHit = api.getIntegerValueOf("maximumTimesBallHit");
+            amountOfWalls = api.getIntegerValueOf("amountOfWalls");
+            wallHeight = api.getIntegerValueOf("wallHeight");
+            wallWidth = api.getIntegerValueOf("wallWidth");
             rightRotation = api.getListIntValueOf("rightRotation");
             leftRotation = api.getListIntValueOf("leftRotation");
             colors = api.getListStringValueOf("colors");

@@ -22,7 +22,8 @@ public class Grid {
     private double edgeToDistance;
     private double topBarHeight;
     private double stageWidth;
-    private double  stageHeight;
+    private double stageHeight;
+    private boolean doneRotating;
 
     /**
      * Creates a grid based on the center values of the grid and initializes all grid cells.
@@ -41,6 +42,7 @@ public class Grid {
         topBarHeight = GameConfiguration.topBarHeight;
         stageWidth = GameConfiguration.stageWidth;
         stageHeight = GameConfiguration.stageHeight;
+        doneRotating = false;
         initializeCells(x, y);
     }
 
@@ -209,6 +211,53 @@ public class Grid {
     }
 
     /**
+     * Look for all the cells within the wallRadius and if they are null they will be put in array
+     * for the potential locations for the walls.
+     * @return array with cell locations for the wall.
+     */
+    public ArrayList<Cell> emptyWallLocation() {
+        ArrayList<Cell> cellLocations = new ArrayList<>();
+        for (Cell i : this.getEmptyCells()) {
+            boolean canBeUsed = false;
+            if ((i.getCurrentX() + GameConfiguration.wallWidth < GameConfiguration.stageWidth)
+                    && (i.getCurrentX() - GameConfiguration.wallWidth> 0)
+                    && (i.getCurrentY() + GameConfiguration.wallWidth
+                    < GameConfiguration.stageHeight)
+                    && (i.getCurrentY() - GameConfiguration.wallWidth
+                    > GameConfiguration.scoreBarHeight)
+                    && Util.getDistance(i.getCurrentX(), i.getCurrentY(),
+                    GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight) > 100) {
+                canBeUsed = true;
+                for (Cell k : cells) {
+                    if ((Util.getDistance(i.getCurrentX(), i.getCurrentY(),
+                            k.getCurrentX(), k.getCurrentY()) <= GameConfiguration.wallRadius)
+                            && (k.getBall() != null)) {
+                        canBeUsed = false;
+                        break;
+                    }
+                }
+            }
+            if (canBeUsed) {
+                cellLocations.add(i);
+            }
+        }
+        return cellLocations;
+    }
+
+    /**
+     * @return empty Cells on Grid.
+     */
+    public ArrayList<Cell> getEmptyCells() {
+        ArrayList<Cell> emptyCell = new ArrayList<>();
+        for (Cell i : cells) {
+            if (i.getBall() == null) {
+                emptyCell.add(i);
+            }
+        }
+        return emptyCell;
+    }
+
+    /**
      * @return cells
      */
     public ArrayList<Cell> getCells() {
@@ -248,6 +297,7 @@ public class Grid {
      */
     public void setRotationDifference(int rotationDifference) {
         this.rotationDifference = rotationDifference;
+
     }
 
     /**
@@ -278,5 +328,19 @@ public class Grid {
      */
     public double getCenterY() {
         return centerY;
+    }
+
+    /**
+     * @return rotating boolean
+     */
+    public boolean getStillRotating() {
+        return doneRotating;
+    }
+
+    /**
+     * @param doneRotating set true if it is rotating
+     */
+    public void setStillRotating(boolean doneRotating) {
+        this.doneRotating = doneRotating;
     }
 }
