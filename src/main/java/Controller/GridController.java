@@ -25,10 +25,10 @@ public class GridController {
      * processes the dynamics of the grid based on a timer.
      */
     public void process() {
-//        if (grid.getRotationDifference() == 0  && grid.getStillRotating()) {
-//            grid.setStillRotating(false);
-//            gc.getWallController().placeWalls();
-//        }
+        if (grid.getRotationDifference() == 0  && grid.getStillRotating()) {
+            grid.setStillRotating(false);
+            gc.getWallController().placeWalls();
+        }
         //calculate the rotated cell coordinate values based on rotation change
         if (grid.getRotationDifference() != 0) {
             if (grid.getRotationDifference() > 0) {
