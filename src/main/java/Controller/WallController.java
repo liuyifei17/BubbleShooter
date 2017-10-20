@@ -8,14 +8,25 @@ import Utility.Util;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * The wallcontroller puts the wall the right location and replaces them when they have to
+ * be replaced.
+ */
 public class WallController {
 
     private GameData data;
 
+    /**
+     * @param data the walls are stored in the gameData.
+     */
     public WallController(GameData data) {
         this.data = data;
     }
 
+    /**
+     * Place the walls at a location when the setting are put on for it. A maximum of three walls
+     * are used in the game, for each shot they will be relocated.
+     */
     public void placeWalls() {
         if (!(GameConfiguration.walls)) {
             data.getRandomWalls().clear();
@@ -33,7 +44,7 @@ public class WallController {
             }
 
             Cell cell = location.get(index);
-            Walls wall = new Walls(cell.getCurrentX(), cell.getCurrentY(),0);
+            Walls wall = new Walls(cell.getCurrentX(), cell.getCurrentY(), 0);
             wall.calculateRotation(data.getGrid());
             data.getRandomWalls().add(wall);
 

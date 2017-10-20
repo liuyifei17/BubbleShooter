@@ -117,6 +117,11 @@ public abstract class PlayerBall {
         return false;
     }
 
+    /**
+     * Checks whether ball has collided with a random wall.
+     * @param wall that the ball has collided with.
+     * @return whether the ball has collided or not with the random wall.
+     */
     public boolean hasCollidedWithRandomWall(Walls wall) {
 
         double[] leftCoordinates = Util.calculateRotatedCoordinates(
