@@ -1,7 +1,10 @@
 package Controller;
 
 
-import Model.*;
+import Model.Cell;
+import Model.Grid;
+import Model.Player;
+import Model.Walls;
 import Utility.Util;
 
 
@@ -121,13 +124,17 @@ public class PlayerBallController {
             deltaY = newDelta[1];
         }
 
-        for (Walls i : gc.getData().getRandomWalls()) {
-            if (player.getPlayerBall().hasCollidedWithRandomWall(i)) {
-                double[] wallDelta = reflectBack(deltaX, deltaY, i);
-                deltaX = wallDelta[0];
-                deltaY = wallDelta[1];
+        if (gc.getData() != null
+                && gc.getData().getRandomWalls().size() > 0) {
+            for (Walls i : gc.getData().getRandomWalls()) {
+                if (player.getPlayerBall().hasCollidedWithRandomWall(i)) {
+                    double[] wallDelta = reflectBack(deltaX, deltaY, i);
+                    deltaX = wallDelta[0];
+                    deltaY = wallDelta[1];
+                }
             }
         }
+
         // the new coordinate of the ball is the the previous one added with the delta.
         double newXCoord = player.getPlayerBall().getX() + deltaX;
         double newYCoord = player.getPlayerBall().getY() + deltaY;
