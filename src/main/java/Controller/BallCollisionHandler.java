@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Ball;
-import Model.Cell;
-import Model.Grid;
-import Model.Player;
+import Model.*;
 import Utility.Util;
 
 import java.util.ArrayList;
@@ -74,21 +71,41 @@ public class BallCollisionHandler {
     public void handleCollision(Cell collidedCell) {
         // display the ball that has collided with the hexagon
         grid.getOccupiedCells().add(collidedCell);
-        collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
+
+        if (player.getPlayerBall() instanceof NormalBall) {
+            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
+        } else if (player.getPlayerBall() instanceof ExplosiveBall) {
+            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 2));
+        } else if (player.getPlayerBall() instanceof RainbowBall) {
+            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 3));
+        }
+
         GameController.getView().display(collidedCell);
 
         // check whether the shot ball has hit at least 2 other balls of the same color
 
         ArrayList<Cell> ballsToBeRemoved = player.getPlayerBall().checkRemovalBalls(collidedCell);
-        if (ballsToBeRemoved.size() >= 3) {
+
+        if (player.getPlayerBall() instanceof NormalBall
+                || player.getPlayerBall() instanceof RainbowBall) {
+            if (ballsToBeRemoved.size() >= 3) {
+                player.setScore(player.getScore() + ballsToBeRemoved.size());
+                removeBalls(ballsToBeRemoved);
+                removeBalls(notConnectedBalls());
+
+            } else {
+                player.setMissCounter(player.getMissCounter() + 1);
+            }
+        } else if (player.getPlayerBall() instanceof ExplosiveBall) {
             player.setScore(player.getScore() + ballsToBeRemoved.size());
             removeBalls(ballsToBeRemoved);
             removeBalls(notConnectedBalls());
-        } else if (player.getMissCounter() >= 5) {
+        }
+
+        if (player.getMissCounter() >= 5) {
             player.setMissCounter(0);
             grid.appendAdditionalBalls(Util.randomBetween(5, 15));
-        } else {
-            player.setMissCounter(player.getMissCounter() + 1);
         }
     }
+
 }
