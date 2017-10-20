@@ -5,6 +5,7 @@ import Utility.Util;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -27,10 +28,10 @@ public class BallCollisionHandler {
 
     // this method removes the balls that the method checkRemovalBalls returns and adds the points
     // to the score
-    private void removeBalls(ArrayList<Cell> toRemove) {
+    private void removeBalls(ArrayList<Cell> toRemove, int multiplier) {
         for (Cell cell : toRemove) {
             GameController.getView().removeBall(cell);
-            GameController.getView().displayPlus1(cell);
+            GameController.getView().displayPlusIcon(cell, multiplier);
             grid.getOccupiedCells().remove(cell);
             cell.setBall(null);
         }
@@ -77,9 +78,11 @@ public class BallCollisionHandler {
         } else if (player.getPlayerBall() instanceof ExplosiveBall) {
             collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 2));
         } else if (player.getPlayerBall() instanceof RainbowBall) {
-            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 3));
-        }else if(player.getPlayerBall() instanceof MultiplierBall) {
-            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 4));
+            List<String> colors = GameConfiguration.colors;
+            String color = colors.get(Util.randomBetween(0, colors.size() - 1));
+            collidedCell.setBall(new Ball(color, collidedCell, 1));
+        } else if (player.getPlayerBall() instanceof MultiplierBall) {
+            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
         }
 
         GameController.getView().display(collidedCell);
@@ -91,29 +94,25 @@ public class BallCollisionHandler {
         if (player.getPlayerBall() instanceof NormalBall
                 || player.getPlayerBall() instanceof RainbowBall) {
             if (ballsToBeRemoved.size() >= 3) {
-                if (hasMultiplier(ballsToBeRemoved)) {
-                    player.setScore(player.getScore() + ballsToBeRemoved.size() * 2);
-                } else {
-                    player.setScore(player.getScore() + ballsToBeRemoved.size());
-                }
-                removeBalls(ballsToBeRemoved);
-                removeBalls(notConnectedBalls());
-
+                player.setScore(player.getScore() + ballsToBeRemoved.size());
+                removeBalls(ballsToBeRemoved, 1);
+                removeBalls(notConnectedBalls(), 1);
             } else {
                 player.setMissCounter(player.getMissCounter() + 1);
             }
         } else if (player.getPlayerBall() instanceof ExplosiveBall) {
-            if (hasMultiplier(ballsToBeRemoved)) {
+            player.setScore(player.getScore() + ballsToBeRemoved.size());
+            removeBalls(ballsToBeRemoved, 1);
+            removeBalls(notConnectedBalls(), 1);
+        } else if (player.getPlayerBall() instanceof MultiplierBall) {
+            if (ballsToBeRemoved.size() >= 3) {
                 player.setScore(player.getScore() + ballsToBeRemoved.size() * 2);
+                removeBalls(ballsToBeRemoved, 2);
+                removeBalls(notConnectedBalls(), 2);
             } else {
-                player.setScore(player.getScore() + ballsToBeRemoved.size());
+                collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
+                player.setMissCounter(player.getMissCounter() + 1);
             }
-            removeBalls(ballsToBeRemoved);
-            removeBalls(notConnectedBalls());
-        }  else {
-            player.setScore(player.getScore() + ballsToBeRemoved.size() * 2);
-            removeBalls(ballsToBeRemoved);
-            removeBalls(notConnectedBalls());
         }
 
         if (player.getMissCounter() >= 5) {

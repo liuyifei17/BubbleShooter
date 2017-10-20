@@ -3,6 +3,7 @@ package View;
 import Controller.GameConfiguration;
 import Model.Cell;
 import Model.GameData;
+import Model.MultiplierBall;
 import Model.Player;
 import Utility.SetTimeout;
 import javafx.application.Platform;
@@ -218,13 +219,26 @@ public class View implements Observer {
                 }
             }
 
-            Image spritePlayerBall = new Image("images/"
-                    + data.getPlayer().getPlayerBall().getColor() + " ball.png");
-            playerBallImageView.setImage(spritePlayerBall);
-
-            Image spriteNextBall =
-                    new Image("images/" + data.getPlayer().getNextBall().getColor() + " ball.png");
-            nextBallImageView.setImage(spriteNextBall);
+            Image spritePlayerBall;
+            Image spriteNextBall;
+            if (data.getPlayer().getPlayerBall() instanceof MultiplierBall) {
+                spritePlayerBall = new Image("images/multiplier "
+                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+                playerBallImageView.setImage(spritePlayerBall);
+            } else {
+                spritePlayerBall = new Image("images/"
+                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+                playerBallImageView.setImage(spritePlayerBall);
+            }
+            if (data.getPlayer().getNextBall() instanceof MultiplierBall) {
+                spriteNextBall = new Image("images/multiplier "
+                        + data.getPlayer().getNextBall().getColor() + " ball.png");
+                nextBallImageView.setImage(spriteNextBall);
+            } else {
+                spriteNextBall = new Image("images/"
+                        + data.getPlayer().getNextBall().getColor() + " ball.png");
+                nextBallImageView.setImage(spriteNextBall);
+            }
 
             playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
                             - spritePlayerBall.getWidth() / 2,
@@ -248,16 +262,17 @@ public class View implements Observer {
     }
 
     /**
-     * This method displays a plus 1 icon in the places where balls have been removed.
-     * @param c the cell where a plus 1 should be displayed
+     * This method displays a plus amount icon in the places where balls have been removed.
+     * @param c the cell where a plus amount should be displayed
+     * @param amount the amount to be displayed
      */
-    public void displayPlus1(Cell c) {
+    public void displayPlusIcon(Cell c, int amount) {
         Platform.runLater(() -> {
-            BallImageView plusOne = new BallImageView(new Image("images/plus1.png"), c, true);
-            plusOne.relocate(c.getCurrentX(), c.getCurrentY());
+            BallImageView plusIcon = new BallImageView(new Image("images/plus" + amount + ".png"), c, true);
+            plusIcon.relocate(c.getCurrentX(), c.getCurrentY());
 
-            gamePane.getChildren().add(plusOne);
-            RemovePlusOneIcon r = new RemovePlusOneIcon(plusOne, gamePane);
+            gamePane.getChildren().add(plusIcon);
+            RemovePlusOneIcon r = new RemovePlusOneIcon(plusIcon, gamePane);
 
             SetTimeout t = new SetTimeout("Timeout Thread", 1000, r);
             t.start();
