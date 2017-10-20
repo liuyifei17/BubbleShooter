@@ -15,7 +15,7 @@ public class PlayerBallFactory {
      * @param ballType the type of the ball that will be created
      * @return an instance of one of the subclasses of PlayerBall
      */
-    PlayerBall createBall(String ballType) {
+    public PlayerBall createBall(String ballType) {
         List<String> colors = GameConfiguration.colors;
         switch (ballType) {
             case "Normal Ball":
