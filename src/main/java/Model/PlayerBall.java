@@ -116,7 +116,7 @@ public abstract class PlayerBall {
 
         return false;
     }
-    
+
     public boolean hasCollidedWithRandomWall(Walls wall) {
 
         double[] leftCoordinates = Util.calculateRotatedCoordinates(
