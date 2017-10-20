@@ -25,7 +25,8 @@ class PlayerBallFactoryTest {
      */
     @Test
     void createNormalBall_1() {
-        assertThat(playerBallFactory.createBall("Normal Ball", 1, 1) instanceof NormalBall).isTrue();
+        assertThat(playerBallFactory.createBall("Normal Ball", 1, 1)
+                instanceof NormalBall).isTrue();
     }
 
     /**
@@ -33,7 +34,8 @@ class PlayerBallFactoryTest {
      */
     @Test
     void createNormalBall_2() {
-        assertThat(playerBallFactory.createBall("Normal Ball") instanceof NormalBall).isTrue();
+        assertThat(playerBallFactory.createBall("Normal Ball")
+                instanceof NormalBall).isTrue();
     }
 
     /**
@@ -41,7 +43,8 @@ class PlayerBallFactoryTest {
      */
     @Test
     void createExplosiveBall_1() {
-        assertThat(playerBallFactory.createBall("Explosive Ball", 1, 1) instanceof ExplosiveBall).isTrue();
+        assertThat(playerBallFactory.createBall("Explosive Ball", 1, 1)
+                instanceof ExplosiveBall).isTrue();
     }
 
     /**
@@ -49,7 +52,8 @@ class PlayerBallFactoryTest {
      */
     @Test
     void createExplosiveBall_2() {
-        assertThat(playerBallFactory.createBall("Explosive Ball") instanceof ExplosiveBall).isTrue();
+        assertThat(playerBallFactory.createBall("Explosive Ball")
+                instanceof ExplosiveBall).isTrue();
     }
 
 
@@ -58,7 +62,8 @@ class PlayerBallFactoryTest {
      */
     @Test
     void createRainbowBallTest_1() {
-        assertThat(playerBallFactory.createBall("Rainbow Ball", 1, 1) instanceof RainbowBall).isTrue();
+        assertThat(playerBallFactory.createBall("Rainbow Ball", 1, 1)
+                instanceof RainbowBall).isTrue();
     }
 
 
@@ -67,7 +72,8 @@ class PlayerBallFactoryTest {
      */
     @Test
     void createRainbowBallTest_2() {
-        assertThat(playerBallFactory.createBall("Rainbow Ball") instanceof RainbowBall).isTrue();
+        assertThat(playerBallFactory.createBall("Rainbow Ball")
+                instanceof RainbowBall).isTrue();
     }
 
 
@@ -76,7 +82,8 @@ class PlayerBallFactoryTest {
      */
     @Test
     void createBallDefault_1() {
-        assertThat(playerBallFactory.createBall("Nonsense", 1, 1) == null).isTrue();
+        assertThat(playerBallFactory.createBall("Nonsense", 1, 1)
+                == null).isTrue();
     }
 
     /**
@@ -84,7 +91,8 @@ class PlayerBallFactoryTest {
      */
     @Test
     void createBallDefault_2() {
-        assertThat(playerBallFactory.createBall("Nonsense") == null).isTrue();
+        assertThat(playerBallFactory.createBall("Nonsense")
+                == null).isTrue();
     }
 
 }

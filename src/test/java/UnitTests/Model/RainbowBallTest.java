@@ -13,8 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -49,7 +47,7 @@ class RainBowBallTest {
         Ball ball = mock(Ball.class);
         when(ball.getColor()).thenReturn("green");
         when(cell.getBall()).thenReturn(ball);
-        ArrayList<Cell> something= new ArrayList<>();
+        ArrayList<Cell> something = new ArrayList<>();
         something.add(cell);
         when(cell.getAdjacentCells()).thenReturn(something);
         assertThat(rainbowBall.checkRemovalBalls(cell).size()).isEqualTo(1);

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -54,7 +53,7 @@ class GridControllerTest {
         Grid newGrid = mock(Grid.class);
         gridController.setGrid(newGrid);
         gridController.process();
-        verify(newGrid,atLeast(1)).getRotationDifference();
+        verify(newGrid, atLeast(1)).getRotationDifference();
     }
 
     @Test
