@@ -78,6 +78,8 @@ public class BallCollisionHandler {
             collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 2));
         } else if (player.getPlayerBall() instanceof RainbowBall) {
             collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 3));
+        }else if(player.getPlayerBall() instanceof MultiplierBall) {
+            collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 4));
         }
 
         GameController.getView().display(collidedCell);
@@ -89,7 +91,11 @@ public class BallCollisionHandler {
         if (player.getPlayerBall() instanceof NormalBall
                 || player.getPlayerBall() instanceof RainbowBall) {
             if (ballsToBeRemoved.size() >= 3) {
-                player.setScore(player.getScore() + ballsToBeRemoved.size());
+                if (hasMultiplier(ballsToBeRemoved)) {
+                    player.setScore(player.getScore() + ballsToBeRemoved.size() * 2);
+                } else {
+                    player.setScore(player.getScore() + ballsToBeRemoved.size());
+                }
                 removeBalls(ballsToBeRemoved);
                 removeBalls(notConnectedBalls());
 
@@ -97,7 +103,15 @@ public class BallCollisionHandler {
                 player.setMissCounter(player.getMissCounter() + 1);
             }
         } else if (player.getPlayerBall() instanceof ExplosiveBall) {
-            player.setScore(player.getScore() + ballsToBeRemoved.size());
+            if (hasMultiplier(ballsToBeRemoved)) {
+                player.setScore(player.getScore() + ballsToBeRemoved.size() * 2);
+            } else {
+                player.setScore(player.getScore() + ballsToBeRemoved.size());
+            }
+            removeBalls(ballsToBeRemoved);
+            removeBalls(notConnectedBalls());
+        }  else {
+            player.setScore(player.getScore() + ballsToBeRemoved.size() * 2);
             removeBalls(ballsToBeRemoved);
             removeBalls(notConnectedBalls());
         }
@@ -108,4 +122,17 @@ public class BallCollisionHandler {
         }
     }
 
+    /**
+     *
+     * @param cells cells that should be removed
+     * @return a boolean if there is a multiplier
+     */
+    private boolean hasMultiplier(ArrayList<Cell> cells) {
+        for (Cell cell : cells) {
+            if (cell.getBall().isMultiplierBall()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
