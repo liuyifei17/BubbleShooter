@@ -2,26 +2,27 @@ package Model;
 
 import Controller.GameConfiguration;
 import Utility.Util;
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Random walls that will be spawned.
  */
 public class Walls {
 
-    private Image walls;
+    private ImageView walls;
     private double x;
     private double y;
+    private int rotation;
 
     /**
      * Create a random wall.
      * @param x the x coordinate
      * @param y the y coordinate
      */
-    public Walls(double x, double y) {
+    public Walls(double x, double y, int rotation) {
         this.x = x;
         this.y = y;
-        walls = null;
+        this.rotation = rotation;
     }
 
     /**
@@ -29,16 +30,15 @@ public class Walls {
      * @param grid the hexagon
      * @return rotation of the wall
      */
-    public int calculateRotation(Grid grid) {
+    public void calculateRotation(Grid grid) {
         double centerToWallX = grid.getCenterCell().getInitialX() - x;
         double centerToWallY = grid.getCenterCell().getInitialY() - y;
-
         double unitDistance = Math.sqrt(centerToWallX * centerToWallX + centerToWallY
                 * centerToWallY);
 
         double degree = Math.acos(centerToWallY / unitDistance);
-
         double randomDegree = Util.randomBetween(0, 10);
+        degree = degree * 180 / Math.PI;
 
         if (Util.randomBetween(0, 1) == 1) {
             degree = degree + randomDegree;
@@ -48,18 +48,14 @@ public class Walls {
         }
 
         int degreeInt = (int) degree;
+        rotation = degreeInt;
 
-        if (x > GameConfiguration.stageWidth) {
-            return -1 * degreeInt;
+       if (x > GameConfiguration.stageWidth/2) {
+            rotation = degreeInt;
         }
-        return degreeInt;
-    }
-
-    /**
-     * @return image of the wall.
-     */
-    public Image getWalls() {
-        return walls;
+        else {
+            rotation = -1 * degreeInt;
+        }
     }
 
     /**
@@ -90,4 +86,7 @@ public class Walls {
         this.y = y;
     }
 
+    public int getRotation() {
+        return rotation;
+    }
 }
