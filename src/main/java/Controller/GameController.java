@@ -25,6 +25,7 @@ public class GameController {
     private GameRunner runner;
     private GridController gridController;
     private PlayerBallController playerBallController;
+    private WallController wallController;
 
     private Stage primaryStage;
     private Scene mainMenu;
@@ -77,6 +78,8 @@ public class GameController {
         loader.initialize(data);
 
         //Initialize controllers
+        wallController = new WallController(data);
+        wallController.placeWalls();
         gridController = new GridController(this, data.getGrid());
         playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
 
@@ -102,7 +105,7 @@ public class GameController {
     private void setupSound() {
         try {
             backgroundMusic = new Media(
-                    new File("src/main/resources/sounds/bgm1.mp3").toURI().toString());
+                    new File("src/main/resources/sounds/track1.mp3").toURI().toString());
             mediaPlayer = new MediaPlayer(backgroundMusic);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             if (GameConfiguration.sounds) {
@@ -212,11 +215,13 @@ public class GameController {
         });
 
         view.getSettingsPopupCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
             view.closeSettingsPopup();
             resumeGame();
         });
 
         view.getPausePopupCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
             view.closePausePopup();
             resumeGame();
         });
@@ -286,6 +291,8 @@ public class GameController {
                 new Player(), 90);
         loader = new GameDataLoader();
         loader.initialize(data);
+        wallController = new WallController(data);
+        wallController.placeWalls();
         gridController = new GridController(this, data.getGrid());
         playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
 
@@ -319,4 +326,17 @@ public class GameController {
         view.showGameOverPopup();
     }
 
+    /**
+     * @return the wallcontroller.
+     */
+    public WallController getWallController() {
+        return wallController;
+    }
+
+    /**
+     * @return the data of the gamecontroller.
+     */
+    public GameData getData() {
+        return data;
+    }
 }

@@ -63,7 +63,7 @@ public class NormalBall extends PlayerBall {
 
 
                     //if never visited and both cells contains same colour ball
-                    if (!visited.contains(adjacentCell) && sameColour) {
+                    if (!visited.contains(adjacentCell) && (sameColour || ball.isRainbowBall())) {
                         //add the cell into the queue and removalBallsList
                         queue.add(adjacentCell);
                         removalBalls.add(adjacentCell);
