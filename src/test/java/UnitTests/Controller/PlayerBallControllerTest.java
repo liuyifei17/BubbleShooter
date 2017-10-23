@@ -2,13 +2,11 @@ package UnitTests.Controller;
 
 import Controller.GameConfiguration;
 import Controller.GameController;
+import Controller.GameDataLoader;
 import Controller.PlayerBallController;
-import Model.Grid;
-import Model.Player;
-import Model.PlayerBall;
+import Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,28 +15,34 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PlayerBallControllerTest {
 
-    Grid grid;
-    Player player;
-    GameController gameController;
-    PlayerBallController pbc;
-    PlayerBall playerBall;
+    private Grid grid;
+    private Player player;
+    private GameController gameController;
+    private PlayerBallController pbc;
+    private PlayerBall playerBall;
+    private PlayerBallFactory playerBallFactory;
+    private GameDataLoader dataLoader;
+    private GameData gameData;
 
     @BeforeEach
     void setUp() {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
+        playerBallFactory = new PlayerBallFactory();
+        gameController = new GameController(null);
+        dataLoader = new GameDataLoader();
+        player = new Player();
+        grid = new Grid(GameConfiguration.stageWidth / 2,
+                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        gameData = new GameData(grid, player, 90);
+        dataLoader.initialize(gameData);
+        playerBall = playerBallFactory.createBall("Normal Ball", 100, 100);
+        player.setPlayerBall(playerBall);
+        pbc = new PlayerBallController(gameController, gameData.getPlayer(), gameData.getGrid());
     }
-
 
     @Test
     void calculateDeltaTest_normal() {
-        grid = Mockito.mock(Grid.class);
-        player = Mockito.mock(Player.class);
-        gameController = Mockito.mock(GameController.class);
-        pbc = new PlayerBallController(gameController, player, grid);
-        PlayerBall playerBall = new PlayerBall("yellow", 50.0, 50.0);
-        Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
-        Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
         pbc.setMouseX(200);
         pbc.setMouseY(200);
 
@@ -48,25 +52,15 @@ public class PlayerBallControllerTest {
         assertThat(pbc.getDeltaY()).isBetween(3.534, 3.536);
     }
 
-
     @Test
     void calculateDeltaTest_secondTime() {
-        grid = Mockito.mock(Grid.class);
-        player = Mockito.mock(Player.class);
-        gameController = Mockito.mock(GameController.class);
-        pbc = new PlayerBallController(gameController, player, grid);
-        PlayerBall playerBall = new PlayerBall("red", 50.0, 50.0);
-        Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
-        Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
         pbc.setMouseX(200);
         pbc.setMouseY(200);
 
         pbc.calculateDelta();
-        pbc.setMouseY(250);
+        pbc.setMouseX(250);
         pbc.setMouseY(60);
         pbc.calculateDelta();
-
-        Mockito.verify(player, Mockito.times(2)).getPlayerBall();
 
         assertThat(pbc.getDeltaX()).isBetween(3.534, 3.536);
         assertThat(pbc.getDeltaY()).isBetween(3.534, 3.536);
@@ -74,16 +68,68 @@ public class PlayerBallControllerTest {
 
     @Test
     void launchBallTest_invalidClick() {
-        gameController = new GameController(null);
-        grid = new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
-        player = new Player();
-        playerBall = new PlayerBall("blue", 100, 100);
-        player.setPlayerBall(playerBall);
-        pbc = new PlayerBallController(gameController, player, grid);
+        pbc.launchBall();
+
+        assertThat(pbc.getStopWatch()).isEqualTo(0);
+    }
+
+    @Test
+    void launchBallTest_noCollision() {
+        pbc.setMouseX(GameConfiguration.stageWidth);
+        pbc.setMouseY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        pbc.setDeltaX(1);
+        pbc.setDeltaY(1);
 
         pbc.launchBall();
 
+        assertThat(playerBall.getX()).isEqualTo(101);
+        assertThat(playerBall.getY()).isEqualTo(101);
+    }
+
+    @Test
+    void launchBallTest_wallCollision1() {
+        playerBall.setX(GameConfiguration.stageWidth);
+        playerBall.setY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        pbc.setDeltaX(1);
+        pbc.setDeltaY(1);
+        pbc.setMouseY(1);
+
+        pbc.launchBall();
+
+        assertThat(pbc.getDeltaX()).isEqualTo(-1);
+        assertThat(pbc.getDeltaY()).isEqualTo(1);
+    }
+
+    @Test
+    void launchBallTest_wallCollision2() {
+        playerBall.setX(GameConfiguration.stageWidth / 2);
+        playerBall.setY(GameConfiguration.stageHeight + GameConfiguration.topBarHeight);
+        pbc.setDeltaX(1);
+        pbc.setDeltaY(1);
+        pbc.setMouseY(1);
+
+        pbc.launchBall();
+
+        assertThat(pbc.getDeltaX()).isEqualTo(1);
+        assertThat(pbc.getDeltaY()).isEqualTo(-1);
+    }
+
+    @Test
+    void launchBallTest_wallCollsion_4times() {
+        pbc.setMouseY(1);
+
+        for (int i = 0; i < 4; i++) {
+            playerBall.setX(GameConfiguration.stageWidth / 2);
+            playerBall.setY(GameConfiguration.stageHeight + GameConfiguration.topBarHeight);
+            pbc.setDeltaX(1);
+            pbc.setDeltaY(1);
+            pbc.launchBall();
+        }
+        pbc.launchBall();
+
+        assertThat(pbc.getDeltaX()).isEqualTo(0);
+        assertThat(pbc.getDeltaY()).isEqualTo(0);
+        assertThat(player.getPlayerBall()).isNotEqualTo(playerBall);
         assertThat(pbc.getStopWatch()).isEqualTo(0);
     }
 
