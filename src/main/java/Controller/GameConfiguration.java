@@ -23,12 +23,19 @@ public class GameConfiguration {
     public static int popupX;
     public static int popupY;
     public static int ballRadius;
+    public static int wallRadius;
     public static int speedup;
     public static int maximumTimesBallHit;
+    public static int amountOfWalls;
+    public static int wallHeight;
+    public static int wallWidth;
     public static List<Integer> leftRotation;
     public static List<Integer> rightRotation;
     public static List<String> colors;
     public static boolean isColor;
+    public static boolean sounds;
+    public static boolean specialBalls;
+    public static boolean walls;
 
     /**
      * Intialize the api by reading the file.
@@ -56,13 +63,20 @@ public class GameConfiguration {
             popupX = api.getIntegerValueOf("popupX");
             popupY = api.getIntegerValueOf("popupY");
             ballRadius = api.getIntegerValueOf("ballRadius");
+            wallRadius = api.getIntegerValueOf("wallRadius");
             speedup = api.getIntegerValueOf("speedup");
             maximumTimesBallHit = api.getIntegerValueOf("maximumTimesBallHit");
+            amountOfWalls = api.getIntegerValueOf("amountOfWalls");
+            wallHeight = api.getIntegerValueOf("wallHeight");
+            wallWidth = api.getIntegerValueOf("wallWidth");
             rightRotation = api.getListIntValueOf("rightRotation");
             leftRotation = api.getListIntValueOf("leftRotation");
             colors = api.getListStringValueOf("colors");
             edgeToDistance = api.getRealValueOf("edgeToDistance");
             isColor = api.getBooleanValueOf("isColor");
+            sounds = api.getBooleanValueOf("sounds");
+            walls = api.getBooleanValueOf("walls");
+            specialBalls = api.getBooleanValueOf("specialBalls");
         } catch (NotExistingVariableException e) {
             e.printStackTrace();
         }

@@ -3,41 +3,31 @@ package Model;
 import Controller.GameConfiguration;
 import Utility.Util;
 
+import java.util.ArrayList;
+
 /**
- * PlayerBall is the ball with which the player shoots.
+ * PlayerBall interface.
  */
-public class PlayerBall {
+public abstract class PlayerBall {
+
     private String color;
     private double x;
     private double y;
     private int counter;
 
-
     /**
-     * Initiate a ball with a random image.
-     * @param color the random selected color of the ball;
+     * This is the constructor of the class.
+     * @param color the color of the ball
+     * @param x the x coordinate
+     * @param y the y coordiante
+     * @param counter the counter of how many times it has hit the wall
      */
-    public PlayerBall(String color) {
-        this.color = color;
-        counter = 0;
-        this.x = GameConfiguration.stageWidth / 2;
-        this.y = GameConfiguration.topBarHeight;
-
-    }
-
-    /**
-     * Initiate a ball with a random image.
-     * @param color the random selected color of the ball;
-     * @param x the x coordinate of the ball.
-     * @param y the y coordinate of the ball.
-     */
-    public PlayerBall(String color, double x, double y) {
-        this.color = color;
-        counter = 0;
+    public PlayerBall(String color, double x, double y, int counter) {
         this.x = x;
         this.y = y;
+        this.color = color;
+        this.counter = counter;
     }
-
 
     /**
      * @return the current x coordinate.
@@ -82,24 +72,6 @@ public class PlayerBall {
     }
 
     /**
-     * If the center of the ball is 15 away from the stage's maximum width and
-     * height then it hit the wall.
-     *
-     * @return true if it hit the wall and false if it didn't.
-     */
-    public boolean hasCollidedWithWall() {
-        if ((x < GameConfiguration.ballRadius)
-                || (x >= GameConfiguration.stageWidth)
-                || (y < GameConfiguration.topBarHeight)
-                || (y >= GameConfiguration.stageHeight)) {
-            counter++;
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Checks if there is a full cell in collision range.
      *
      * @param grid the grid associated with the ball the user is going to shoot with
@@ -126,5 +98,51 @@ public class PlayerBall {
 
         return null;
     }
-}
 
+    /**
+     * If the center of the ball is 15 away from the stage's maximum width and
+     * height then it hit the wall.
+     *
+     * @return true if it hit the wall and false if it didn't.
+     */
+    public boolean hasCollidedWithWall() {
+        if ((x < GameConfiguration.ballRadius)
+                || (x >= GameConfiguration.stageWidth)
+                || (y < GameConfiguration.topBarHeight)
+                || (y >= GameConfiguration.stageHeight)) {
+            counter++;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks whether ball has collided with a random wall.
+     * @param wall that the ball has collided with.
+     * @return whether the ball has collided or not with the random wall.
+     */
+    public boolean hasCollidedWithRandomWall(Walls wall) {
+
+        double[] leftCoordinates = Util.calculateRotatedCoordinates(
+                wall.getX() - GameConfiguration.wallHeight, wall.getY(), wall.getX(),
+                wall.getY(), wall.getRotation());
+        double[] rightCoordinates = Util.calculateRotatedCoordinates(
+                wall.getX() + GameConfiguration.wallHeight, wall.getY(), wall.getX(),
+                wall.getY(), wall.getRotation());
+        if ((Util.getDistance(x, y, leftCoordinates[0], leftCoordinates[1])
+                <= GameConfiguration.wallHeight * 2) || (Util.getDistance(x, y, rightCoordinates[0],
+                rightCoordinates[1]) <= GameConfiguration.wallHeight * 2)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * This is an abstract method that checks which balls should be removed.
+     * @param collidedCell the cell the playerball has collided with
+     * @return an arraylist of balls that will be removed
+     */
+    public abstract ArrayList<Cell> checkRemovalBalls(Cell collidedCell);
+}
