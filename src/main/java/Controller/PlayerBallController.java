@@ -164,6 +164,14 @@ public class PlayerBallController {
         return new double[]{deltaX, deltaY};
     }
 
+    /**
+     * Return the reflected deltas for which the ball will travels after
+     * colliding with the wall at a certain surface.
+     * @param deltaX the x direction in which the ball travels.
+     * @param deltaY the y direction in which the ball travels.
+     * @param wall the location of the wall.
+     * @return the reflected deltaX and deltaY coordinates.
+     */
     private double[] reflectBack(double deltaX, double deltaY, Walls wall) {
         double[] upVector = wall.calculateUpNormal();
         double[] downVector = wall.calculateDownNormal();
@@ -186,7 +194,6 @@ public class PlayerBallController {
                 || (distanceToTopHalfRight > distanceToRight))
                 && ((distanceToTop > distanceToLeft) || (distanceToTopHalfLeft > distanceToLeft)
                 || (distanceToTopHalfRight > distanceToLeft))) {
-            //System.out.println("A");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (upVector[0] - wall.getX()),
                     (upVector[1] - wall.getY()));
         } else if (((distanceToBottom > distanceToTop)
@@ -198,18 +205,15 @@ public class PlayerBallController {
                 && ((distanceToBottom > distanceToRight)
                 || (distanceToBottomHalfLeft > distanceToRight)
                 || (distanceToBottomHalfRight > distanceToRight))) {
-            //System.out.println("C");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (downVector[0] - wall.getX()),
                     (downVector[1] - wall.getY()));
         } else if ((distanceToRight > distanceToBottomHalfRight)
                 && (distanceToRight > distanceToLeft)
                 && (distanceToRight > distanceToTopHalfRight)) {
-            // System.out.println("B");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (rightVector[0] - wall.getX()),
                     (rightVector[1] - wall.getY()));
         } else if ((distanceToLeft > distanceToTopHalfLeft) && (distanceToLeft > distanceToRight)
                 && (distanceToLeft > distanceToBottomHalfLeft)) {
-            //System.out.println("D");
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (leftVector[0] - wall.getX()),
                     (leftVector[1] - wall.getY()));
         }
