@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for PlayerBallFactory class.
  */
 class PlayerBallFactoryTest {
-    PlayerBallFactory playerBallFactory = new PlayerBallFactory();
+    PlayerBallFactory playerBallFactory = PlayerBallFactory.getInstance();
 
     @BeforeEach
     void setUp() {
