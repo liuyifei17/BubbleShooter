@@ -130,8 +130,9 @@ public abstract class PlayerBall {
                 wall.getX() + GameConfiguration.wallHeight, wall.getY(), wall.getX(),
                 wall.getY(), wall.getRotation());
         if ((Util.getDistance(x, y, leftCoordinates[0], leftCoordinates[1])
-                <= GameConfiguration.wallHeight * 2) || (Util.getDistance(x, y, rightCoordinates[0],
-                rightCoordinates[1]) <= GameConfiguration.wallHeight * 2)) {
+                <= GameConfiguration.wallHeight * 2.1)
+                || (Util.getDistance(x, y, rightCoordinates[0],
+                rightCoordinates[1]) <= GameConfiguration.wallHeight * 2.1)) {
             return true;
         }
 
