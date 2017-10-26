@@ -31,7 +31,7 @@ class RainBowBallTest {
      */
     @BeforeEach
     void setUp() {
-        playerBallFactory = new PlayerBallFactory();
+        playerBallFactory = PlayerBallFactory.getInstance();
         GameConfiguration.setApi();
         GameConfiguration.isApi();
         rainbowBall = playerBallFactory.createBall("Rainbow Ball",

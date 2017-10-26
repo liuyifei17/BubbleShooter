@@ -8,7 +8,28 @@ import java.util.List;
 /**
  * Ball Factory class.
  */
-public class PlayerBallFactory {
+public final class PlayerBallFactory {
+
+    private static volatile PlayerBallFactory uniqueInstance = null;
+
+    /**
+     * The constructor.
+     */
+    private PlayerBallFactory() { }
+
+    /**
+     * @return the unique instance of the player ball factory singleton.
+     */
+    public static PlayerBallFactory getInstance() {
+        if (uniqueInstance == null) {
+            synchronized (PlayerBallFactory.class) {
+                if (uniqueInstance == null) {
+                    uniqueInstance = new PlayerBallFactory();
+                }
+            }
+        }
+        return uniqueInstance;
+    }
 
     /**
      * This method creates a player ball.
@@ -30,7 +51,6 @@ public class PlayerBallFactory {
                 return null;
         }
     }
-
 
     /**
      * This method creates a player ball.

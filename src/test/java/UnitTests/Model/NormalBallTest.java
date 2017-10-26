@@ -23,7 +23,7 @@ public class NormalBallTest {
 
     @BeforeEach
     void setUp() {
-        playerBallFactory = new PlayerBallFactory();
+        playerBallFactory = PlayerBallFactory.getInstance();
         GameConfiguration.setApi();
         GameConfiguration.isApi();
     }
