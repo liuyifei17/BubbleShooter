@@ -28,7 +28,7 @@ public class WallController {
      * are used in the game, for each shot they will be relocated.
      */
     public void placeWalls() {
-        if (!(GameConfiguration.walls)) {
+        if (!GameConfiguration.walls) {
             data.getRandomWalls().clear();
             return;
         }
