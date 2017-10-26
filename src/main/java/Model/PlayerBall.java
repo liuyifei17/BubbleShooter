@@ -123,7 +123,6 @@ public abstract class PlayerBall {
      * @return whether the ball has collided or not with the random wall.
      */
     public boolean hasCollidedWithRandomWall(Walls wall) {
-
         double[] leftCoordinates = Util.calculateRotatedCoordinates(
                 wall.getX() - GameConfiguration.wallHeight, wall.getY(), wall.getX(),
                 wall.getY(), wall.getRotation());
