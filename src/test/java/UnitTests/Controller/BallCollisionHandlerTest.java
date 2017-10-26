@@ -31,7 +31,7 @@ public class BallCollisionHandlerTest {
     void setUp() {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
-        playerBallFactory = new PlayerBallFactory();
+        playerBallFactory = PlayerBallFactory.getInstance();
         gameController = new GameController(null);
         view = Mockito.mock(View.class);
         GameController.setView(view);

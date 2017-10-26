@@ -14,12 +14,13 @@ public class Player  extends Observable {
     private int missCounter;
     private int score;
     private PlayerBallFactory playerBallFactory;
+
     /**
      * The player has a score, a ball with whom it shoots and a misscounter for each missed
      * ball.
      */
     public Player() {
-        playerBallFactory = new PlayerBallFactory();
+        playerBallFactory = PlayerBallFactory.getInstance();
         playerBall = playerBallFactory.createBall("Normal Ball");
         nextBall = playerBallFactory.createBall("Normal Ball");
         missCounter = 0;
@@ -27,7 +28,7 @@ public class Player  extends Observable {
     }
 
     /**
-     * This is the getter for the score fiels.
+     * This is the getter for the score fields.
      * @return score the score the player has achieved
      */
     public int getScore() {

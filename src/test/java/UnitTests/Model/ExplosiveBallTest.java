@@ -20,7 +20,7 @@ public class ExplosiveBallTest {
 
     @BeforeEach
     void setUp() {
-        playerBallFactory = new PlayerBallFactory();
+        playerBallFactory = PlayerBallFactory.getInstance();
         GameConfiguration.setApi();
         GameConfiguration.isApi();
         explosiveBall = playerBallFactory.createBall("Explosive Ball",
