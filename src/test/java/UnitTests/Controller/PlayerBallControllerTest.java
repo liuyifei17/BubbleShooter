@@ -28,7 +28,7 @@ public class PlayerBallControllerTest {
     void setUp() {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
-        playerBallFactory = new PlayerBallFactory();
+        playerBallFactory = PlayerBallFactory.getInstance();
         gameController = new GameController(null);
         dataLoader = new GameDataLoader();
         player = new Player();
