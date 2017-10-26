@@ -1,10 +1,7 @@
 package Controller;
 
 
-import Model.Cell;
-import Model.Grid;
-import Model.Player;
-import Model.Walls;
+import Model.*;
 
 
 /**
@@ -125,7 +122,9 @@ public class PlayerBallController {
 
         if (gc.getData() != null
                 && gc.getData().getRandomWalls().size() > 0) {
-            for (Walls i : gc.getData().getRandomWalls()) {
+            WallIterator iterator = new WallIterator(gc.getData().getRandomWalls());
+            while (iterator.hasNext()) {
+                Walls i = iterator.next();
                 if (player.getPlayerBall().hasCollidedWithRandomWall(i)) {
                     double[] wallDelta = reflectBack(deltaX, deltaY, i);
                     deltaX = wallDelta[0];
