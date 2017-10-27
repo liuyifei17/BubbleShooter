@@ -242,7 +242,7 @@ public class View implements Observer {
     }
 
     /**
-     * Place the wals based on the size on the screen.
+     * Place the walls based on the size on the screen.
      */
     public void placeWalls() {
         if (data.getRandomWalls().size() == 3 && GameConfiguration.walls) {
@@ -260,7 +260,6 @@ public class View implements Observer {
             firstWall.setVisible(true);
             secondWall.setVisible(true);
             thirdWall.setVisible(true);
-
         }
         if (data.getRandomWalls().size() == 2 && GameConfiguration.walls) {
             firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
