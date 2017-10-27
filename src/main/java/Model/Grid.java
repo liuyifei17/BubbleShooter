@@ -208,14 +208,7 @@ public class Grid {
         ArrayList<Cell> cellLocations = new ArrayList<>();
         for (Cell i : this.getEmptyCells()) {
             boolean canBeUsed = false;
-            if ((i.getCurrentX() + GameConfiguration.wallWidth < GameConfiguration.stageWidth)
-                    && (i.getCurrentX() - GameConfiguration.wallWidth > 0)
-                    && (i.getCurrentY() + GameConfiguration.wallWidth
-                    < GameConfiguration.stageHeight)
-                    && (i.getCurrentY() - GameConfiguration.wallWidth
-                    > GameConfiguration.scoreBarHeight)
-                    && Util.getDistance(i.getCurrentX(), i.getCurrentY(),
-                    GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight) > 100) {
+            if (availableWallLocation(i)) {
                 canBeUsed = true;
                 for (Cell k : cells) {
                     if ((Util.getDistance(i.getCurrentX(), i.getCurrentY(),
@@ -244,6 +237,24 @@ public class Grid {
             }
         }
         return emptyCell;
+    }
+
+
+    /**
+     * Checks whether the cell is a possible location for the random walls.
+     * @param cell The current cell.
+     * @return true if cell is potential location.
+     */
+    private boolean availableWallLocation(Cell cell) {
+        return ((cell.getCurrentX() + GameConfiguration.wallWidth < GameConfiguration.stageWidth)
+                && (cell.getCurrentX() - GameConfiguration.wallWidth > 0)
+                && (cell.getCurrentY() + GameConfiguration.wallWidth
+                < GameConfiguration.stageHeight)
+                && (cell.getCurrentY() - GameConfiguration.wallWidth
+                > GameConfiguration.scoreBarHeight)
+                && Util.getDistance(cell.getCurrentX(), cell.getCurrentY(),
+                  GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight)
+                > GameConfiguration.wallRadius);
     }
 
     /**
