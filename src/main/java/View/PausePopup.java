@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 /**
- * The game over popup class.
+ * The pause popup class.
  */
 public class PausePopup extends Popup {
 
