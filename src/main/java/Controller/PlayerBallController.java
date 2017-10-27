@@ -177,42 +177,35 @@ public class PlayerBallController {
         double[] rightVector = wall.calculateRightNormal();
         double[] leftVector = wall.calculateLeftNormal();
 
-        double distanceToTop = wall.topDistancesToBall(player.getPlayerBall())[0];
-        double distanceToTopHalfLeft = wall.topDistancesToBall(player.getPlayerBall())[1];
-        double distanceToTopHalfRight = wall.topDistancesToBall(player.getPlayerBall())[2];
+        double[] topDistances = wall.topDistancesToBall(player.getPlayerBall());
+        double[] bottomDistances = wall.bottomDistancesToBall(player.getPlayerBall());
+        double distanceToTop = topDistances[0];
+        double distanceToTopHalfLeft = topDistances[1];
+        double distanceToTopHalfRight = topDistances[2];
         double distanceToRight = wall.rightDistanceToBall(player.getPlayerBall());
-        double distanceToBottom = wall.bottomDistancesToBall(player.getPlayerBall())[0];
-        double distanceToBottomHalfLeft = wall.bottomDistancesToBall(player.getPlayerBall())[1];
-        double distanceToBottomHalfRight = wall.bottomDistancesToBall(player.getPlayerBall())[2];
+        double distanceToBottom = bottomDistances[0];
+        double distanceToBottomHalfLeft = bottomDistances[1];
+        double distanceToBottomHalfRight = bottomDistances[2];
         double distanceToLeft = wall.leftDistanceToBall(player.getPlayerBall());
 
         double[] reflectDeltas = new double[2];
-        if (((distanceToTop > distanceToBottom) || (distanceToTopHalfLeft > distanceToBottom)
-                || (distanceToTopHalfRight > distanceToBottom))
-                && ((distanceToTop > distanceToRight) || (distanceToTopHalfLeft > distanceToRight)
-                || (distanceToTopHalfRight > distanceToRight))
-                && ((distanceToTop > distanceToLeft) || (distanceToTopHalfLeft > distanceToLeft)
-                || (distanceToTopHalfRight > distanceToLeft))) {
+        if (wall.hasCollidedTop(distanceToTop, distanceToBottom, distanceToTopHalfLeft,
+                distanceToRight, distanceToTopHalfRight, distanceToLeft)) {
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (upVector[0] - wall.getX()),
                     (upVector[1] - wall.getY()));
-        } else if (((distanceToBottom > distanceToTop)
-                || (distanceToBottomHalfLeft > distanceToTop)
-                || (distanceToBottomHalfRight > distanceToTop))
-                && ((distanceToBottom > distanceToLeft)
-                || (distanceToBottomHalfLeft > distanceToLeft)
-                || (distanceToBottomHalfRight > distanceToLeft))
-                && ((distanceToBottom > distanceToRight)
-                || (distanceToBottomHalfLeft > distanceToRight)
-                || (distanceToBottomHalfRight > distanceToRight))) {
+        }
+        else if (wall.hasCollidedBottom(distanceToTop, distanceToBottom, distanceToBottomHalfLeft,
+                distanceToRight, distanceToBottomHalfRight, distanceToLeft)) {
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (downVector[0] - wall.getX()),
                     (downVector[1] - wall.getY()));
-        } else if ((distanceToRight > distanceToBottomHalfRight)
-                && (distanceToRight > distanceToLeft)
-                && (distanceToRight > distanceToTopHalfRight)) {
+        }
+        else if (wall.hasCollidedRight(distanceToRight, distanceToBottomHalfRight,
+                distanceToLeft, distanceToTopHalfRight)) {
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (rightVector[0] - wall.getX()),
                     (rightVector[1] - wall.getY()));
-        } else if ((distanceToLeft > distanceToTopHalfLeft) && (distanceToLeft > distanceToRight)
-                && (distanceToLeft > distanceToBottomHalfLeft)) {
+        }
+        else if (wall.hasColllidedLeft(distanceToLeft, distanceToTopHalfLeft,
+                distanceToRight, distanceToBottomHalfLeft)) {
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (leftVector[0] - wall.getX()),
                     (leftVector[1] - wall.getY()));
         }
