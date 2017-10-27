@@ -247,28 +247,16 @@ public class PlayerBallController {
      */
     private void calculateRotation() {
         grid.setStillRotating(true);
+        int rotationIndex = stopWatch / 80;
+        if (rotationIndex >= 3) {
+            rotationIndex = 2;
+        }
         if (directionDeltaX > 0 && directionDeltaY > 0) {
-            if (stopWatch < 70) {
-                grid.setRotationDifference(GameConfiguration.rightRotation.get(0));
-            }
-            if (stopWatch >= 70 && stopWatch < 170) {
-                grid.setRotationDifference(GameConfiguration.rightRotation.get(1));
-            }
-            if (stopWatch > 170) {
-                grid.setRotationDifference(GameConfiguration.rightRotation.get(2));
-            }
+            grid.setRotationDifference(GameConfiguration.rightRotation.get(rotationIndex));
         }
 
         if (directionDeltaX < 0 && directionDeltaY > 0) {
-            if (stopWatch < 70) {
-                grid.setRotationDifference(GameConfiguration.leftRotation.get(0));
-            }
-            if (stopWatch >= 70 && stopWatch < 170) {
-                grid.setRotationDifference(GameConfiguration.leftRotation.get(1));
-            }
-            if (stopWatch > 170) {
-                grid.setRotationDifference(GameConfiguration.leftRotation.get(2));
-            }
+            grid.setRotationDifference(GameConfiguration.leftRotation.get(rotationIndex));
         }
         stopWatch = 0;
     }

@@ -124,17 +124,6 @@ public class Grid {
                 }
             }
         }
-
-        for (Cell c2 : cells) {
-            if (Math.abs(centerCell.getCurrentX()
-                    - c2.getCurrentX()) < edgeToDistance * 3
-                    && Math.abs(centerCell.getCurrentY()
-                    - c2.getCurrentY()) < edgeToDistance * 3) {
-                if (!centerCell.equals(c2) && !centerCell.getAdjacentCells().contains(c2)) {
-                    centerCell.getAdjacentCells().add(c2);
-                }
-            }
-        }
     }
 
     /**
