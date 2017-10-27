@@ -113,6 +113,18 @@ public class PlayerBallController {
             return;
         }
 
+        checkWallCollision();
+
+        // the new coordinate of the ball is the the previous one added with the delta.
+        double newXCoord = player.getPlayerBall().getX() + deltaX;
+        double newYCoord = player.getPlayerBall().getY() + deltaY;
+
+        // set the new coordinate for the playerball.
+        player.getPlayerBall().setX(newXCoord);
+        player.getPlayerBall().setY(newYCoord);
+    }
+
+    private void checkWallCollision() {
         // if the ball has collided with the wall the deltaX or deltaY will become negative.
         if (player.getPlayerBall().hasCollidedWithWall()) {
             double[] newDelta = reflectBack(deltaX, deltaY);
@@ -132,14 +144,6 @@ public class PlayerBallController {
                 }
             }
         }
-
-        // the new coordinate of the ball is the the previous one added with the delta.
-        double newXCoord = player.getPlayerBall().getX() + deltaX;
-        double newYCoord = player.getPlayerBall().getY() + deltaY;
-
-        // set the new coordinate for the playerball.
-        player.getPlayerBall().setX(newXCoord);
-        player.getPlayerBall().setY(newYCoord);
     }
 
     /**
