@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 /**
- * The game over popup class.
+ * The settings popup class.
  */
 public class SettingsPopup extends Popup {
 
