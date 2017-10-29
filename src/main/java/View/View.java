@@ -14,11 +14,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
-import java.util.Observable;
-import java.util.Observer;
-
+import java.util.*;
 
 /**
  * The view class.
@@ -38,28 +35,14 @@ public class View implements Observer {
     private ImageView topBar;
     private ImageView scoreBar;
     private Text scoreBarScore;
-    private Pane gameOverPopup;
-    private Text popupScore;
-    private ImageView popupRestartButton;
-    private ImageView popupHomeButton;
     private ImageView playerBallImageView;
     private ImageView nextBallImageView;
     private ImageView firstWall;
     private ImageView secondWall;
     private ImageView thirdWall;
-    private Pane pausePopup;
-    private ImageView pausePopupRestartButton;
-    private ImageView pausePopupMainMenuButton;
-    private ImageView pausePopupExitButton;
-    private ImageView pausePopupCloseButton;
-    private Pane settingsPopup;
-    private Text audioText;
-    private ImageView audioToggle;
-    private Text wallText;
-    private ImageView wallToggle;
-    private Text specialText;
-    private ImageView specialToggle;
-    private ImageView settingsPopupCloseButton;
+    private GameOverPopup gameOverPopup;
+    private PausePopup pausePopup;
+    private SettingsPopup settingsPopup;
 
     /**
      * @param mainMenuPane sets the main menu pane
@@ -86,7 +69,7 @@ public class View implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (o == player) {
-            popupScore.setText("Score: " + player.getScore());
+            gameOverPopup.setScore("Score: " + player.getScore());
             scoreBarScore.setText("Score: " + player.getScore());
         }
     }
@@ -121,6 +104,37 @@ public class View implements Observer {
      * Fills the game pane with elements to initialize the game pane view.
      */
     public void drawGame() {
+
+        drawLayout();
+
+        //draw walls
+        firstWall = new ImageView("images/asteroid.png");
+        secondWall = new ImageView("images/asteroid.png");
+        thirdWall = new ImageView("images/asteroid.png");
+
+        //draw entities
+        for (Cell c : data.getGrid().getOccupiedCells()) {
+            display(c);
+        }
+
+        initializePlayerBalls();
+
+        //create popup menu's
+        gameOverPopup = new GameOverPopup(this, new Pane());
+        pausePopup = new PausePopup(this, new Pane());
+        settingsPopup = new SettingsPopup(this, new Pane());
+
+        //add components to game pane
+        Node[] nodes = {topBar, playerBallImageView, nextBallImageView, firstWall, secondWall,
+                thirdWall, scoreBarScore, gamePauseIcon, gameSettingsIcon, gameOverPopup.getPopup(),
+                pausePopup.getPopup(), settingsPopup.getPopup()};
+        gamePane.getChildren().addAll(Arrays.asList(nodes));
+        gameOverPopup.getPopup().setVisible(false);
+        pausePopup.getPopup().setVisible(false);
+        settingsPopup.getPopup().setVisible(false);
+    }
+
+    private void drawLayout() {
         //draw background
         gameBg = new Image("images/background1.png");
         gamePane.setBackground(new Background(
@@ -158,17 +172,9 @@ public class View implements Observer {
         gameSettingsIcon.relocate(550, 10);
         gameSettingsIcon.fitHeightProperty().setValue(46);
         gameSettingsIcon.fitWidthProperty().setValue(46);
+    }
 
-        //draw walls
-        firstWall = new ImageView("images/asteroid.png");
-        secondWall = new ImageView("images/asteroid.png");
-        thirdWall = new ImageView("images/asteroid.png");
-
-        //draw entities
-        for (Cell c : data.getGrid().getOccupiedCells()) {
-            display(c);
-        }
-
+    private void initializePlayerBalls() {
         Image spriteNextBall =
                 new Image("images/" + data.getPlayer().getNextBall().getColor() + " ball.png");
         nextBallImageView = new ImageView(spriteNextBall);
@@ -184,30 +190,6 @@ public class View implements Observer {
         playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
                         - spritePlayerBall.getWidth() / 2,
                 data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
-
-        //create popup menu's
-        createGameOverPopup();
-        createPausePopup();
-        createSettingsPopup();
-
-        //add components to game pane
-        gamePane.getChildren().add(topBar);
-        //gamePane.getChildren().add(scoreBar);
-
-        gamePane.getChildren().add(playerBallImageView);
-        gamePane.getChildren().add(nextBallImageView);
-        gamePane.getChildren().add(firstWall);
-        gamePane.getChildren().add(secondWall);
-        gamePane.getChildren().add(thirdWall);
-        gamePane.getChildren().add(scoreBarScore);
-        gamePane.getChildren().add(gamePauseIcon);
-        gamePane.getChildren().add(gameSettingsIcon);
-        gamePane.getChildren().add(gameOverPopup);
-        gamePane.getChildren().add(pausePopup);
-        gamePane.getChildren().add(settingsPopup);
-        gameOverPopup.setVisible(false);
-        pausePopup.setVisible(false);
-        settingsPopup.setVisible(false);
     }
 
     /**
@@ -222,44 +204,44 @@ public class View implements Observer {
                     BallImageView biv = (BallImageView) node;
                     biv.relocate(getScreenX(biv.getCell(), biv.getImage()),
                             getScreenY(biv.getCell(), biv.getImage()));
-                    if (!biv.isPlus1Icon()) {
-                        biv.rotateProperty().setValue(data.getGrid().getRotation());
-                    }
                 }
             }
 
-            Image spritePlayerBall;
-            Image spriteNextBall;
-            if (data.getPlayer().getPlayerBall() instanceof MultiplierBall) {
-                spritePlayerBall = new Image("images/multiplier "
-                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
-                playerBallImageView.setImage(spritePlayerBall);
-            } else {
-                spritePlayerBall = new Image("images/"
-                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
-                playerBallImageView.setImage(spritePlayerBall);
-            }
-            if (data.getPlayer().getNextBall() instanceof MultiplierBall) {
-                spriteNextBall = new Image("images/multiplier "
-                        + data.getPlayer().getNextBall().getColor() + " ball.png");
-                nextBallImageView.setImage(spriteNextBall);
-            } else {
-                spriteNextBall = new Image("images/"
-                        + data.getPlayer().getNextBall().getColor() + " ball.png");
-                nextBallImageView.setImage(spriteNextBall);
-            }
-
-            playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
-                            - spritePlayerBall.getWidth() / 2,
-                    data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
-
+            redrawPlayerBall();
             removeWalls();
             placeWalls();
         });
     }
 
+    private void redrawPlayerBall() {
+        Image spritePlayerBall;
+        Image spriteNextBall;
+        if (data.getPlayer().getPlayerBall() instanceof MultiplierBall) {
+            spritePlayerBall = new Image("images/multiplier "
+                    + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+            playerBallImageView.setImage(spritePlayerBall);
+        } else {
+            spritePlayerBall = new Image("images/"
+                    + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+            playerBallImageView.setImage(spritePlayerBall);
+        }
+        if (data.getPlayer().getNextBall() instanceof MultiplierBall) {
+            spriteNextBall = new Image("images/multiplier "
+                    + data.getPlayer().getNextBall().getColor() + " ball.png");
+            nextBallImageView.setImage(spriteNextBall);
+        } else {
+            spriteNextBall = new Image("images/"
+                    + data.getPlayer().getNextBall().getColor() + " ball.png");
+            nextBallImageView.setImage(spriteNextBall);
+        }
+
+        playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
+                        - spritePlayerBall.getWidth() / 2,
+                data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
+    }
+
     /**
-     * Place the wals based on the size on the screen.
+     * Place the walls based on the size on the screen.
      */
     public void placeWalls() {
         if (data.getRandomWalls().size() == 3 && GameConfiguration.walls) {
@@ -277,7 +259,6 @@ public class View implements Observer {
             firstWall.setVisible(true);
             secondWall.setVisible(true);
             thirdWall.setVisible(true);
-
         }
         if (data.getRandomWalls().size() == 2 && GameConfiguration.walls) {
             firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
@@ -395,256 +376,16 @@ public class View implements Observer {
     }
 
     /**
-     * Creates a game over popup menu.
-     */
-    private void createGameOverPopup() {
-        //create popup container
-        gameOverPopup = new Pane();
-        gameOverPopup.setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
-        gameOverPopup.relocate(GameConfiguration.popupX, GameConfiguration.popupY);
-        gameOverPopup.setBackground(new Background(new BackgroundImage(
-                new Image("images/popupBackground.png", GameConfiguration.popupWidth,
-                        GameConfiguration.popupHeight, false, true),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT)));
-
-        //create graphical elements
-        ImageView gameOverMessage = new ImageView("images/gameOverMessage.png");
-        gameOverMessage.relocate(0, 5);
-        popupScore = new Text("Score: 0");
-        popupScore.setFont(Font.font("Arial", 35));
-        popupScore.setFill(Color.YELLOW);
-        popupScore.setWrappingWidth(GameConfiguration.popupWidth);
-        popupScore.setTextAlignment(TextAlignment.CENTER);
-        popupScore.setUnderline(true);
-        popupScore.relocate(0, 130);
-        popupRestartButton = new ImageView("images/restart-icon.png");
-        popupRestartButton.relocate(5, 260);
-        popupHomeButton = new ImageView("images/home-icon.png");
-        popupHomeButton.relocate(198, 260);
-
-        //add graphical elements to popup container
-        gameOverPopup.getChildren().add(gameOverMessage);
-        gameOverPopup.getChildren().add(popupScore);
-        gameOverPopup.getChildren().add(popupRestartButton);
-        gameOverPopup.getChildren().add(popupHomeButton);
-    }
-
-    /**
-     * Creates a pause popup menu.
-     */
-    private void createPausePopup() {
-        //create popup container
-        pausePopup = new Pane();
-        pausePopup.setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
-        pausePopup.relocate(GameConfiguration.popupX, GameConfiguration.popupY);
-        pausePopup.setBackground(new Background(new BackgroundImage(
-                new Image("images/popupBackground.png", GameConfiguration.popupWidth,
-                        GameConfiguration.popupHeight, false, true),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT)));
-
-        //create graphical elements
-        ImageView pauseMessage = new ImageView("images/pauseMessage.png");
-        pauseMessage.relocate(0, 5);
-        pausePopupMainMenuButton = new ImageView("images/popup-home-button.png");
-        createHover(pausePopupMainMenuButton, new Image("images/popup-home-button.png"),
-                new Image("images/popup-home-button-hovered.png"));
-        pausePopupMainMenuButton.relocate(50, 105);
-        pausePopupExitButton = new ImageView("images/popup-exit-button.png");
-        createHover(pausePopupExitButton, new Image("images/popup-exit-button.png"),
-                new Image("images/popup-exit-button-hovered.png"));
-        pausePopupExitButton.relocate(50, 180);
-        pausePopupRestartButton = new ImageView("images/popup-restart-button.png");
-        createHover(pausePopupRestartButton, new Image("images/popup-restart-button.png"),
-                new Image("images/popup-restart-button-hovered.png"));
-        pausePopupRestartButton.relocate(50, 255);
-        pausePopupCloseButton = new ImageView("images/close-button.png");
-        createHover(pausePopupCloseButton, new Image("images/close-button.png"),
-                new Image("images/close-button-hovered.png"));
-        pausePopupCloseButton.relocate(270, 8);
-
-        //add graphical elements to popup container
-        pausePopup.getChildren().add(pauseMessage);
-        pausePopup.getChildren().add(pausePopupRestartButton);
-        pausePopup.getChildren().add(pausePopupMainMenuButton);
-        pausePopup.getChildren().add(pausePopupExitButton);
-        pausePopup.getChildren().add(pausePopupCloseButton);
-    }
-
-    /**
-     * Creates a settings popup menu.
-     */
-    private void createSettingsPopup() {
-        //create popup container
-        settingsPopup = new Pane();
-        settingsPopup.setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
-        settingsPopup.relocate(GameConfiguration.popupX, GameConfiguration.popupY);
-        settingsPopup.setBackground(new Background(new BackgroundImage(
-                new Image("images/popupBackground.png", GameConfiguration.popupWidth,
-                        GameConfiguration.popupHeight, false, true),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT)));
-
-        //create graphical elements
-        ImageView settingsMessage = new ImageView("images/settingsMessage.png");
-        settingsMessage.relocate(0, 5);
-        audioText = new Text("Sounds on/off: ");
-        audioText.setFont(Font.font("Arial", 22));
-        audioText.setFill(Color.YELLOW);
-        audioText.setWrappingWidth(GameConfiguration.popupWidth);
-        audioText.setTextAlignment(TextAlignment.LEFT);
-        audioText.relocate(10, 80);
-        specialText = new Text("Special balls on/off: ");
-        specialText.setFont(Font.font("Arial", 22));
-        specialText.setFill(Color.YELLOW);
-        specialText.setWrappingWidth(GameConfiguration.popupWidth);
-        specialText.setTextAlignment(TextAlignment.LEFT);
-        specialText.relocate(10, 110);
-        wallText = new Text("Asteroids on/off: ");
-        wallText.setFont(Font.font("Arial", 22));
-        wallText.setFill(Color.YELLOW);
-        wallText.setWrappingWidth(GameConfiguration.popupWidth);
-        wallText.setTextAlignment(TextAlignment.LEFT);
-        wallText.relocate(10, 140);
-        audioToggle = new ImageView("images/toggleOff.png");
-        audioToggle.relocate(275, 86);
-        specialToggle = new ImageView("images/toggleOff.png");
-        specialToggle.relocate(275, 116);
-        wallToggle = new ImageView("images/toggleOff.png");
-        wallToggle.relocate(275, 146);
-        settingsPopupCloseButton = new ImageView("images/close-button.png");
-        createHover(settingsPopupCloseButton, new Image("images/close-button.png"),
-                new Image("images/close-button-hovered.png"));
-        settingsPopupCloseButton.relocate(270, 8);
-
-        //add graphical elements to popup container
-        settingsPopup.getChildren().add(settingsMessage);
-        settingsPopup.getChildren().add(audioText);
-        settingsPopup.getChildren().add(specialText);
-        settingsPopup.getChildren().add(wallText);
-        settingsPopup.getChildren().add(audioToggle);
-        settingsPopup.getChildren().add(specialToggle);
-        settingsPopup.getChildren().add(wallToggle);
-        settingsPopup.getChildren().add(settingsPopupCloseButton);
-
-        //checks for toggle sprites
-        checkAllSettingsToggles();
-    }
-
-    /**
      * @param icon the icon to be hovered
      * @param normal the unhovered sprite of the icon
      * @param hovered the hovered sprite of the icon
      */
-    private void createHover(ImageView icon, Image normal, Image hovered) {
+    public void createHover(ImageView icon, Image normal, Image hovered) {
         icon.setOnMouseEntered(event -> {
             icon.setImage(hovered);
         });
         icon.setOnMouseExited(event -> {
             icon.setImage(normal);
-        });
-    }
-
-    /**
-     * Checks all the settings option toggle and sets the sprites accordingly.
-     */
-    public void checkAllSettingsToggles() {
-        checkSettingsAudioToggle();
-        checkSettingsSpecialBallToggle();
-        checkSettingsWallToggle();
-    }
-
-    /**
-     * Checks whether a setting is toggled and not and updates toggle sprite accordingly.
-     */
-    public void checkSettingsAudioToggle() {
-        if (GameConfiguration.sounds) {
-            audioToggle.setImage(new Image("images/toggleOn.png"));
-        }
-        else {
-            audioToggle.setImage(new Image("images/toggleOff.png"));
-        }
-    }
-
-    /**
-     * Checks whether a setting is toggled and not and updates toggle sprite accordingly.
-     */
-    public void checkSettingsWallToggle() {
-        if (GameConfiguration.walls) {
-            wallToggle.setImage(new Image("images/toggleOn.png"));
-        }
-        else {
-            wallToggle.setImage(new Image("images/toggleOff.png"));
-        }
-    }
-
-    /**
-     * Checks whether a setting is toggled and not and updates toggle sprite accordingly.
-     */
-    public void checkSettingsSpecialBallToggle() {
-        if (GameConfiguration.specialBalls) {
-            specialToggle.setImage(new Image("images/toggleOn.png"));
-        }
-        else {
-            specialToggle.setImage(new Image("images/toggleOff.png"));
-        }
-    }
-
-    /**
-     * Sets the game over popup to being visible and updates the score.
-     */
-    public void showGameOverPopup() {
-        Platform.runLater(() -> {
-            gameOverPopup.setVisible(true);
-            gameOverPopup.toFront();
-        });
-    }
-
-    /**
-     * Sets the pause popup to being visible.
-     */
-    public void showPausePopup() {
-        Platform.runLater(() -> {
-            pausePopup.setVisible(true);
-            pausePopup.toFront();
-        });
-    }
-
-    /**
-     * Sets the settings popup to being visible.
-     */
-    public void showSettingsPopup() {
-        Platform.runLater(() -> {
-            settingsPopup.setVisible(true);
-            settingsPopup.toFront();
-        });
-    }
-
-    /**
-     * Sets the gam over popup to being invisible.
-     */
-    public void closeGameOverPopup() {
-        Platform.runLater(() -> {
-            gameOverPopup.setVisible(false);
-        });
-    }
-
-    /**
-     * Sets the gam over popup to being invisible.
-     */
-    public void closePausePopup() {
-        Platform.runLater(() -> {
-            pausePopup.setVisible(false);
-        });
-    }
-
-    /**
-     * Sets the gam over popup to being invisible.
-     */
-    public void closeSettingsPopup() {
-        Platform.runLater(() -> {
-            settingsPopup.setVisible(false);
         });
     }
 
@@ -679,20 +420,6 @@ public class View implements Observer {
     }
 
     /**
-     * @return popup restart button.
-     */
-    public ImageView getPopupRestartButton() {
-        return popupRestartButton;
-    }
-
-    /**
-     * @return the popup home button.
-     */
-    public ImageView getPopupHomeButton() {
-        return popupHomeButton;
-    }
-
-    /**
      * @param data sets a data.
      */
     public void setData(GameData data) {
@@ -714,27 +441,6 @@ public class View implements Observer {
     }
 
     /**
-     * @return popup continue game button
-     */
-    public ImageView getPausePopupRestartButton() {
-        return pausePopupRestartButton;
-    }
-
-    /**
-     * @return popup main menu return button
-     */
-    public ImageView getPausePopupMainMenuButton() {
-        return pausePopupMainMenuButton;
-    }
-
-    /**
-     * @return popup exit game button
-     */
-    public ImageView getPausePopupExitButton() {
-        return pausePopupExitButton;
-    }
-
-    /**
      * @return game settings button
      */
     public ImageView getGameSettingsIcon() {
@@ -749,37 +455,23 @@ public class View implements Observer {
     }
 
     /**
-     * @return audio toggle button
+     * @return the game over popup.
      */
-    public ImageView getAudioToggle() {
-        return audioToggle;
+    public GameOverPopup getGameOverPopup() {
+        return gameOverPopup;
     }
 
     /**
-     * @return wall toggle button
+     * @return the pause popup.
      */
-    public ImageView getWallToggle() {
-        return wallToggle;
+    public PausePopup getPausePopup() {
+        return pausePopup;
     }
 
     /**
-     * @return special balls toggle button
+     * @return the settings popup.
      */
-    public ImageView getSpecialToggle() {
-        return specialToggle;
-    }
-
-    /**
-     * @return settings popup menu close button
-     */
-    public ImageView getSettingsPopupCloseButton() {
-        return settingsPopupCloseButton;
-    }
-
-    /**
-     * @return pause popup menu close button
-     */
-    public ImageView getPausePopupCloseButton() {
-        return pausePopupCloseButton;
+    public SettingsPopup getSettingsPopup() {
+        return settingsPopup;
     }
 }
