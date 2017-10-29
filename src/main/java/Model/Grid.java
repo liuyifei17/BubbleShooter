@@ -14,16 +14,12 @@ public class Grid {
     private ArrayList<Cell> cells;
     private ArrayList<Cell> occupiedCells;
     private Cell centerCell;
-    private int rotation; //the current rotation in degrees
-    private int rotationDifference; //the change in rotation for a given ball impact
-    private int rotationSpeed; //turning speed in degrees per frame
     private double centerX;
     private double centerY;
     private double edgeToDistance;
     private double topBarHeight;
     private double stageWidth;
     private double stageHeight;
-    private boolean doneRotating;
 
     /**
      * Creates a grid based on the center values of the grid and initializes all grid cells.
@@ -33,16 +29,12 @@ public class Grid {
     public Grid(double x, double y) {
         cells = new ArrayList<>();
         occupiedCells = new ArrayList<>();
-        rotation = 180;
-        rotationDifference = 0;
-        rotationSpeed = 5;
         centerX = x;
         centerY = y;
         edgeToDistance = GameConfiguration.edgeToDistance;
         topBarHeight = GameConfiguration.topBarHeight;
         stageWidth = GameConfiguration.stageWidth;
         stageHeight = GameConfiguration.stageHeight;
-        doneRotating = false;
         initializeCells(x, y);
     }
 
@@ -272,42 +264,6 @@ public class Grid {
     }
 
     /**
-     * @return rotation
-     */
-    public int getRotation() {
-        return rotation;
-    }
-
-    /**
-     * @param rotation set rotation
-     */
-    public void setRotation(int rotation) {
-        this.rotation = rotation;
-    }
-
-    /**
-     * @return rotation difference
-     */
-    public int getRotationDifference() {
-        return rotationDifference;
-    }
-
-    /**
-     * @param rotationDifference set the rotation difference
-     */
-    public void setRotationDifference(int rotationDifference) {
-        this.rotationDifference = rotationDifference;
-
-    }
-
-    /**
-     * @return rotation speed
-     */
-    public int getRotationSpeed() {
-        return rotationSpeed;
-    }
-
-    /**
      * @return the occupied cells
      */
     public ArrayList<Cell> getOccupiedCells() {
@@ -328,19 +284,5 @@ public class Grid {
      */
     public double getCenterY() {
         return centerY;
-    }
-
-    /**
-     * @return rotating boolean
-     */
-    public boolean getStillRotating() {
-        return doneRotating;
-    }
-
-    /**
-     * @param doneRotating set true if it is rotating
-     */
-    public void setStillRotating(boolean doneRotating) {
-        this.doneRotating = doneRotating;
     }
 }
