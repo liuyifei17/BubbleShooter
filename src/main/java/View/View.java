@@ -14,8 +14,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import java.util.Observable;
-import java.util.Observer;
+
+import java.util.*;
 
 /**
  * The view class.
@@ -104,6 +104,37 @@ public class View implements Observer {
      * Fills the game pane with elements to initialize the game pane view.
      */
     public void drawGame() {
+
+        drawLayout();
+
+        //draw walls
+        firstWall = new ImageView("images/asteroid.png");
+        secondWall = new ImageView("images/asteroid.png");
+        thirdWall = new ImageView("images/asteroid.png");
+
+        //draw entities
+        for (Cell c : data.getGrid().getOccupiedCells()) {
+            display(c);
+        }
+
+        initializePlayerBalls();
+
+        //create popup menu's
+        gameOverPopup = new GameOverPopup(this, new Pane());
+        pausePopup = new PausePopup(this, new Pane());
+        settingsPopup = new SettingsPopup(this, new Pane());
+
+        //add components to game pane
+        Node[] nodes = {topBar, playerBallImageView, nextBallImageView, firstWall, secondWall,
+                thirdWall, scoreBarScore, gamePauseIcon, gameSettingsIcon, gameOverPopup.getPopup(),
+                pausePopup.getPopup(), settingsPopup.getPopup()};
+        gamePane.getChildren().addAll(Arrays.asList(nodes));
+        gameOverPopup.getPopup().setVisible(false);
+        pausePopup.getPopup().setVisible(false);
+        settingsPopup.getPopup().setVisible(false);
+    }
+
+    private void drawLayout() {
         //draw background
         gameBg = new Image("images/background1.png");
         gamePane.setBackground(new Background(
@@ -141,17 +172,9 @@ public class View implements Observer {
         gameSettingsIcon.relocate(550, 10);
         gameSettingsIcon.fitHeightProperty().setValue(46);
         gameSettingsIcon.fitWidthProperty().setValue(46);
+    }
 
-        //draw walls
-        firstWall = new ImageView("images/asteroid.png");
-        secondWall = new ImageView("images/asteroid.png");
-        thirdWall = new ImageView("images/asteroid.png");
-
-        //draw entities
-        for (Cell c : data.getGrid().getOccupiedCells()) {
-            display(c);
-        }
-
+    private void initializePlayerBalls() {
         Image spriteNextBall =
                 new Image("images/" + data.getPlayer().getNextBall().getColor() + " ball.png");
         nextBallImageView = new ImageView(spriteNextBall);
@@ -167,30 +190,6 @@ public class View implements Observer {
         playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
                         - spritePlayerBall.getWidth() / 2,
                 data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
-
-        //create popup menu's
-        gameOverPopup = new GameOverPopup(this, new Pane());
-        pausePopup = new PausePopup(this, new Pane());
-        settingsPopup = new SettingsPopup(this, new Pane());
-
-        //add components to game pane
-        gamePane.getChildren().add(topBar);
-        //gamePane.getChildren().add(scoreBar);
-
-        gamePane.getChildren().add(playerBallImageView);
-        gamePane.getChildren().add(nextBallImageView);
-        gamePane.getChildren().add(firstWall);
-        gamePane.getChildren().add(secondWall);
-        gamePane.getChildren().add(thirdWall);
-        gamePane.getChildren().add(scoreBarScore);
-        gamePane.getChildren().add(gamePauseIcon);
-        gamePane.getChildren().add(gameSettingsIcon);
-        gamePane.getChildren().add(gameOverPopup.getPopup());
-        gamePane.getChildren().add(pausePopup.getPopup());
-        gamePane.getChildren().add(settingsPopup.getPopup());
-        gameOverPopup.getPopup().setVisible(false);
-        pausePopup.getPopup().setVisible(false);
-        settingsPopup.getPopup().setVisible(false);
     }
 
     /**
@@ -211,34 +210,37 @@ public class View implements Observer {
                 }
             }
 
-            Image spritePlayerBall;
-            Image spriteNextBall;
-            if (data.getPlayer().getPlayerBall() instanceof MultiplierBall) {
-                spritePlayerBall = new Image("images/multiplier "
-                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
-                playerBallImageView.setImage(spritePlayerBall);
-            } else {
-                spritePlayerBall = new Image("images/"
-                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
-                playerBallImageView.setImage(spritePlayerBall);
-            }
-            if (data.getPlayer().getNextBall() instanceof MultiplierBall) {
-                spriteNextBall = new Image("images/multiplier "
-                        + data.getPlayer().getNextBall().getColor() + " ball.png");
-                nextBallImageView.setImage(spriteNextBall);
-            } else {
-                spriteNextBall = new Image("images/"
-                        + data.getPlayer().getNextBall().getColor() + " ball.png");
-                nextBallImageView.setImage(spriteNextBall);
-            }
-
-            playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
-                            - spritePlayerBall.getWidth() / 2,
-                    data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
-
+            redrawPlayerBall();
             removeWalls();
             placeWalls();
         });
+    }
+
+    private void redrawPlayerBall() {
+        Image spritePlayerBall;
+        Image spriteNextBall;
+        if (data.getPlayer().getPlayerBall() instanceof MultiplierBall) {
+            spritePlayerBall = new Image("images/multiplier "
+                    + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+            playerBallImageView.setImage(spritePlayerBall);
+        } else {
+            spritePlayerBall = new Image("images/"
+                    + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+            playerBallImageView.setImage(spritePlayerBall);
+        }
+        if (data.getPlayer().getNextBall() instanceof MultiplierBall) {
+            spriteNextBall = new Image("images/multiplier "
+                    + data.getPlayer().getNextBall().getColor() + " ball.png");
+            nextBallImageView.setImage(spriteNextBall);
+        } else {
+            spriteNextBall = new Image("images/"
+                    + data.getPlayer().getNextBall().getColor() + " ball.png");
+            nextBallImageView.setImage(spriteNextBall);
+        }
+
+        playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
+                        - spritePlayerBall.getWidth() / 2,
+                data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
     }
 
     /**
