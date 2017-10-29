@@ -22,6 +22,11 @@ public class GameDataTest {
         gameData = new GameData(null, null, 0);
     }
 
+
+    @Test
+    void getRandomWallsTest() {
+        assertThat(gameData.getRandomWalls().size()).isEqualTo(0);
+    }
     @Test
     void getGridTest() {
         Grid grid = mock(Grid.class);
