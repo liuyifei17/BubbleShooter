@@ -32,6 +32,7 @@ public class PlayerBallController {
      * @param gc     the game controller object
      * @param player the player object of the game.
      * @param grid   the grid of the game.
+     * @param gridController the grid controller associated with this playerballcontroller
      */
     public PlayerBallController(GameController gc, Player player, Grid grid,
                                 GridController gridController) {
