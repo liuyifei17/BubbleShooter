@@ -4,8 +4,10 @@ import Controller.GameConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,20 +28,20 @@ class MultiplierBallTest {
         playerBallFactory = PlayerBallFactory.getInstance();
         GameConfiguration.setApi();
         GameConfiguration.isApi();
-        multiplierBall = playerBallFactory.createBall("Multiplier Ball",
-                GameConfiguration.ballRadius, GameConfiguration.stageWidth / 2);
+        multiplierBall = new MultiplierBall("Multiplier Ball");
+    }
+    @Test
+    void constructorTest() {
+        multiplierBall = new MultiplierBall("Multiplier Ball", 2, 3, 2);
+        assertThat(multiplierBall.getX()).isEqualTo(2);
     }
 
     @Test
     void checkRemovalBalls() {
         Cell cell = mock(Cell.class);
-        Ball ball = mock(Ball.class);
-        when(ball.getColor()).thenReturn("green");
-        when(cell.getBall()).thenReturn(ball);
-        ArrayList<Cell> something = new ArrayList<>();
-        something.add(cell);
-        when(cell.getAdjacentCells()).thenReturn(something);
-        multiplierBall.checkRemovalBalls(cell);
+        ArrayList arrayList = new ArrayList();
+        arrayList.add(cell);
+        assertThat(multiplierBall.checkRemovalBalls(cell)).isEqualTo(arrayList);
 
     }
 

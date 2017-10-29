@@ -58,6 +58,16 @@ public class PlayerTest {
         assertThat(player.getMissCounter()).isEqualTo(2);
     }
 
+    @Test
+    void testNextBall2() {
+        NormalBall playerBall = (NormalBall) player.getPlayerBall();
+        PlayerBall nextBall = player.getNextBall();
+        GameConfiguration.specialBalls = false;
+        player.nextBall();
 
+        assertThat(player.getPlayerBall()).isNotEqualTo(playerBall);
+        assertThat(player.getPlayerBall().getColor()).isEqualTo(nextBall.getColor());
+        assertThat(player.getNextBall()).isNotEqualTo(nextBall);
+    }
 
 }

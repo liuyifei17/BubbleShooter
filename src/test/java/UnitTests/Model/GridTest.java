@@ -85,4 +85,9 @@ class GridTest {
 
         assertThat(grid.getOccupiedCells().size()).isEqualTo(6);
     }
+
+    @Test
+    void isStillRotating() {
+        assertThat(grid.getStillRotating()).isFalse();
+    }
 }

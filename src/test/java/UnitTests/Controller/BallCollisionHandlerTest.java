@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * This class provides test cases for the BallCollisionHandler class
@@ -33,7 +34,7 @@ public class BallCollisionHandlerTest {
         GameConfiguration.isApi();
         playerBallFactory = PlayerBallFactory.getInstance();
         gameController = new GameController(null);
-        view = Mockito.mock(View.class);
+        view = mock(View.class);
         GameController.setView(view);
         dataLoader = new GameDataLoader();
         player = new Player();
@@ -101,4 +102,57 @@ public class BallCollisionHandlerTest {
         assertThat(grid.getOccupiedCells().size()).isBetween(11, 23);
         assertThat(player.getScore()).isEqualTo(0);
     }
+    @Test
+    void handleCollisionRainbow() {
+        pbc.setMouseX(GameConfiguration.stageWidth / 2);
+        pbc.setMouseY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        for (Cell c : grid.getCenterCell().getAdjacentCells()) {
+            c.setBall(new Ball("blue", c, 1));
+        }
+        Cell c = grid.getCenterCell().getAdjacentCellInDirection(0, -1)
+                .getAdjacentCellInDirection(0, -1);
+        playerBall = new RainbowBall("Rainbow", c.getCurrentX(), c.getCurrentY());
+        player.setPlayerBall(playerBall);
+        pbc.calculateDelta();
+
+        pbc.launchBall();
+
+        assertThat(grid.getOccupiedCells()).hasSize(1);
+    }
+    @Test
+    void handleCollisionExplosive() {
+        pbc.setMouseX(GameConfiguration.stageWidth / 2);
+        pbc.setMouseY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        for (Cell c : grid.getCenterCell().getAdjacentCells()) {
+            c.setBall(new Ball("blue", c, 1));
+        }
+        Cell c = grid.getCenterCell().getAdjacentCellInDirection(0, -1)
+                .getAdjacentCellInDirection(0, -1);
+        playerBall = new ExplosiveBall("Explosive", c.getCurrentX(), c.getCurrentY());
+        player.setPlayerBall(playerBall);
+        pbc.calculateDelta();
+
+        pbc.launchBall();
+
+        assertThat(grid.getOccupiedCells()).hasSize(6);
+    }
+
+    @Test
+    void handleCollisionMultiplier() {
+        pbc.setMouseX(GameConfiguration.stageWidth / 2);
+        pbc.setMouseY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        for (Cell c : grid.getCenterCell().getAdjacentCells()) {
+            c.setBall(new Ball("blue", c, 1));
+        }
+        Cell c = grid.getCenterCell().getAdjacentCellInDirection(0, -1)
+                .getAdjacentCellInDirection(0, -1);
+        playerBall = new MultiplierBall("Multiplier", c.getCurrentX(), c.getCurrentY(), 3);
+        player.setPlayerBall(playerBall);
+        pbc.calculateDelta();
+
+        pbc.launchBall();
+
+        assertThat(grid.getOccupiedCells()).hasSize(8);
+    }
+
 }
