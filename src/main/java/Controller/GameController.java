@@ -81,7 +81,8 @@ public class GameController {
         wallController = new WallController(data);
         wallController.placeWalls();
         gridController = new GridController(this, data.getGrid());
-        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
+        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
+                gridController);
 
         // set up the sound
         // if the route is not correct start the game without sound
@@ -302,7 +303,8 @@ public class GameController {
         wallController = new WallController(data);
         wallController.placeWalls();
         gridController = new GridController(this, data.getGrid());
-        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
+        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
+                gridController);
 
         //reset view
         gamePane = new Pane();

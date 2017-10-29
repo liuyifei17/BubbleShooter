@@ -204,9 +204,6 @@ public class View implements Observer {
                     BallImageView biv = (BallImageView) node;
                     biv.relocate(getScreenX(biv.getCell(), biv.getImage()),
                             getScreenY(biv.getCell(), biv.getImage()));
-                    if (!biv.isPlus1Icon()) {
-                        biv.rotateProperty().setValue(data.getGrid().getRotation());
-                    }
                 }
             }
 

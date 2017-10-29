@@ -12,6 +12,7 @@ public class PlayerBallController {
     private Player player;
     private Grid grid;
     private GameController gc;
+    private GridController gridController;
     private double mouseX;
     private double mouseY;
     private double deltaX;
@@ -32,7 +33,8 @@ public class PlayerBallController {
      * @param player the player object of the game.
      * @param grid   the grid of the game.
      */
-    public PlayerBallController(GameController gc, Player player, Grid grid) {
+    public PlayerBallController(GameController gc, Player player, Grid grid,
+                                GridController gridController) {
         this.gc = gc;
         this.player = player;
         this.grid = grid;
@@ -44,6 +46,7 @@ public class PlayerBallController {
         this.mouseX = 0;
         this.mouseY = 0;
         this.ballCollisionHandler = new BallCollisionHandler(grid, player);
+        this.gridController = gridController;
     }
 
     /**
@@ -243,17 +246,19 @@ public class PlayerBallController {
      * Rotate a certain degree based on the time it takes to hit the grid.
      */
     private void calculateRotation() {
-        grid.setStillRotating(true);
+        gridController.setStillRotating(true);
         int rotationIndex = stopWatch / 80;
         if (rotationIndex >= 3) {
             rotationIndex = 2;
         }
         if (directionDeltaX > 0 && directionDeltaY > 0) {
-            grid.setRotationDifference(GameConfiguration.rightRotation.get(rotationIndex));
+            gridController.setRotationDifference(
+                    GameConfiguration.rightRotation.get(rotationIndex));
         }
 
         if (directionDeltaX < 0 && directionDeltaY > 0) {
-            grid.setRotationDifference(GameConfiguration.leftRotation.get(rotationIndex));
+            gridController.setRotationDifference(
+                    GameConfiguration.leftRotation.get(rotationIndex));
         }
         stopWatch = 0;
     }
