@@ -62,7 +62,18 @@ class RainBowBallTest {
         rainbowBall = new RainbowBall("Black");
     }
 
-
+    @Test
+    void checkColors() {
+        Cell cell = mock(Cell.class);
+        Ball ball = mock(Ball.class);
+        when(ball.getColor()).thenReturn("green");
+        when(cell.getBall()).thenReturn(ball);
+        ArrayList<Cell> something = new ArrayList<>();
+        something.add(cell);
+        when(cell.getAdjacentCells()).thenReturn(something);
+        assertThat(rainbowBall.checkRemovalBalls(cell).size()).isEqualTo(1);
+;
+    }
 
 
 }
