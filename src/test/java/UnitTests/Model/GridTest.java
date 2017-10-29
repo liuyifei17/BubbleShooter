@@ -2,6 +2,7 @@ package UnitTests.Model;
 
 import Controller.GameConfiguration;
 import Controller.GameController;
+import Controller.GridController;
 import Model.*;
 import View.View;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class GridTest {
     private Grid grid;
     private View view;
+    private GridController gridController;
 
     @BeforeEach
     void setUp() {
@@ -24,7 +26,7 @@ class GridTest {
         grid = new Grid(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
 
-
+        gridController = new GridController(null, grid);
         view = Mockito.mock(View.class);
         GameController.setView(view);
     }
@@ -33,30 +35,14 @@ class GridTest {
     void testConstructor() {
         assertThat(grid.getCells()).isNotNull();
         assertThat(grid.getOccupiedCells()).isNotNull();
-        assertThat(grid.getCenterX()).isEqualTo(GameConfiguration.stageWidth / 2);
-        assertThat(grid.getCenterY()).isEqualTo((GameConfiguration.stageHeight
+        assertThat(grid.getCenterCell().getInitialX()).isEqualTo(GameConfiguration.stageWidth / 2);
+        assertThat(grid.getCenterCell().getInitialY()).isEqualTo((GameConfiguration.stageHeight
                 + GameConfiguration.topBarHeight) / 2);
     }
 
     @Test
     void testConstructor_rotation() {
-        assertThat(grid.getRotationDifference()).isEqualTo(0);
-        assertThat(grid.getRotationSpeed()).isEqualTo(5);
-        assertThat(grid.getRotation()).isEqualTo(180);
-    }
-
-    @Test
-    void setRotationDifferenceTest() {
-        grid.setRotationDifference(100);
-
-        assertThat(grid.getRotationDifference()).isEqualTo(100);
-    }
-
-    @Test
-    void setRotation() {
-        grid.setRotation(100);
-
-        assertThat(grid.getRotation()).isEqualTo(100);
+        assertThat(gridController.getRotationDifference()).isEqualTo(0);
     }
 
     @Test

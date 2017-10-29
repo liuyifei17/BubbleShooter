@@ -2,14 +2,12 @@ package Model;
 
 import Controller.GameConfiguration;
 import Utility.Util;
-import javafx.scene.image.ImageView;
 
 /**
  * Random walls that will be spawned.
  */
 public class Walls {
 
-    private ImageView walls;
     private double x;
     private double y;
     private int rotation;
@@ -189,6 +187,82 @@ public class Walls {
                 ball.getX(), ball.getY()) + Util.getDistance(bottomLeft[0], bottomLeft[1],
                 ball.getX(), ball.getY());
     }
+
+    /**
+     * @param distanceToTop the top distance to the surface.
+     * @param distanceToBottom the bottom distance to the surface.
+     * @param distanceToTopHalfLeft the top left distance to surface.
+     * @param distanceToRight the right distance to surface.
+     * @param distanceToTopHalfRight the top right distance to surface.
+     * @param distanceToLeft the left distance to surface.
+     * @return whether the top surface is the closest surface to the ball.
+     */
+    public boolean hasCollidedTop(double distanceToTop, double distanceToBottom,
+                                  double distanceToTopHalfLeft, double distanceToRight,
+                                  double distanceToTopHalfRight, double distanceToLeft) {
+        return ((distanceToTop > distanceToBottom)
+                || (distanceToTopHalfLeft > distanceToBottom)
+                || (distanceToTopHalfRight > distanceToBottom))
+                && ((distanceToTop > distanceToRight)
+                || (distanceToTopHalfLeft > distanceToRight)
+                || (distanceToTopHalfRight > distanceToRight))
+                && ((distanceToTop > distanceToLeft)
+                || (distanceToTopHalfLeft > distanceToLeft)
+                || (distanceToTopHalfRight > distanceToLeft));
+    }
+
+    /**
+     * @param distanceToTop the top distance to the surface
+     * @param distanceToBottom the bottom distance to the surface.
+     * @param distanceToBottomHalfLeft the bottom left distance to the surface.
+     * @param distanceToRight the right distance to the surface.
+     * @param distanceToBottomHalfRight the bottom right distance to the surface.
+     * @param distanceToLeft the left distance to the surface.
+     * @return whether the bottom surface is the closest surface to the ball.
+     */
+    public boolean hasCollidedBottom(double distanceToTop, double distanceToBottom,
+                                     double distanceToBottomHalfLeft, double distanceToRight,
+                                     double distanceToBottomHalfRight, double distanceToLeft) {
+        return ((distanceToBottom > distanceToTop)
+                || (distanceToBottomHalfLeft > distanceToTop)
+                || (distanceToBottomHalfRight > distanceToTop))
+                && ((distanceToBottom > distanceToLeft)
+                || (distanceToBottomHalfLeft > distanceToLeft)
+                || (distanceToBottomHalfRight > distanceToLeft))
+                && ((distanceToBottom > distanceToRight)
+                || (distanceToBottomHalfLeft > distanceToRight)
+                || (distanceToBottomHalfRight > distanceToRight));
+    }
+
+    /**
+     * @param distanceToRight the right distance to surface.
+     * @param distanceToBottomHalfRight the bottom right distance to surface.
+     * @param distanceToLeft the left distance to surface.
+     * @param distanceToTopHalfRight the top right distance to surface.
+     * @return whether the right surface is the closest surface to the ball.
+     */
+    public boolean hasCollidedRight(double distanceToRight, double distanceToBottomHalfRight,
+                                    double distanceToLeft, double distanceToTopHalfRight) {
+        return ((distanceToRight > distanceToBottomHalfRight)
+                && (distanceToRight > distanceToLeft)
+                && (distanceToRight > distanceToTopHalfRight));
+    }
+
+    /**
+     * @param distanceToLeft the left distance to surface.
+     * @param distanceToTopHalfLeft the top left distance to surface.
+     * @param distanceToRight the right distance to surface.
+     * @param distanceToBottomHalfLeft the bottom left distance to surface.
+     * @return whether the left surface is the closest surface to the ball.
+     */
+    public boolean hasColllidedLeft(double distanceToLeft, double distanceToTopHalfLeft,
+                                    double distanceToRight, double distanceToBottomHalfLeft) {
+        return ((distanceToLeft > distanceToTopHalfLeft)
+                && (distanceToLeft > distanceToRight)
+                && (distanceToLeft > distanceToBottomHalfLeft));
+    }
+
+
     /**
      * @return x coordinate.
      */

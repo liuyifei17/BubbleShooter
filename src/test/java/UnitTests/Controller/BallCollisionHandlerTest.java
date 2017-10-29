@@ -1,9 +1,6 @@
 package UnitTests.Controller;
 
-import Controller.GameConfiguration;
-import Controller.GameController;
-import Controller.GameDataLoader;
-import Controller.PlayerBallController;
+import Controller.*;
 import Model.*;
 import View.View;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +23,7 @@ public class BallCollisionHandlerTest {
     private PlayerBallFactory playerBallFactory;
     private GameDataLoader dataLoader;
     private GameData gameData;
+    private GridController gridController;
     private View view;
 
     @BeforeEach
@@ -40,9 +38,11 @@ public class BallCollisionHandlerTest {
         player = new Player();
         grid = new Grid(GameConfiguration.stageWidth / 2,
                 (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        gridController = new GridController(gameController, grid);
         gameData = new GameData(grid, player, 6);
         dataLoader.initialize(gameData);
-        pbc = new PlayerBallController(gameController, gameData.getPlayer(), gameData.getGrid());
+        pbc = new PlayerBallController(gameController, gameData.getPlayer(), gameData.getGrid(),
+                gridController);
     }
 
     @Test

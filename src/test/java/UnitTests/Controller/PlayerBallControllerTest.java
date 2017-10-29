@@ -38,7 +38,8 @@ public class PlayerBallControllerTest {
         dataLoader.initialize(gameData);
         playerBall = playerBallFactory.createBall("Normal Ball", 100, 100);
         player.setPlayerBall(playerBall);
-        pbc = new PlayerBallController(gameController, gameData.getPlayer(), gameData.getGrid());
+        pbc = new PlayerBallController(gameController, gameData.getPlayer(), gameData.getGrid(),
+                null);
     }
 
     @Test

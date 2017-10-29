@@ -12,6 +12,7 @@ public class PlayerBallController {
     private Player player;
     private Grid grid;
     private GameController gc;
+    private GridController gridController;
     private double mouseX;
     private double mouseY;
     private double deltaX;
@@ -31,8 +32,10 @@ public class PlayerBallController {
      * @param gc     the game controller object
      * @param player the player object of the game.
      * @param grid   the grid of the game.
+     * @param gridController the grid controller associated with this playerballcontroller
      */
-    public PlayerBallController(GameController gc, Player player, Grid grid) {
+    public PlayerBallController(GameController gc, Player player, Grid grid,
+                                GridController gridController) {
         this.gc = gc;
         this.player = player;
         this.grid = grid;
@@ -44,6 +47,7 @@ public class PlayerBallController {
         this.mouseX = 0;
         this.mouseY = 0;
         this.ballCollisionHandler = new BallCollisionHandler(grid, player);
+        this.gridController = gridController;
     }
 
     /**
@@ -113,6 +117,18 @@ public class PlayerBallController {
             return;
         }
 
+        checkWallCollision();
+
+        // the new coordinate of the ball is the the previous one added with the delta.
+        double newXCoord = player.getPlayerBall().getX() + deltaX;
+        double newYCoord = player.getPlayerBall().getY() + deltaY;
+
+        // set the new coordinate for the playerball.
+        player.getPlayerBall().setX(newXCoord);
+        player.getPlayerBall().setY(newYCoord);
+    }
+
+    private void checkWallCollision() {
         // if the ball has collided with the wall the deltaX or deltaY will become negative.
         if (player.getPlayerBall().hasCollidedWithWall()) {
             double[] newDelta = reflectBack(deltaX, deltaY);
@@ -132,14 +148,6 @@ public class PlayerBallController {
                 }
             }
         }
-
-        // the new coordinate of the ball is the the previous one added with the delta.
-        double newXCoord = player.getPlayerBall().getX() + deltaX;
-        double newYCoord = player.getPlayerBall().getY() + deltaY;
-
-        // set the new coordinate for the playerball.
-        player.getPlayerBall().setX(newXCoord);
-        player.getPlayerBall().setY(newYCoord);
     }
 
     /**
@@ -177,42 +185,35 @@ public class PlayerBallController {
         double[] rightVector = wall.calculateRightNormal();
         double[] leftVector = wall.calculateLeftNormal();
 
-        double distanceToTop = wall.topDistancesToBall(player.getPlayerBall())[0];
-        double distanceToTopHalfLeft = wall.topDistancesToBall(player.getPlayerBall())[1];
-        double distanceToTopHalfRight = wall.topDistancesToBall(player.getPlayerBall())[2];
+        double[] topDistances = wall.topDistancesToBall(player.getPlayerBall());
+        double[] bottomDistances = wall.bottomDistancesToBall(player.getPlayerBall());
+        double distanceToTop = topDistances[0];
+        double distanceToTopHalfLeft = topDistances[1];
+        double distanceToTopHalfRight = topDistances[2];
         double distanceToRight = wall.rightDistanceToBall(player.getPlayerBall());
-        double distanceToBottom = wall.bottomDistancesToBall(player.getPlayerBall())[0];
-        double distanceToBottomHalfLeft = wall.bottomDistancesToBall(player.getPlayerBall())[1];
-        double distanceToBottomHalfRight = wall.bottomDistancesToBall(player.getPlayerBall())[2];
+        double distanceToBottom = bottomDistances[0];
+        double distanceToBottomHalfLeft = bottomDistances[1];
+        double distanceToBottomHalfRight = bottomDistances[2];
         double distanceToLeft = wall.leftDistanceToBall(player.getPlayerBall());
 
         double[] reflectDeltas = new double[2];
-        if (((distanceToTop > distanceToBottom) || (distanceToTopHalfLeft > distanceToBottom)
-                || (distanceToTopHalfRight > distanceToBottom))
-                && ((distanceToTop > distanceToRight) || (distanceToTopHalfLeft > distanceToRight)
-                || (distanceToTopHalfRight > distanceToRight))
-                && ((distanceToTop > distanceToLeft) || (distanceToTopHalfLeft > distanceToLeft)
-                || (distanceToTopHalfRight > distanceToLeft))) {
+        if (wall.hasCollidedTop(distanceToTop, distanceToBottom, distanceToTopHalfLeft,
+                distanceToRight, distanceToTopHalfRight, distanceToLeft)) {
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (upVector[0] - wall.getX()),
                     (upVector[1] - wall.getY()));
-        } else if (((distanceToBottom > distanceToTop)
-                || (distanceToBottomHalfLeft > distanceToTop)
-                || (distanceToBottomHalfRight > distanceToTop))
-                && ((distanceToBottom > distanceToLeft)
-                || (distanceToBottomHalfLeft > distanceToLeft)
-                || (distanceToBottomHalfRight > distanceToLeft))
-                && ((distanceToBottom > distanceToRight)
-                || (distanceToBottomHalfLeft > distanceToRight)
-                || (distanceToBottomHalfRight > distanceToRight))) {
+        }
+        else if (wall.hasCollidedBottom(distanceToTop, distanceToBottom, distanceToBottomHalfLeft,
+                distanceToRight, distanceToBottomHalfRight, distanceToLeft)) {
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (downVector[0] - wall.getX()),
                     (downVector[1] - wall.getY()));
-        } else if ((distanceToRight > distanceToBottomHalfRight)
-                && (distanceToRight > distanceToLeft)
-                && (distanceToRight > distanceToTopHalfRight)) {
+        }
+        else if (wall.hasCollidedRight(distanceToRight, distanceToBottomHalfRight,
+                distanceToLeft, distanceToTopHalfRight)) {
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (rightVector[0] - wall.getX()),
                     (rightVector[1] - wall.getY()));
-        } else if ((distanceToLeft > distanceToTopHalfLeft) && (distanceToLeft > distanceToRight)
-                && (distanceToLeft > distanceToBottomHalfLeft)) {
+        }
+        else if (wall.hasColllidedLeft(distanceToLeft, distanceToTopHalfLeft,
+                distanceToRight, distanceToBottomHalfLeft)) {
             reflectDeltas = reflectionDeltas(deltaX, deltaY, (leftVector[0] - wall.getX()),
                     (leftVector[1] - wall.getY()));
         }
@@ -246,29 +247,19 @@ public class PlayerBallController {
      * Rotate a certain degree based on the time it takes to hit the grid.
      */
     private void calculateRotation() {
-        grid.setStillRotating(true);
+        gridController.setStillRotating(true);
+        int rotationIndex = stopWatch / 80;
+        if (rotationIndex >= 3) {
+            rotationIndex = 2;
+        }
         if (directionDeltaX > 0 && directionDeltaY > 0) {
-            if (stopWatch < 70) {
-                grid.setRotationDifference(GameConfiguration.rightRotation.get(0));
-            }
-            if (stopWatch >= 70 && stopWatch < 170) {
-                grid.setRotationDifference(GameConfiguration.rightRotation.get(1));
-            }
-            if (stopWatch > 170) {
-                grid.setRotationDifference(GameConfiguration.rightRotation.get(2));
-            }
+            gridController.setRotationDifference(
+                    GameConfiguration.rightRotation.get(rotationIndex));
         }
 
         if (directionDeltaX < 0 && directionDeltaY > 0) {
-            if (stopWatch < 70) {
-                grid.setRotationDifference(GameConfiguration.leftRotation.get(0));
-            }
-            if (stopWatch >= 70 && stopWatch < 170) {
-                grid.setRotationDifference(GameConfiguration.leftRotation.get(1));
-            }
-            if (stopWatch > 170) {
-                grid.setRotationDifference(GameConfiguration.leftRotation.get(2));
-            }
+            gridController.setRotationDifference(
+                    GameConfiguration.leftRotation.get(rotationIndex));
         }
         stopWatch = 0;
     }

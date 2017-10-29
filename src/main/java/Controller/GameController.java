@@ -81,7 +81,8 @@ public class GameController {
         wallController = new WallController(data);
         wallController.placeWalls();
         gridController = new GridController(this, data.getGrid());
-        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
+        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
+                gridController);
 
         // set up the sound
         // if the route is not correct start the game without sound
@@ -171,74 +172,82 @@ public class GameController {
         });
 
         //popup home button event
-        view.getPopupHomeButton().setOnMouseReleased(event -> {
+        view.getGameOverPopup().getHomeButton().setOnMouseReleased(event -> {
             resetGame();
             primaryStage.setScene(mainMenu);
         });
 
         //popup restart button event
-        view.getPopupRestartButton().setOnMouseReleased(event -> {
+        view.getGameOverPopup().getRestartButton().setOnMouseReleased(event -> {
             resetGame();
         });
 
+
+        setMouseControllers_PausePopup();
+        setMouseControllers_SettingsPopup();
+
+    }
+
+    private void setMouseControllers_PausePopup() {
+        view.getGamePauseIcon().setOnMouseReleased(event -> {
+            if (!gamePaused) {
+                view.getPausePopup().showPopup();
+                pauseGame();
+            }
+        });
+
         //continue playing the game
-        view.getPausePopupRestartButton().setOnMouseReleased(event -> {
+        view.getPausePopup().getRestartButton().setOnMouseReleased(event -> {
             clickDelay = System.currentTimeMillis();
             resetGame();
         });
 
         //continue playing the game
-        view.getPausePopupExitButton().setOnMouseReleased(event -> {
+        view.getPausePopup().getExitButton().setOnMouseReleased(event -> {
             System.exit(0);
         });
 
         //return to main menu
-        view.getPausePopupMainMenuButton().setOnMouseReleased(event -> {
+        view.getPausePopup().getHomeButton().setOnMouseReleased(event -> {
             clickDelay = System.currentTimeMillis();
             primaryStage.setScene(mainMenu);
-            view.closePausePopup();
+            view.getPausePopup().closePopup();
         });
 
-        //
-        view.getGamePauseIcon().setOnMouseReleased(event -> {
-            if (!gamePaused) {
-                view.showPausePopup();
-                pauseGame();
-            }
+        view.getPausePopup().getCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
+            view.getPausePopup().closePopup();
+            resumeGame();
         });
+    }
 
+    private void setMouseControllers_SettingsPopup() {
         view.getGameSettingsIcon().setOnMouseReleased(event -> {
             if (!gamePaused) {
-                view.showSettingsPopup();
+                view.getSettingsPopup().showPopup();
                 pauseGame();
             }
         });
 
-        view.getSettingsPopupCloseButton().setOnMouseReleased(event -> {
-            clickDelay = System.currentTimeMillis();
-            view.closeSettingsPopup();
-            resumeGame();
-        });
-
-        view.getPausePopupCloseButton().setOnMouseReleased(event -> {
-            clickDelay = System.currentTimeMillis();
-            view.closePausePopup();
-            resumeGame();
-        });
-
-        view.getAudioToggle().setOnMouseReleased(event -> {
+        view.getSettingsPopup().getAudioToggle().setOnMouseReleased(event -> {
             handleMusicButtonClick();
-            view.checkSettingsAudioToggle();
+            view.getSettingsPopup().checkSettingsAudioToggle();
         });
 
-        view.getWallToggle().setOnMouseReleased(event -> {
+        view.getSettingsPopup().getWallToggle().setOnMouseReleased(event -> {
             GameConfiguration.walls = !GameConfiguration.walls;
-            view.checkSettingsWallToggle();
+            view.getSettingsPopup().checkSettingsWallToggle();
         });
 
-        view.getSpecialToggle().setOnMouseReleased(event -> {
+        view.getSettingsPopup().getSpecialToggle().setOnMouseReleased(event -> {
             GameConfiguration.specialBalls = !GameConfiguration.specialBalls;
-            view.checkSettingsSpecialBallToggle();
+            view.getSettingsPopup().checkSettingsSpecialBallToggle();
+        });
+
+        view.getSettingsPopup().getCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
+            view.getSettingsPopup().closePopup();
+            resumeGame();
         });
     }
 
@@ -260,11 +269,11 @@ public class GameController {
         gameScreen.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 if (!gamePaused) {
-                    view.showPausePopup();
+                    view.getPausePopup().showPopup();
                     pauseGame();
                 } else {
-                    view.closeSettingsPopup();
-                    view.closePausePopup();
+                    view.getSettingsPopup().closePopup();
+                    view.getPausePopup().closePopup();
                     resumeGame();
                 }
             }
@@ -283,7 +292,7 @@ public class GameController {
 
     private void resetGame() {
         //close the game over popup
-        view.closeGameOverPopup();
+        view.getGameOverPopup().createPopup();
 
         //reset data
         data = new GameData(new Grid(GameConfiguration.stageWidth / 2,
@@ -294,7 +303,8 @@ public class GameController {
         wallController = new WallController(data);
         wallController.placeWalls();
         gridController = new GridController(this, data.getGrid());
-        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
+        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
+                gridController);
 
         //reset view
         gamePane = new Pane();
@@ -323,7 +333,7 @@ public class GameController {
      */
     public void gameOver() {
         pauseGame();
-        view.showGameOverPopup();
+        view.getGameOverPopup().showPopup();
     }
 
     /**
