@@ -181,6 +181,20 @@ public class GameController {
             resetGame();
         });
 
+
+        setMouseControllers_PausePopup();
+        setMouseControllers_SettingsPopup();
+
+    }
+
+    private void setMouseControllers_PausePopup() {
+        view.getGamePauseIcon().setOnMouseReleased(event -> {
+            if (!gamePaused) {
+                view.getPausePopup().showPopup();
+                pauseGame();
+            }
+        });
+
         //continue playing the game
         view.getPausePopup().getRestartButton().setOnMouseReleased(event -> {
             clickDelay = System.currentTimeMillis();
@@ -199,31 +213,19 @@ public class GameController {
             view.getPausePopup().closePopup();
         });
 
-        //
-        view.getGamePauseIcon().setOnMouseReleased(event -> {
-            if (!gamePaused) {
-                view.getPausePopup().showPopup();
-                pauseGame();
-            }
+        view.getPausePopup().getCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
+            view.getPausePopup().closePopup();
+            resumeGame();
         });
+    }
 
+    private void setMouseControllers_SettingsPopup() {
         view.getGameSettingsIcon().setOnMouseReleased(event -> {
             if (!gamePaused) {
                 view.getSettingsPopup().showPopup();
                 pauseGame();
             }
-        });
-
-        view.getSettingsPopup().getCloseButton().setOnMouseReleased(event -> {
-            clickDelay = System.currentTimeMillis();
-            view.getSettingsPopup().closePopup();
-            resumeGame();
-        });
-
-        view.getPausePopup().getCloseButton().setOnMouseReleased(event -> {
-            clickDelay = System.currentTimeMillis();
-            view.getPausePopup().closePopup();
-            resumeGame();
         });
 
         view.getSettingsPopup().getAudioToggle().setOnMouseReleased(event -> {
@@ -239,6 +241,12 @@ public class GameController {
         view.getSettingsPopup().getSpecialToggle().setOnMouseReleased(event -> {
             GameConfiguration.specialBalls = !GameConfiguration.specialBalls;
             view.getSettingsPopup().checkSettingsSpecialBallToggle();
+        });
+
+        view.getSettingsPopup().getCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
+            view.getSettingsPopup().closePopup();
+            resumeGame();
         });
     }
 

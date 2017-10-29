@@ -42,9 +42,9 @@ public final class PlayerBallFactory {
             case "Normal Ball":
                 return new NormalBall(colors.get(Util.randomBetween(0, colors.size() - 1)));
             case "Explosive Ball":
-                return new  ExplosiveBall("Explosive");
+                return new  ExplosiveBall("explosive");
             case "Rainbow Ball":
-                return new RainbowBall("Rainbow");
+                return new RainbowBall("rainbow");
             case "Multiplier Ball":
                 return new MultiplierBall(colors.get(Util.randomBetween(0, colors.size() - 1)));
             default:
@@ -65,9 +65,9 @@ public final class PlayerBallFactory {
                 List<String> colors = GameConfiguration.colors;
                 return new NormalBall(colors.get(Util.randomBetween(0, colors.size() - 1)), x, y);
             case "Explosive Ball":
-                return new  ExplosiveBall("Explosive", x, y);
+                return new  ExplosiveBall("explosive", x, y);
             case "Rainbow Ball":
-                return new RainbowBall("Rainbow", x, y);
+                return new RainbowBall("rainbow", x, y);
             default:
                 return null;
         }
