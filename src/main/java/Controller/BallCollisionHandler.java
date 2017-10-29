@@ -67,7 +67,7 @@ public class BallCollisionHandler {
     }
 
     /**
-     * This method puts the playerball to the hexagon after collision
+     * This method puts the playerball to the hexagon after collision.
      */
     private void setBallInHexagon(Cell collidedCell) {
         // display the ball that has collided with the hexagon

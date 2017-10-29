@@ -1,53 +1,48 @@
-//package UnitTests.Controller;
-//
-//import Controller.GameConfiguration;
-//import Controller.GameController;
-//import Controller.GridController;
-//import Model.Ball;
-//import Model.Cell;
-//import Model.Grid;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.Mockito;
-//
-//import java.util.ArrayList;
-//
-//import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-//import static org.junit.Assert.assertTrue;
-//import static org.mockito.Mockito.*;
-//
-///**
-// * GridControllerTest.
-// */
-//class GridControllerTest {
-//
-//    private GameController gameController = mock(GameController.class);
-//    private Grid grid = Mockito.mock(Grid.class);
-//
-//    private GridController gridController;
-//
-//    @BeforeEach
-//    void setUp() {
-//        GameConfiguration.setApi();
-//        GameConfiguration.isApi();
-//        gridController = new GridController(gameController, grid);
-//    }
-//
-//    @Test
-//    void constructorTest() {
-//        Grid newGrid = new Grid(200, 200);
-//        gridController.setGrid(newGrid);
-//        assertTrue(gridController.getGrid().getCenterX() == 200);
-//        assertTrue(gridController.getGrid().getCenterY() == 200);
-//    }
-//
-//    @Test
-//    void setGridTest() {
-//        Grid newGrid = new Grid(200, 200);
-//        gridController.setGrid(newGrid);
-//        assertTrue(gridController.getGrid().getCenterX() == 200);
-//    }
-//
+package UnitTests.Controller;
+
+import Controller.GameConfiguration;
+import Controller.GameController;
+import Controller.GridController;
+import Model.Grid;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+
+/**
+ * GridControllerTest.
+ */
+class GridControllerTest {
+
+    private GameController gameController = mock(GameController.class);
+    private Grid grid = Mockito.mock(Grid.class);
+
+    private GridController gridController;
+
+    @BeforeEach
+    void setUp() {
+        GameConfiguration.setApi();
+        GameConfiguration.isApi();
+        gridController = new GridController(gameController, grid);
+    }
+
+    @Test
+    void constructorTest() {
+        Grid newGrid = new Grid(200, 200);
+        gridController.setGrid(newGrid);
+        assertTrue(gridController.getGrid().getCenterCell().getInitialX() == 200);
+        assertTrue(gridController.getGrid().getCenterCell().getInitialY() == 200);
+    }
+
+    @Test
+    void setGridTest() {
+        Grid newGrid = new Grid(200, 200);
+        gridController.setGrid(newGrid);
+        assertTrue(gridController.getGrid().getCenterCell().getInitialX() == 200);
+    }
+
 //    @Test
 //    void progressTest1() {
 //        Grid newGrid = mock(Grid.class);
@@ -55,7 +50,7 @@
 //        gridController.process();
 //        verify(newGrid, atLeast(1)).getRotationDifference();
 //    }
-//
+
 //    @Test
 //    void progressTest2() {
 //        Grid newGrid = mock(Grid.class);
@@ -115,4 +110,4 @@
 //        gridController.process();
 //        verify(gameController).gameOver();
 //    }
-//}
+}

@@ -79,6 +79,14 @@ public class GridController {
         this.rotationDifference = rotationDifference;
     }
 
+    /**
+     * This is the getter for the rotationDifference field.
+     * @return the rotation difference
+     */
+    public int getRotationDifference() {
+        return this.rotationDifference;
+    }
+
 
 
     /**
