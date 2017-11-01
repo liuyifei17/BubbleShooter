@@ -52,7 +52,7 @@ public class WallController {
             while (iter.hasNext()) {
                 Cell i = iter.next();
                 if (Util.getDistance(i.getCurrentX(), i.getCurrentY(),
-                        cell.getCurrentX(), cell.getCurrentY()) <= GameConfiguration.wallRadius) {
+                        cell.getCurrentX(), cell.getCurrentY()) <= GUIConfiguration.wallRadius) {
                     iter.remove();
                 }
             }

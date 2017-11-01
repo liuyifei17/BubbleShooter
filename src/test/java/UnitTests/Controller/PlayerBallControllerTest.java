@@ -1,9 +1,6 @@
 package UnitTests.Controller;
 
-import Controller.GameConfiguration;
-import Controller.GameController;
-import Controller.GameDataLoader;
-import Controller.PlayerBallController;
+import Controller.*;
 import Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +29,8 @@ public class PlayerBallControllerTest {
         gameController = new GameController(null);
         dataLoader = new GameDataLoader();
         player = new Player();
-        grid = new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        grid = new Grid(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         gameData = new GameData(grid, player, 90);
         dataLoader.initialize(gameData);
         playerBall = playerBallFactory.createBall("Normal Ball", 100, 100);
@@ -76,8 +73,8 @@ public class PlayerBallControllerTest {
 
     @Test
     void launchBallTest_noCollision() {
-        pbc.setMouseX(GameConfiguration.stageWidth);
-        pbc.setMouseY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        pbc.setMouseX(GUIConfiguration.stageWidth);
+        pbc.setMouseY((GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         pbc.setDeltaX(1);
         pbc.setDeltaY(1);
 
@@ -89,8 +86,8 @@ public class PlayerBallControllerTest {
 
     @Test
     void launchBallTest_wallCollision1() {
-        playerBall.setX(GameConfiguration.stageWidth);
-        playerBall.setY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        playerBall.setX(GUIConfiguration.stageWidth);
+        playerBall.setY((GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         pbc.setDeltaX(1);
         pbc.setDeltaY(1);
         pbc.setMouseY(1);
@@ -103,8 +100,8 @@ public class PlayerBallControllerTest {
 
     @Test
     void launchBallTest_wallCollision2() {
-        playerBall.setX(GameConfiguration.stageWidth / 2);
-        playerBall.setY(GameConfiguration.stageHeight + GameConfiguration.topBarHeight);
+        playerBall.setX(GUIConfiguration.stageWidth / 2);
+        playerBall.setY(GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight);
         pbc.setDeltaX(1);
         pbc.setDeltaY(1);
         pbc.setMouseY(1);
@@ -120,8 +117,8 @@ public class PlayerBallControllerTest {
         pbc.setMouseY(1);
 
         for (int i = 0; i < 4; i++) {
-            playerBall.setX(GameConfiguration.stageWidth / 2);
-            playerBall.setY(GameConfiguration.stageHeight + GameConfiguration.topBarHeight);
+            playerBall.setX(GUIConfiguration.stageWidth / 2);
+            playerBall.setY(GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight);
             pbc.setDeltaX(1);
             pbc.setDeltaY(1);
             pbc.launchBall();

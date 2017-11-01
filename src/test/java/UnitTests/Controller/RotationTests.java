@@ -1,9 +1,6 @@
 package UnitTests.Controller;
 
-import Controller.GameConfiguration;
-import Controller.GameController;
-import Controller.GridController;
-import Controller.PlayerBallController;
+import Controller.*;
 import Model.Cell;
 import Model.Grid;
 import Model.NormalBall;
@@ -33,8 +30,8 @@ public class RotationTests {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
 
-        grid = new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        grid = new Grid(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         gridController = new GridController(gameController, grid);
         player = Mockito.mock(Player.class);
         playerBall = Mockito.mock(NormalBall.class);
@@ -47,8 +44,8 @@ public class RotationTests {
     @Test
     void launchBallTest_normalCollision_noRotation() {
         gameController = Mockito.mock(GameController.class);
-        grid = new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        grid = new Grid(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         player = Mockito.mock(Player.class);
         playerBall = Mockito.mock(NormalBall.class);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);

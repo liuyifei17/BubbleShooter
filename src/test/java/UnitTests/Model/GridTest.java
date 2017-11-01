@@ -1,5 +1,6 @@
 package UnitTests.Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Controller.GridController;
@@ -23,8 +24,8 @@ class GridTest {
     void setUp() {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
-        grid = new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        grid = new Grid(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
 
         gridController = new GridController(null, grid);
         view = Mockito.mock(View.class);
@@ -35,9 +36,9 @@ class GridTest {
     void testConstructor() {
         assertThat(grid.getCells()).isNotNull();
         assertThat(grid.getOccupiedCells()).isNotNull();
-        assertThat(grid.getCenterCell().getInitialX()).isEqualTo(GameConfiguration.stageWidth / 2);
-        assertThat(grid.getCenterCell().getInitialY()).isEqualTo((GameConfiguration.stageHeight
-                + GameConfiguration.topBarHeight) / 2);
+        assertThat(grid.getCenterCell().getInitialX()).isEqualTo(GUIConfiguration.stageWidth / 2);
+        assertThat(grid.getCenterCell().getInitialY()).isEqualTo((GUIConfiguration.stageHeight
+                + GUIConfiguration.topBarHeight) / 2);
     }
 
     @Test
@@ -48,8 +49,8 @@ class GridTest {
     @Test
     void closestEmptyCellToLocation() {
         Cell cell = grid.getCenterCell();
-        assertThat(grid.closestEmptyCellToLocation(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2))
+        assertThat(grid.closestEmptyCellToLocation(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2))
                 .isEqualTo(cell);
     }
 
@@ -57,8 +58,8 @@ class GridTest {
     void closestFullCellToLocation() {
         Cell cell = grid.getCenterCell();
         cell.setBall(new Ball("blue", cell, 1));
-        assertThat(grid.closestFullCellToLocation(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2))
+        assertThat(grid.closestFullCellToLocation(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2))
                 .isEqualTo(cell);
     }
 
