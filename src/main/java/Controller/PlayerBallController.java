@@ -160,12 +160,12 @@ public class PlayerBallController {
      */
     private double[] reflectBack(double deltaX, double deltaY) {
 
-        if ((player.getPlayerBall().getX() < GameConfiguration.ballRadius)
-                || (player.getPlayerBall().getX() >= GameConfiguration.stageWidth)) {
+        if ((player.getPlayerBall().getX() < GUIConfiguration.ballRadius)
+                || (player.getPlayerBall().getX() >= GUIConfiguration.stageWidth)) {
             deltaX = deltaX * -1;
         }
-        if ((player.getPlayerBall().getY() < GameConfiguration.topBarHeight)
-                || (player.getPlayerBall().getY() >= GameConfiguration.stageHeight)) {
+        if ((player.getPlayerBall().getY() < GUIConfiguration.topBarHeight)
+                || (player.getPlayerBall().getY() >= GUIConfiguration.stageHeight)) {
             deltaY = deltaY * -1;
         }
         return new double[]{deltaX, deltaY};

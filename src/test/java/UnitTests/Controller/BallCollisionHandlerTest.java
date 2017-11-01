@@ -35,8 +35,8 @@ public class BallCollisionHandlerTest {
         GameController.setView(view);
         dataLoader = new GameDataLoader();
         player = new Player();
-        grid = new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        grid = new Grid(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         gridController = new GridController(gameController, grid);
         gameData = new GameData(grid, player, 6);
         dataLoader.initialize(gameData);
@@ -46,8 +46,8 @@ public class BallCollisionHandlerTest {
 
     @Test
     void handleCollision_miss() {
-        pbc.setMouseX(GameConfiguration.stageWidth / 2);
-        pbc.setMouseY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        pbc.setMouseX(GUIConfiguration.stageWidth / 2);
+        pbc.setMouseY((GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         for (Cell c : grid.getCenterCell().getAdjacentCells()) {
             c.setBall(new Ball("blue", c, 1));
         }
@@ -65,8 +65,8 @@ public class BallCollisionHandlerTest {
 
     @Test
     void handleCollision_successfulShot() {
-        pbc.setMouseX(GameConfiguration.stageWidth / 2);
-        pbc.setMouseY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        pbc.setMouseX(GUIConfiguration.stageWidth / 2);
+        pbc.setMouseY((GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         for (Cell c : grid.getCenterCell().getAdjacentCells()) {
             c.setBall(new Ball("blue", c, 1));
         }
@@ -84,8 +84,8 @@ public class BallCollisionHandlerTest {
 
     @Test
     void handleCollision_5misses() {
-        pbc.setMouseX(GameConfiguration.stageWidth / 2);
-        pbc.setMouseY((GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        pbc.setMouseX(GUIConfiguration.stageWidth / 2);
+        pbc.setMouseY((GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         for (Cell c : grid.getCenterCell().getAdjacentCells()) {
             c.setBall(new Ball("blue", c, 1));
         }

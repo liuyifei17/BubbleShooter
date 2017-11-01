@@ -1,6 +1,6 @@
 package Model;
 
-import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 import Utility.Util;
 
 import java.util.ArrayList;
@@ -103,10 +103,10 @@ public class Cell {
      * @return checks if a ball has collided with a wall
      */
     public boolean hasCollidedWithWall() {
-        if ((currentX < GameConfiguration.ballRadius)
-                || (currentX >= GameConfiguration.stageWidth)
-                || (currentY < GameConfiguration.topBarHeight)
-                || (currentY >= GameConfiguration.stageHeight)) {
+        if ((currentX < GUIConfiguration.ballRadius)
+                || (currentX >= GUIConfiguration.stageWidth)
+                || (currentY < GUIConfiguration.topBarHeight)
+                || (currentY >= GUIConfiguration.stageHeight)) {
             return true;
         }
         return false;

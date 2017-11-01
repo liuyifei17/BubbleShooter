@@ -1,6 +1,7 @@
 package View;
 
 import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 import Model.Cell;
 import Model.GameData;
 import Model.MultiplierBall;
@@ -145,13 +146,13 @@ public class View implements Observer {
         topBar = new ImageView("images/topBar1.png");
         topBar.relocate(0, 0);
         topBar.fitWidthProperty().bind(gamePane.widthProperty());
-        topBar.setFitHeight(GameConfiguration.topBarHeight);
+        topBar.setFitHeight(GUIConfiguration.topBarHeight);
 
         //draw score bar
         scoreBar = new ImageView("images/scoreBar1.png");
         scoreBar.relocate(8, 15);
-        scoreBar.setFitHeight(GameConfiguration.scoreBarHeight);
-        scoreBar.setFitWidth(GameConfiguration.scoreBarWidth);
+        scoreBar.setFitHeight(GUIConfiguration.scoreBarHeight);
+        scoreBar.setFitWidth(GUIConfiguration.scoreBarWidth);
 
         //draw score text
         scoreBarScore = new Text("Score: 0");
@@ -178,8 +179,8 @@ public class View implements Observer {
         Image spriteNextBall =
                 new Image("images/" + data.getPlayer().getNextBall().getColor() + " ball.png");
         nextBallImageView = new ImageView(spriteNextBall);
-        nextBallImageView.relocate(GameConfiguration.stageWidth / 2
-                - spriteNextBall.getWidth() / 4, GameConfiguration.topBarHeight - 30);
+        nextBallImageView.relocate(GUIConfiguration.stageWidth / 2
+                - spriteNextBall.getWidth() / 4, GUIConfiguration.topBarHeight - 30);
         nextBallImageView.setFitWidth(spriteNextBall.getWidth() / 2);
         nextBallImageView.setFitHeight(spriteNextBall.getHeight() / 2);
 
@@ -245,12 +246,12 @@ public class View implements Observer {
      */
     public void placeWalls() {
         if (data.getRandomWalls().size() == 3 && GameConfiguration.walls) {
-            firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(0).getY() - GameConfiguration.wallHeight);
-            secondWall.relocate(data.getRandomWalls().get(1).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(1).getY() - GameConfiguration.wallHeight);
-            thirdWall.relocate(data.getRandomWalls().get(2).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(2).getY() - GameConfiguration.wallHeight);
+            firstWall.relocate(data.getRandomWalls().get(0).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(0).getY() - GUIConfiguration.wallHeight);
+            secondWall.relocate(data.getRandomWalls().get(1).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(1).getY() - GUIConfiguration.wallHeight);
+            thirdWall.relocate(data.getRandomWalls().get(2).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(2).getY() - GUIConfiguration.wallHeight);
 
             firstWall.rotateProperty().setValue(data.getRandomWalls().get(0).getRotation());
             secondWall.rotateProperty().setValue(data.getRandomWalls().get(1).getRotation());
@@ -261,10 +262,10 @@ public class View implements Observer {
             thirdWall.setVisible(true);
         }
         if (data.getRandomWalls().size() == 2 && GameConfiguration.walls) {
-            firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(0).getY() - GameConfiguration.wallHeight);
-            secondWall.relocate(data.getRandomWalls().get(1).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(1).getY() - GameConfiguration.wallHeight);
+            firstWall.relocate(data.getRandomWalls().get(0).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(0).getY() - GUIConfiguration.wallHeight);
+            secondWall.relocate(data.getRandomWalls().get(1).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(1).getY() - GUIConfiguration.wallHeight);
 
             firstWall.rotateProperty().setValue(data.getRandomWalls().get(0).getRotation());
             secondWall.rotateProperty().setValue(data.getRandomWalls().get(1).getRotation());
@@ -273,8 +274,8 @@ public class View implements Observer {
             secondWall.setVisible(true);
         }
         if (data.getRandomWalls().size() == 1 && GameConfiguration.walls) {
-            firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(0).getY() - GameConfiguration.wallHeight);
+            firstWall.relocate(data.getRandomWalls().get(0).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(0).getY() - GUIConfiguration.wallHeight);
 
             firstWall.rotateProperty().setValue(data.getRandomWalls().get(0).getRotation());
 
