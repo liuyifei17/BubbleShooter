@@ -21,9 +21,9 @@ public class ExplosiveBallTest {
 
     @BeforeEach
     void setUp() {
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         playerBallFactory = PlayerBallFactory.getInstance();
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
         explosiveBall = playerBallFactory.createBall("Explosive Ball",
                 GUIConfiguration.ballRadius, GUIConfiguration.stageWidth / 2);
 

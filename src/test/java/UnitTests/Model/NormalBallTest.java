@@ -2,10 +2,7 @@ package UnitTests.Model;
 
 import Controller.GameConfiguration;
 import Controller.GUIConfiguration;
-import Model.Cell;
-import Model.Grid;
-import Model.PlayerBall;
-import Model.PlayerBallFactory;
+import Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,6 +10,9 @@ import org.mockito.Mockito;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -24,10 +24,11 @@ public class NormalBallTest {
     private String normalBall;
     @BeforeEach
     void setUp() {
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
+
         normalBall ="Normal Ball";
         playerBallFactory = PlayerBallFactory.getInstance();
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
     }
 
     @Test
@@ -110,5 +111,13 @@ public class NormalBallTest {
         Mockito.when(grid.closestEmptyCellToLocation(pb.getX(), pb.getY())).thenReturn(emptyCell);
 
         assertThat(pb.getCellCollision(grid, 1, 1)).isEqualTo(emptyCell);
+    }
+
+    @Test
+    void hasCollidedRandomWallTrue() {
+        Walls wall = mock(Walls.class);
+        PlayerBall pb = playerBallFactory.createBall("Normal Ball", 200, 200);
+        pb.hasCollidedWithRandomWall(wall);
+        verify(wall, times(4)).getX();
     }
 }
