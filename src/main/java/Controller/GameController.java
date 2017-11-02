@@ -26,6 +26,7 @@ public class GameController {
     private GridController gridController;
     private PlayerBallController playerBallController;
     private WallController wallController;
+    private IOController ioController;
 
     private Stage primaryStage;
     private Scene mainMenu;
@@ -83,6 +84,10 @@ public class GameController {
         gridController = new GridController(this, data.getGrid());
         playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
                 gridController);
+        ioController = new IOController(data.getScores(),
+                "src/main/resources/configuration/scores.json");
+        ioController.readFromFile(data);
+
 
         // set up the sound
         // if the route is not correct start the game without sound
@@ -305,6 +310,9 @@ public class GameController {
         gridController = new GridController(this, data.getGrid());
         playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
                 gridController);
+        ioController = new IOController(data.getScores(),
+                "src/main/resources/configuration/scores.json");
+        ioController.readFromFile(data);
 
         //reset view
         gamePane = new Pane();
@@ -334,6 +342,7 @@ public class GameController {
     public void gameOver() {
         pauseGame();
         data.placeScore();
+        ioController.writeToFile();
         view.getGameOverPopup().showPopup();
     }
 
