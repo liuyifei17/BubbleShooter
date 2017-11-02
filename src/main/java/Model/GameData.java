@@ -34,6 +34,7 @@ public class GameData {
         Score score = new Score(player.getScore());
         if (scores.size() == 0) {
             scores.add(score);
+            return;
         }
 
         for (int i = 0; i < scores.size(); i++) {
@@ -44,7 +45,7 @@ public class GameData {
         }
 
         if (scores.size() >  10) {
-            scores.remove(scores.size());
+            scores.remove(scores.size() - 1);
         }
     }
 
@@ -102,5 +103,12 @@ public class GameData {
      */
     public ArrayList<Score> getScores() {
         return scores;
+    }
+
+    /**
+     * @param scores new scorelist.
+     */
+    public void setScores(ArrayList<Score> scores) {
+        this.scores = scores;
     }
 }

@@ -26,23 +26,9 @@ public class Score {
     }
 
     /**
-     * @param score a new score
-     */
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    /**
      * @return the current date.
      */
     public Date getDate() {
         return date;
-    }
-
-    /**
-     * @param date a new date.
-     */
-    public void setDate(Date date) {
-        this.date = date;
     }
 }
