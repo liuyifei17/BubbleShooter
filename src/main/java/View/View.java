@@ -1,6 +1,7 @@
 package View;
 
 import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 import Model.Cell;
 import Model.GameData;
 import Model.MultiplierBall;
@@ -14,8 +15,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import java.util.Observable;
-import java.util.Observer;
+
+import java.util.*;
 
 /**
  * The view class.
@@ -104,6 +105,37 @@ public class View implements Observer {
      * Fills the game pane with elements to initialize the game pane view.
      */
     public void drawGame() {
+
+        drawLayout();
+
+        //draw walls
+        firstWall = new ImageView("images/asteroid.png");
+        secondWall = new ImageView("images/asteroid.png");
+        thirdWall = new ImageView("images/asteroid.png");
+
+        //draw entities
+        for (Cell c : data.getGrid().getOccupiedCells()) {
+            display(c);
+        }
+
+        initializePlayerBalls();
+
+        //create popup menu's
+        gameOverPopup = new GameOverPopup(this, new Pane());
+        pausePopup = new PausePopup(this, new Pane());
+        settingsPopup = new SettingsPopup(this, new Pane());
+
+        //add components to game pane
+        Node[] nodes = {topBar, playerBallImageView, nextBallImageView, firstWall, secondWall,
+                thirdWall, scoreBarScore, gamePauseIcon, gameSettingsIcon, gameOverPopup.getPopup(),
+                pausePopup.getPopup(), settingsPopup.getPopup()};
+        gamePane.getChildren().addAll(Arrays.asList(nodes));
+        gameOverPopup.getPopup().setVisible(false);
+        pausePopup.getPopup().setVisible(false);
+        settingsPopup.getPopup().setVisible(false);
+    }
+
+    private void drawLayout() {
         //draw background
         gameBg = new Image("images/background1.png");
         gamePane.setBackground(new Background(
@@ -114,13 +146,13 @@ public class View implements Observer {
         topBar = new ImageView("images/topBar1.png");
         topBar.relocate(0, 0);
         topBar.fitWidthProperty().bind(gamePane.widthProperty());
-        topBar.setFitHeight(GameConfiguration.topBarHeight);
+        topBar.setFitHeight(GUIConfiguration.topBarHeight);
 
         //draw score bar
         scoreBar = new ImageView("images/scoreBar1.png");
         scoreBar.relocate(8, 15);
-        scoreBar.setFitHeight(GameConfiguration.scoreBarHeight);
-        scoreBar.setFitWidth(GameConfiguration.scoreBarWidth);
+        scoreBar.setFitHeight(GUIConfiguration.scoreBarHeight);
+        scoreBar.setFitWidth(GUIConfiguration.scoreBarWidth);
 
         //draw score text
         scoreBarScore = new Text("Score: 0");
@@ -141,22 +173,14 @@ public class View implements Observer {
         gameSettingsIcon.relocate(550, 10);
         gameSettingsIcon.fitHeightProperty().setValue(46);
         gameSettingsIcon.fitWidthProperty().setValue(46);
+    }
 
-        //draw walls
-        firstWall = new ImageView("images/asteroid.png");
-        secondWall = new ImageView("images/asteroid.png");
-        thirdWall = new ImageView("images/asteroid.png");
-
-        //draw entities
-        for (Cell c : data.getGrid().getOccupiedCells()) {
-            display(c);
-        }
-
+    private void initializePlayerBalls() {
         Image spriteNextBall =
                 new Image("images/" + data.getPlayer().getNextBall().getColor() + " ball.png");
         nextBallImageView = new ImageView(spriteNextBall);
-        nextBallImageView.relocate(GameConfiguration.stageWidth / 2
-                - spriteNextBall.getWidth() / 4, GameConfiguration.topBarHeight - 30);
+        nextBallImageView.relocate(GUIConfiguration.stageWidth / 2
+                - spriteNextBall.getWidth() / 4, GUIConfiguration.topBarHeight - 30);
         nextBallImageView.setFitWidth(spriteNextBall.getWidth() / 2);
         nextBallImageView.setFitHeight(spriteNextBall.getHeight() / 2);
 
@@ -167,30 +191,6 @@ public class View implements Observer {
         playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
                         - spritePlayerBall.getWidth() / 2,
                 data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
-
-        //create popup menu's
-        gameOverPopup = new GameOverPopup(this, new Pane());
-        pausePopup = new PausePopup(this, new Pane());
-        settingsPopup = new SettingsPopup(this, new Pane());
-
-        //add components to game pane
-        gamePane.getChildren().add(topBar);
-        //gamePane.getChildren().add(scoreBar);
-
-        gamePane.getChildren().add(playerBallImageView);
-        gamePane.getChildren().add(nextBallImageView);
-        gamePane.getChildren().add(firstWall);
-        gamePane.getChildren().add(secondWall);
-        gamePane.getChildren().add(thirdWall);
-        gamePane.getChildren().add(scoreBarScore);
-        gamePane.getChildren().add(gamePauseIcon);
-        gamePane.getChildren().add(gameSettingsIcon);
-        gamePane.getChildren().add(gameOverPopup.getPopup());
-        gamePane.getChildren().add(pausePopup.getPopup());
-        gamePane.getChildren().add(settingsPopup.getPopup());
-        gameOverPopup.getPopup().setVisible(false);
-        pausePopup.getPopup().setVisible(false);
-        settingsPopup.getPopup().setVisible(false);
     }
 
     /**
@@ -205,40 +205,40 @@ public class View implements Observer {
                     BallImageView biv = (BallImageView) node;
                     biv.relocate(getScreenX(biv.getCell(), biv.getImage()),
                             getScreenY(biv.getCell(), biv.getImage()));
-                    if (!biv.isPlus1Icon()) {
-                        biv.rotateProperty().setValue(data.getGrid().getRotation());
-                    }
                 }
             }
 
-            Image spritePlayerBall;
-            Image spriteNextBall;
-            if (data.getPlayer().getPlayerBall() instanceof MultiplierBall) {
-                spritePlayerBall = new Image("images/multiplier "
-                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
-                playerBallImageView.setImage(spritePlayerBall);
-            } else {
-                spritePlayerBall = new Image("images/"
-                        + data.getPlayer().getPlayerBall().getColor() + " ball.png");
-                playerBallImageView.setImage(spritePlayerBall);
-            }
-            if (data.getPlayer().getNextBall() instanceof MultiplierBall) {
-                spriteNextBall = new Image("images/multiplier "
-                        + data.getPlayer().getNextBall().getColor() + " ball.png");
-                nextBallImageView.setImage(spriteNextBall);
-            } else {
-                spriteNextBall = new Image("images/"
-                        + data.getPlayer().getNextBall().getColor() + " ball.png");
-                nextBallImageView.setImage(spriteNextBall);
-            }
-
-            playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
-                            - spritePlayerBall.getWidth() / 2,
-                    data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
-
+            redrawPlayerBall();
             removeWalls();
             placeWalls();
         });
+    }
+
+    private void redrawPlayerBall() {
+        Image spritePlayerBall;
+        Image spriteNextBall;
+        if (data.getPlayer().getPlayerBall() instanceof MultiplierBall) {
+            spritePlayerBall = new Image("images/multiplier "
+                    + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+            playerBallImageView.setImage(spritePlayerBall);
+        } else {
+            spritePlayerBall = new Image("images/"
+                    + data.getPlayer().getPlayerBall().getColor() + " ball.png");
+            playerBallImageView.setImage(spritePlayerBall);
+        }
+        if (data.getPlayer().getNextBall() instanceof MultiplierBall) {
+            spriteNextBall = new Image("images/multiplier "
+                    + data.getPlayer().getNextBall().getColor() + " ball.png");
+            nextBallImageView.setImage(spriteNextBall);
+        } else {
+            spriteNextBall = new Image("images/"
+                    + data.getPlayer().getNextBall().getColor() + " ball.png");
+            nextBallImageView.setImage(spriteNextBall);
+        }
+
+        playerBallImageView.relocate(data.getPlayer().getPlayerBall().getX()
+                        - spritePlayerBall.getWidth() / 2,
+                data.getPlayer().getPlayerBall().getY() - spritePlayerBall.getHeight() / 2);
     }
 
     /**
@@ -246,12 +246,12 @@ public class View implements Observer {
      */
     public void placeWalls() {
         if (data.getRandomWalls().size() == 3 && GameConfiguration.walls) {
-            firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(0).getY() - GameConfiguration.wallHeight);
-            secondWall.relocate(data.getRandomWalls().get(1).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(1).getY() - GameConfiguration.wallHeight);
-            thirdWall.relocate(data.getRandomWalls().get(2).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(2).getY() - GameConfiguration.wallHeight);
+            firstWall.relocate(data.getRandomWalls().get(0).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(0).getY() - GUIConfiguration.wallHeight);
+            secondWall.relocate(data.getRandomWalls().get(1).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(1).getY() - GUIConfiguration.wallHeight);
+            thirdWall.relocate(data.getRandomWalls().get(2).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(2).getY() - GUIConfiguration.wallHeight);
 
             firstWall.rotateProperty().setValue(data.getRandomWalls().get(0).getRotation());
             secondWall.rotateProperty().setValue(data.getRandomWalls().get(1).getRotation());
@@ -262,10 +262,10 @@ public class View implements Observer {
             thirdWall.setVisible(true);
         }
         if (data.getRandomWalls().size() == 2 && GameConfiguration.walls) {
-            firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(0).getY() - GameConfiguration.wallHeight);
-            secondWall.relocate(data.getRandomWalls().get(1).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(1).getY() - GameConfiguration.wallHeight);
+            firstWall.relocate(data.getRandomWalls().get(0).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(0).getY() - GUIConfiguration.wallHeight);
+            secondWall.relocate(data.getRandomWalls().get(1).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(1).getY() - GUIConfiguration.wallHeight);
 
             firstWall.rotateProperty().setValue(data.getRandomWalls().get(0).getRotation());
             secondWall.rotateProperty().setValue(data.getRandomWalls().get(1).getRotation());
@@ -274,8 +274,8 @@ public class View implements Observer {
             secondWall.setVisible(true);
         }
         if (data.getRandomWalls().size() == 1 && GameConfiguration.walls) {
-            firstWall.relocate(data.getRandomWalls().get(0).getX() - GameConfiguration.wallWidth,
-                    data.getRandomWalls().get(0).getY() - GameConfiguration.wallHeight);
+            firstWall.relocate(data.getRandomWalls().get(0).getX() - GUIConfiguration.wallWidth,
+                    data.getRandomWalls().get(0).getY() - GUIConfiguration.wallHeight);
 
             firstWall.rotateProperty().setValue(data.getRandomWalls().get(0).getRotation());
 
