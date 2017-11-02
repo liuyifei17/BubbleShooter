@@ -34,7 +34,6 @@ public class IOController {
         clearFile();
         Type array = new TypeToken<ArrayList<Score>>() { } .getType();
         try (FileWriter fileWriter = new FileWriter(fileName)) {
-
             Gson gson = new GsonBuilder().create();
             gson.toJson(scores, array, fileWriter);
         } catch (IOException e) {
@@ -48,13 +47,19 @@ public class IOController {
     public void readFromFile(GameData data) {
         Type array = new TypeToken<ArrayList<Score>>() { } .getType();
         try (FileReader fileReader = new FileReader(fileName)) {
+
             Gson gson = new Gson();
+            if (gson.fromJson(fileReader, array) == null) {
+                return;
+            }
             scores = gson.fromJson(fileReader, array);
+
         } catch (FileNotFoundException e) {
             System.out.println("No File Found");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         data.setScores(scores);
     }
 
