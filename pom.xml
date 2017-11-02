@@ -68,7 +68,7 @@
                     </check>
                     <instrumentation>
                         <excludes>
-                            <exclude>View/View.*</exclude>
+                            <exclude>View/*</exclude>
                             <exclude>Controller/GameController.class</exclude>
                             <exclude>Main.class</exclude>
                         </excludes>
