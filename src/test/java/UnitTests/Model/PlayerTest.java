@@ -1,5 +1,6 @@
 package UnitTests.Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Model.NormalBall;
 import Model.Player;
@@ -16,8 +17,8 @@ public class PlayerTest {
 
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
 
         player = new Player();
     }
