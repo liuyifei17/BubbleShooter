@@ -29,8 +29,10 @@ public class GameController {
 
     private Stage primaryStage;
     private Scene mainMenu;
+    private Scene rankings;
     private Scene gameScreen;
     private Pane gamePane;
+    private Pane rankingPane;
     private Pane mainMenuPane;
 
     private Media backgroundMusic;
@@ -120,16 +122,20 @@ public class GameController {
     private void setupView() {
         //Create the panes to hold game elements
         mainMenuPane = new Pane();
+        rankingPane = new Pane();
         gamePane = new Pane();
 
         //Draw elements on pane
-        view = new View(mainMenuPane, gamePane, data, data.getPlayer());
+        view = new View(mainMenuPane, rankingPane, gamePane, data, data.getPlayer());
         data.getPlayer().addObserver(view);
         view.drawMainMenu();
+        view.drawRankings();
         view.drawGame();
 
         // Create scenes containing the panes
         mainMenu = new Scene(mainMenuPane, GameConfiguration.stageWidth,
+                GameConfiguration.stageHeight);
+        rankings = new Scene(rankingPane, GameConfiguration.stageWidth,
                 GameConfiguration.stageHeight);
         gameScreen = new Scene(gamePane, GameConfiguration.stageWidth,
                 GameConfiguration.stageHeight);
@@ -162,6 +168,11 @@ public class GameController {
                 resumeGame();
             }
             primaryStage.setScene(gameScreen);
+        });
+
+        // play button event
+        view.getRankingButton().setOnMouseReleased(event -> {
+            primaryStage.setScene(rankings);
         });
 
         //exit button event
@@ -257,6 +268,12 @@ public class GameController {
                 view.getRankingPopup().showPopup();
                 pauseGame();
             }
+        });
+
+        view.getRankingPopup().getCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
+            view.getRankingPopup().closePopup();
+            resumeGame();
         });
     }
 
