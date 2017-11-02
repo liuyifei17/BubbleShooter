@@ -32,12 +32,7 @@ public class RainbowBall extends PlayerBall {
 
     @Override
     public ArrayList<Cell> checkRemovalBalls(Cell collidedCell) {
-        //initialise an arrayList which will contain all possible removedBalls
-        ArrayList<Cell> removalBalls = new ArrayList<>();
-        removalBalls.add(collidedCell);
         ArrayList<String> colors = checkColors(collidedCell);
-
-
         Map<Integer, ArrayList<Cell>> map = new TreeMap<>();
 
         // create a treeMap of arrayLists, the key is the size of returned cell.
