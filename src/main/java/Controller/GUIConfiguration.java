@@ -36,6 +36,8 @@ public class GUIConfiguration {
         setPopupHeight(-1);
         setPopupX(-1);
         setPopupY(-1);
+        setWallWidth(-1);
+        setWallHeight(-1);
         setBallRadius(-1);
         setWallRadius(-1);
     }
