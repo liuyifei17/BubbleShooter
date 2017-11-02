@@ -1,6 +1,6 @@
 package View;
 
-import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -29,11 +29,11 @@ public class PausePopup extends Popup {
     @Override
     public void createPopup() {
         //create popup container
-        getPopup().setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
-        getPopup().relocate(GameConfiguration.popupX, GameConfiguration.popupY);
+        getPopup().setPrefSize(GUIConfiguration.popupWidth, GUIConfiguration.popupHeight);
+        getPopup().relocate(GUIConfiguration.popupX, GUIConfiguration.popupY);
         getPopup().setBackground(new Background(new BackgroundImage(
-                new Image("images/popupBackground.png", GameConfiguration.popupWidth,
-                        GameConfiguration.popupHeight, false, true),
+                new Image("images/popupBackground.png", GUIConfiguration.popupWidth,
+                        GUIConfiguration.popupHeight, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 

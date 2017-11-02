@@ -1,23 +1,22 @@
 package UnitTests.Controller;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Controller.WallController;
 import Model.Cell;
 import Model.GameData;
 import Model.Grid;
-import Model.Walls;
 import View.View;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Henks Laptop on 28/10/2017.
+ * This class provides test cases for the WallController class.
  */
 class WallControllerTest {
     WallController wallController;
@@ -30,7 +29,7 @@ class WallControllerTest {
         view = mock(View.class);
         GameConfiguration.setApi();
         GameConfiguration.isApi();
-        grid = new Grid(GameConfiguration.stageWidth, GameConfiguration.stageHeight);
+        grid = new Grid(GUIConfiguration.stageWidth, GUIConfiguration.stageHeight);
         GameController.setView(view);
         GameConfiguration.amountOfWalls = 2;
     }

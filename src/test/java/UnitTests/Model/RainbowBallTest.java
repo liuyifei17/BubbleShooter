@@ -2,6 +2,7 @@
 
 package UnitTests.Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Model.Ball;
 import Model.Cell;
@@ -35,7 +36,7 @@ class RainBowBallTest {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
         rainbowBall = playerBallFactory.createBall("Rainbow Ball",
-                GameConfiguration.ballRadius, GameConfiguration.stageWidth / 2);
+                GUIConfiguration.ballRadius, GUIConfiguration.stageWidth / 2);
     }
 
     /**
@@ -72,7 +73,6 @@ class RainBowBallTest {
         something.add(cell);
         when(cell.getAdjacentCells()).thenReturn(something);
         assertThat(rainbowBall.checkRemovalBalls(cell).size()).isEqualTo(1);
-;
     }
 
 

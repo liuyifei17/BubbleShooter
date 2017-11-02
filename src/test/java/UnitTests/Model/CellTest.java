@@ -1,6 +1,7 @@
 package UnitTests.Model;
 
 import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 import Model.Ball;
 import Model.Cell;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,9 +91,9 @@ class CellTest {
 
     @Test
     void hasCollidedWithWallTest_false() {
-        cell.setCurrentX(GameConfiguration.stageWidth / 2);
+        cell.setCurrentX(GUIConfiguration.stageWidth / 2);
         cell.setCurrentY(
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         assertThat(cell.hasCollidedWithWall()).isFalse();
     }
 
