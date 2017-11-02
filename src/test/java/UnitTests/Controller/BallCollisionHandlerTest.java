@@ -19,17 +19,17 @@ public class BallCollisionHandlerTest {
     private GameController gameController;
     private PlayerBallController pbc;
     private PlayerBall playerBall;
-    private PlayerBallFactory playerBallFactory;
     private GameDataLoader dataLoader;
     private GameData gameData;
     private GridController gridController;
     private View view;
+    private String blue;
 
     @BeforeEach
     void setUp() {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
-        playerBallFactory = PlayerBallFactory.getInstance();
+        blue = "blue";
         gameController = new GameController(null);
         view = mock(View.class);
         GameController.setView(view);
@@ -46,10 +46,11 @@ public class BallCollisionHandlerTest {
 
     @Test
     void handleCollision_miss() {
+
         pbc.setMouseX(GUIConfiguration.stageWidth / 2);
         pbc.setMouseY((GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         for (Cell c : grid.getCenterCell().getAdjacentCells()) {
-            c.setBall(new Ball("blue", c, 1));
+            c.setBall(new Ball(blue, c, 1));
         }
         Cell c = grid.getCenterCell().getAdjacentCellInDirection(0, -1)
                 .getAdjacentCellInDirection(0, -1);
@@ -68,11 +69,11 @@ public class BallCollisionHandlerTest {
         pbc.setMouseX(GUIConfiguration.stageWidth / 2);
         pbc.setMouseY((GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         for (Cell c : grid.getCenterCell().getAdjacentCells()) {
-            c.setBall(new Ball("blue", c, 1));
+            c.setBall(new Ball(blue, c, 1));
         }
         Cell c = grid.getCenterCell().getAdjacentCellInDirection(0, -1)
                 .getAdjacentCellInDirection(0, -1);
-        playerBall = new NormalBall("blue", c.getCurrentX(), c.getCurrentY());
+        playerBall = new NormalBall(blue, c.getCurrentX(), c.getCurrentY());
         player.setPlayerBall(playerBall);
         pbc.calculateDelta();
 
@@ -87,7 +88,7 @@ public class BallCollisionHandlerTest {
         pbc.setMouseX(GUIConfiguration.stageWidth / 2);
         pbc.setMouseY((GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         for (Cell c : grid.getCenterCell().getAdjacentCells()) {
-            c.setBall(new Ball("blue", c, 1));
+            c.setBall(new Ball(blue, c, 1));
         }
         Cell c = grid.getCenterCell().getAdjacentCellInDirection(0, -1)
                 .getAdjacentCellInDirection(0, -1);

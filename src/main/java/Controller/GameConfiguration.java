@@ -6,7 +6,6 @@ import nl.tu.delft.defpro.api.IDefProAPI;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * GameConfiguration class loads all the pre-determinded attributes.
  */
