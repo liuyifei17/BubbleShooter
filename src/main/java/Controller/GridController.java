@@ -11,6 +11,10 @@ public class GridController {
 
     private Grid grid;
     private GameController gc;
+    private int rotation; //the current rotation in degrees
+    private int rotationDifference; //the change in rotation for a given ball impact
+    private int rotationSpeed; //turning speed in degrees per frame
+    private boolean doneRotating;
 
     /**
      * @param gc sets the game controller
@@ -19,31 +23,35 @@ public class GridController {
     public GridController(GameController gc, Grid grid) {
         this.gc = gc;
         this.grid = grid;
+        rotation = 180;
+        rotationDifference = 0;
+        rotationSpeed = 5;
+        doneRotating = false;
     }
 
     /**
      * processes the dynamics of the grid based on a timer.
      */
     public void process() {
-        if (grid.getRotationDifference() == 0  && grid.getStillRotating()) {
-            grid.setStillRotating(false);
+        if (rotationDifference == 0  && doneRotating) {
+            doneRotating = false;
             gc.getWallController().placeWalls();
         }
         //calculate the rotated cell coordinate values based on rotation change
-        if (grid.getRotationDifference() != 0) {
-            if (grid.getRotationDifference() > 0) {
-                grid.setRotationDifference(grid.getRotationDifference() - grid.getRotationSpeed());
-                grid.setRotation(grid.getRotation() + grid.getRotationSpeed());
+        if (rotationDifference != 0) {
+            if (rotationDifference > 0) {
+                rotationDifference -= rotationSpeed;
+                rotation += rotationSpeed;
             }
-            if (grid.getRotationDifference() < 0) {
-                grid.setRotationDifference(grid.getRotationDifference() + grid.getRotationSpeed());
-                grid.setRotation(grid.getRotation() - grid.getRotationSpeed());
+            if (rotationDifference < 0) {
+                rotationDifference += rotationSpeed;
+                rotation -= rotationSpeed;
             }
 
             for (Cell c : grid.getCells()) {
                 double[] newCoords = Util.calculateRotatedCoordinates(
                         c.getInitialX(), c.getInitialY(), grid.getCenterCell().getInitialX(),
-                        grid.getCenterCell().getInitialY(), grid.getRotation());
+                        grid.getCenterCell().getInitialY(), rotation);
                 c.setCurrentX(newCoords[0]);
                 c.setCurrentY(newCoords[1]);
 
@@ -54,6 +62,29 @@ public class GridController {
                 }
             }
         }
+    }
+
+    /**
+     * This is the setter for the stillRotating field.
+     * @param stillRotating is the grid still rotating
+     */
+    public void setStillRotating(boolean stillRotating) {
+        this.doneRotating = stillRotating;
+    }
+
+    /**
+     * @param rotationDifference set the rotation difference
+     */
+    public void setRotationDifference(int rotationDifference) {
+        this.rotationDifference = rotationDifference;
+    }
+
+    /**
+     * This is the getter for the rotationDifference field.
+     * @return the rotation difference
+     */
+    public int getRotationDifference() {
+        return this.rotationDifference;
     }
 
 

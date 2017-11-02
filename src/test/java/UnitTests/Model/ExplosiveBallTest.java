@@ -1,5 +1,6 @@
 package UnitTests.Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Model.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ public class ExplosiveBallTest {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
         explosiveBall = playerBallFactory.createBall("Explosive Ball",
-                GameConfiguration.ballRadius, GameConfiguration.stageWidth / 2);
+                GUIConfiguration.ballRadius, GUIConfiguration.stageWidth / 2);
 
     }
 

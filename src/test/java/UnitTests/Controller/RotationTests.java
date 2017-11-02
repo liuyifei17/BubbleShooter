@@ -1,8 +1,6 @@
 package UnitTests.Controller;
 
-import Controller.GameConfiguration;
-import Controller.GameController;
-import Controller.PlayerBallController;
+import Controller.*;
 import Model.Cell;
 import Model.Grid;
 import Model.NormalBall;
@@ -22,6 +20,7 @@ public class RotationTests {
     private Grid grid;
     private Player player;
     private GameController gameController;
+    private GridController gridController;
     private View view;
     private PlayerBallController pbc;
     private NormalBall playerBall;
@@ -31,26 +30,27 @@ public class RotationTests {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
 
-        grid = new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        grid = new Grid(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
+        gridController = new GridController(gameController, grid);
         player = Mockito.mock(Player.class);
         playerBall = Mockito.mock(NormalBall.class);
         view = Mockito.mock(View.class);
         GameController.setView(view);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
-        pbc = new PlayerBallController(gameController, player, grid);
+        pbc = new PlayerBallController(gameController, player, grid, gridController);
     }
 
     @Test
     void launchBallTest_normalCollision_noRotation() {
         gameController = Mockito.mock(GameController.class);
-        grid = new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2);
+        grid = new Grid(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
         player = Mockito.mock(Player.class);
         playerBall = Mockito.mock(NormalBall.class);
         Mockito.when(player.getPlayerBall()).thenReturn(playerBall);
         Mockito.when(playerBall.getCellCollision(grid, 0, 0)).thenReturn(new Cell(102, 102));
-        pbc = new PlayerBallController(gameController, player, grid);
+        pbc = new PlayerBallController(gameController, player, grid, gridController);
         pbc.setMouseY(10);
 
         pbc.launchBall();
@@ -60,7 +60,7 @@ public class RotationTests {
                 Mockito.times(1)).setMissCounter(Mockito.anyInt());
         Mockito.verify(player, Mockito.times(1)).nextBall();
         assertThat(pbc.getMouseY()).isEqualTo(0);
-        assertThat(grid.getRotationDifference()).isEqualTo(0);
+        assertThat(gridController.getRotationDifference()).isEqualTo(0);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class RotationTests {
 
         pbc.launchBall();
 
-        assertThat(grid.getRotationDifference())
+        assertThat(gridController.getRotationDifference())
                 .isEqualTo(GameConfiguration.rightRotation.get(0));
     }
 
@@ -84,7 +84,7 @@ public class RotationTests {
         pbc.setMouseY(10);
         pbc.setMouseX(10);
         pbc.calculateDelta();
-        pbc.setStopWatch(71);
+        pbc.setStopWatch(81);
         double x = pbc.getDeltaX();
         double y = pbc.getDeltaY();
         Mockito.when(playerBall.getCellCollision(grid, x, y))
@@ -92,7 +92,7 @@ public class RotationTests {
 
         pbc.launchBall();
 
-        assertThat(grid.getRotationDifference())
+        assertThat(gridController.getRotationDifference())
                 .isEqualTo(GameConfiguration.rightRotation.get(1));
     }
 
@@ -109,7 +109,7 @@ public class RotationTests {
 
         pbc.launchBall();
 
-        assertThat(grid.getRotationDifference())
+        assertThat(gridController.getRotationDifference())
                 .isEqualTo(GameConfiguration.rightRotation.get(2));
     }
 
@@ -125,7 +125,7 @@ public class RotationTests {
 
         pbc.launchBall();
 
-        assertThat(grid.getRotationDifference())
+        assertThat(gridController.getRotationDifference())
                 .isEqualTo(GameConfiguration.leftRotation.get(0));
     }
 
@@ -134,7 +134,7 @@ public class RotationTests {
         pbc.setMouseY(10);
         pbc.setMouseX(-10);
         pbc.calculateDelta();
-        pbc.setStopWatch(71);
+        pbc.setStopWatch(81);
         double x = pbc.getDeltaX();
         double y = pbc.getDeltaY();
         Mockito.when(playerBall.getCellCollision(grid, x, y))
@@ -142,7 +142,7 @@ public class RotationTests {
 
         pbc.launchBall();
 
-        assertThat(grid.getRotationDifference())
+        assertThat(gridController.getRotationDifference())
                 .isEqualTo(GameConfiguration.leftRotation.get(1));
     }
 
@@ -159,7 +159,7 @@ public class RotationTests {
 
         pbc.launchBall();
 
-        assertThat(grid.getRotationDifference())
+        assertThat(gridController.getRotationDifference())
                 .isEqualTo(GameConfiguration.leftRotation.get(2));
     }
 }
