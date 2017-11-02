@@ -166,6 +166,7 @@
             <configuration>
                 <xmlOutput>true</xmlOutput>
                 <includeTests>true</includeTests>
+                <includeFilterFile>filter.xml</includeFilterFile>
             </configuration>
         </plugin>
             <plugin>
