@@ -33,7 +33,7 @@ int maximumTimesBallHit = 4
 int amountOfWalls = 3
 
 bool isColor = true
-bool sounds = true
+bool sounds = false
 bool specialBalls = true
 bool walls = true
 

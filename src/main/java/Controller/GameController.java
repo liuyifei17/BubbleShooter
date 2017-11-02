@@ -184,6 +184,7 @@ public class GameController {
 
         setMouseControllers_PausePopup();
         setMouseControllers_SettingsPopup();
+        setMouseControllers_ScorePopup();
 
     }
 
@@ -250,6 +251,15 @@ public class GameController {
         });
     }
 
+    private void setMouseControllers_ScorePopup() {
+        view.getGameRankingIcon().setOnMouseReleased(event -> {
+            if (!gamePaused) {
+                view.getRankingPopup().showPopup();
+                pauseGame();
+            }
+        });
+    }
+
     private void handleMusicButtonClick() {
         if (mediaPlayer == null) {
             return;
@@ -273,6 +283,7 @@ public class GameController {
                 } else {
                     view.getSettingsPopup().closePopup();
                     view.getPausePopup().closePopup();
+                    view.getRankingPopup().closePopup();
                     resumeGame();
                 }
             }
