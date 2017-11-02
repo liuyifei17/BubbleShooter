@@ -53,16 +53,16 @@ public class RankingPopup extends Popup {
         ImageView rankingMessage = new ImageView("images/rankingMessage.png");
         rankingMessage.relocate(0, 5);
         int xText = 10;
-        rankOne = createScoreText("1.", xText, 70);
-        rankTwo = createScoreText("2.", xText, 98);
-        rankThree = createScoreText("3.", xText, 126);
-        rankFour = createScoreText("4.", xText, 154);
-        rankFive = createScoreText("5.", xText, 182);
-        rankSix = createScoreText("6.", xText, 210);
-        rankSeven = createScoreText("7.", xText, 238);
-        rankEight = createScoreText("8.", xText, 266);
-        rankNine = createScoreText("9.", xText, 294);
-        rankTen = createScoreText("10.", xText, 322);
+        rankOne = createScoreTextPopup("1.", xText, 70);
+        rankTwo = createScoreTextPopup("2.", xText, 98);
+        rankThree = createScoreTextPopup("3.", xText, 126);
+        rankFour = createScoreTextPopup("4.", xText, 154);
+        rankFive = createScoreTextPopup("5.", xText, 182);
+        rankSix = createScoreTextPopup("6.", xText, 210);
+        rankSeven = createScoreTextPopup("7.", xText, 238);
+        rankEight = createScoreTextPopup("8.", xText, 266);
+        rankNine = createScoreTextPopup("9.", xText, 294);
+        rankTen = createScoreTextPopup("10.", xText, 322);
 
         closeButton = new ImageView("images/close-button.png");
         getView().createHover(closeButton, new Image("images/close-button.png"),
@@ -90,7 +90,7 @@ public class RankingPopup extends Popup {
      * @param y the y coordinate of the text on the screen
      * @return the newly created text element
      */
-    private Text createScoreText(String string, int x, int y) {
+    private Text createScoreTextPopup(String string, int x, int y) {
         Text text = new Text(string);
         text.setFont(Font.font("Arial", 20));
         text.setFill(Color.YELLOW);

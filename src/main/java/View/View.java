@@ -14,6 +14,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -34,8 +36,9 @@ public class View implements Observer {
     private Image rankingBg;
     private ImageView playButton;
     private ImageView rankingButton;
-    private ImageView settingsButton;
     private ImageView exitButton;
+    private ImageView homeButton;
+    private ImageView resetButton;
     private Image gameBg;
     private ImageView topBar;
     private ImageView scoreBar;
@@ -45,10 +48,21 @@ public class View implements Observer {
     private ImageView firstWall;
     private ImageView secondWall;
     private ImageView thirdWall;
+    private Text rankOne;
+    private Text rankTwo;
+    private Text rankThree;
+    private Text rankFour;
+    private Text rankFive;
+    private Text rankSix;
+    private Text rankSeven;
+    private Text rankEight;
+    private Text rankNine;
+    private Text rankTen;
     private GameOverPopup gameOverPopup;
     private PausePopup pausePopup;
     private SettingsPopup settingsPopup;
     private RankingPopup rankingPopup;
+
 
     /**
      * @param mainMenuPane sets the main menu pane
@@ -71,7 +85,7 @@ public class View implements Observer {
      * <code>notifyObservers</code> method to have all the object's
      * observers notified of the change.
      *
-     * @param o   the observable object.
+     * @param o the observable object.
      * @param arg an argument passed to the <code>notifyObservers</code>
      */
     @Override
@@ -87,7 +101,7 @@ public class View implements Observer {
      */
     public void drawMainMenu() {
         //draw background
-        mainMenuBg = new Image("images/main-menu-bg.png");
+        mainMenuBg = new Image("images/background1.png");
         mainMenuPane.setBackground(new Background(
                 new BackgroundImage(mainMenuBg, BackgroundRepeat.NO_REPEAT,
                         BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
@@ -118,13 +132,57 @@ public class View implements Observer {
      */
     public void drawRankings() {
         //draw background
-        rankingBg = new Image("images/main-menu-bg.png");
+        rankingBg = new Image("images/background4.png");
         rankingPane.setBackground(new Background(
-                new BackgroundImage(mainMenuBg, BackgroundRepeat.NO_REPEAT,
+                new BackgroundImage(rankingBg, BackgroundRepeat.NO_REPEAT,
                         BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                         BackgroundSize.DEFAULT)));
 
+        ImageView rankingMessage = new ImageView("images/ranking-text.png");
+        rankingMessage.relocate(0, 0);
+        ImageView sidebar1 = new ImageView("images/sidebar.png");
+        sidebar1.relocate(0, 0);
+        ImageView sidebar2 = new ImageView("images/sidebar.png");
+        sidebar1.relocate(GameConfiguration.stageWidth - sidebar2.getImage().getWidth(), 0);
+        ImageView bottombar = new ImageView("images/bottombar.png");
+        bottombar.relocate(0, GameConfiguration.stageHeight - bottombar.getImage().getHeight());
+        int xText = 10;
+        rankOne = createScoreTextStage("1.", xText, 105);
+        rankTwo = createScoreTextStage("2.", xText, 155);
+        rankThree = createScoreTextStage("3.", xText, 205);
+        rankFour = createScoreTextStage("4.", xText, 255);
+        rankFive = createScoreTextStage("5.", xText, 305);
+        rankSix = createScoreTextStage("6.", xText, 355);
+        rankSeven = createScoreTextStage("7.", xText, 405);
+        rankEight = createScoreTextStage("8.", xText, 455);
+        rankNine = createScoreTextStage("9.", xText, 505);
+        rankTen = createScoreTextStage("10.", xText, 555);
+        homeButton = new ImageView("images/ranking-home-button.png");
+        createHover(homeButton, new Image("images/ranking-home-button.png"),
+                new Image("images/ranking-home-button-hovered.png"));
+        homeButton.relocate(50, 625);
+        resetButton = new ImageView("images/ranking-reset-button.png");
+        createHover(resetButton, new Image("images/ranking-reset-button.png"),
+                new Image("images/ranking-reset-button-hovered.png"));
+        resetButton.relocate(350, 625);
+
         //add components to main menu
+        rankingPane.getChildren().add(rankingMessage);
+        rankingPane.getChildren().add(sidebar1);
+        rankingPane.getChildren().add(sidebar2);
+        rankingPane.getChildren().add(bottombar);
+        rankingPane.getChildren().add(rankOne);
+        rankingPane.getChildren().add(rankTwo);
+        rankingPane.getChildren().add(rankThree);
+        rankingPane.getChildren().add(rankFour);
+        rankingPane.getChildren().add(rankFive);
+        rankingPane.getChildren().add(rankSix);
+        rankingPane.getChildren().add(rankSeven);
+        rankingPane.getChildren().add(rankEight);
+        rankingPane.getChildren().add(rankNine);
+        rankingPane.getChildren().add(rankTen);
+        rankingPane.getChildren().add(homeButton);
+        rankingPane.getChildren().add(resetButton);
     }
 
     /**
@@ -132,7 +190,7 @@ public class View implements Observer {
      */
     public void drawGame() {
         //draw background
-        gameBg = new Image("images/background1.png");
+        gameBg = new Image("images/background2.png");
         gamePane.setBackground(new Background(
                 new BackgroundImage(gameBg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                         BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
@@ -428,6 +486,22 @@ public class View implements Observer {
     }
 
     /**
+     * @param string the string of text to display
+     * @param x the x of the text element on te screen
+     * @param y the y coordinate of the text on the screen
+     * @return the newly created text element
+     */
+    private Text createScoreTextStage(String string, int x, int y) {
+        Text text = new Text(string);
+        text.setFont(Font.font("Arial", 40));
+        text.setFill(Color.YELLOW);
+        text.setWrappingWidth(GameConfiguration.stageWidth);
+        text.setTextAlignment(TextAlignment.LEFT);
+        text.relocate(x, y);
+        return text;
+    }
+
+    /**
      * @param cell the cell to calculate the screen coordinates of.
      * @return the calculate screen coordinate x.
      */
@@ -464,12 +538,6 @@ public class View implements Observer {
         return rankingButton;
     }
 
-    /**
-     * @return settings button.
-     */
-    public ImageView getSettingsButton() {
-        return settingsButton;
-    }
 
     /**
      * @param data sets a data.
@@ -539,5 +607,19 @@ public class View implements Observer {
      */
     public RankingPopup getRankingPopup() {
         return rankingPopup;
+    }
+
+    /**
+     * @return the ranking screen home button.
+     */
+    public ImageView getHomeButton() {
+        return homeButton;
+    }
+
+    /**
+     * @return the ranking screen reset button
+     */
+    public ImageView getResetButton() {
+        return resetButton;
     }
 }
