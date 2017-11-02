@@ -28,6 +28,7 @@ public class View implements Observer {
     private Pane mainMenuPane;
     private ImageView gameSettingsIcon;
     private ImageView gamePauseIcon;
+    private ImageView gameRankingIcon;
     private Image mainMenuBg;
     private ImageView playButton;
     private ImageView exitButton;
@@ -43,6 +44,7 @@ public class View implements Observer {
     private GameOverPopup gameOverPopup;
     private PausePopup pausePopup;
     private SettingsPopup settingsPopup;
+    private RankingPopup rankingPopup;
 
     /**
      * @param mainMenuPane sets the main menu pane
@@ -132,15 +134,21 @@ public class View implements Observer {
         gamePauseIcon = new ImageView("images/pause-icon.png");
         createHover(gamePauseIcon, new Image("images/pause-icon.png"),
                 new Image("images/pause-icon-hovered.png"));
-        gamePauseIcon.relocate(495, 10);
+        gamePauseIcon.relocate(440, 10);
         gamePauseIcon.fitHeightProperty().setValue(48);
         gamePauseIcon.fitWidthProperty().setValue(48);
         gameSettingsIcon = new ImageView("images/settings-icon.png");
         createHover(gameSettingsIcon, new Image("images/settings-icon.png"),
                 new Image("images/settings-icon-hovered.png"));
-        gameSettingsIcon.relocate(550, 10);
+        gameSettingsIcon.relocate(495, 10);
         gameSettingsIcon.fitHeightProperty().setValue(46);
         gameSettingsIcon.fitWidthProperty().setValue(46);
+        gameRankingIcon = new ImageView("images/score-icon.png");
+        createHover(gameRankingIcon, new Image("images/score-icon.png"),
+                new Image("images/score-icon-hovered.png"));
+        gameRankingIcon.relocate(550, 14);
+        gameRankingIcon.fitHeightProperty().setValue(40);
+        gameRankingIcon.fitWidthProperty().setValue(40);
 
         //draw walls
         firstWall = new ImageView("images/asteroid.png");
@@ -172,6 +180,7 @@ public class View implements Observer {
         gameOverPopup = new GameOverPopup(this, new Pane());
         pausePopup = new PausePopup(this, new Pane());
         settingsPopup = new SettingsPopup(this, new Pane());
+        rankingPopup = new RankingPopup(this, new Pane());
 
         //add components to game pane
         gamePane.getChildren().add(topBar);
@@ -185,12 +194,15 @@ public class View implements Observer {
         gamePane.getChildren().add(scoreBarScore);
         gamePane.getChildren().add(gamePauseIcon);
         gamePane.getChildren().add(gameSettingsIcon);
+        gamePane.getChildren().add(gameRankingIcon);
         gamePane.getChildren().add(gameOverPopup.getPopup());
         gamePane.getChildren().add(pausePopup.getPopup());
         gamePane.getChildren().add(settingsPopup.getPopup());
+        gamePane.getChildren().add(rankingPopup.getPopup());
         gameOverPopup.getPopup().setVisible(false);
         pausePopup.getPopup().setVisible(false);
         settingsPopup.getPopup().setVisible(false);
+        rankingPopup.getPopup().setVisible(false);
     }
 
     /**
@@ -456,6 +468,13 @@ public class View implements Observer {
     }
 
     /**
+     * @return game scores button
+     */
+    public ImageView getGameRankingIcon() {
+        return gameRankingIcon;
+    }
+
+    /**
      * @return the game over popup.
      */
     public GameOverPopup getGameOverPopup() {
@@ -474,5 +493,12 @@ public class View implements Observer {
      */
     public SettingsPopup getSettingsPopup() {
         return settingsPopup;
+    }
+
+    /**
+     * @return the score popup.
+     */
+    public RankingPopup getRankingPopup() {
+        return rankingPopup;
     }
 }
