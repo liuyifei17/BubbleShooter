@@ -26,11 +26,15 @@ public class View implements Observer {
     private Player player;
     private Pane gamePane;
     private Pane mainMenuPane;
+    private Pane rankingPane;
     private ImageView gameSettingsIcon;
     private ImageView gamePauseIcon;
     private ImageView gameRankingIcon;
     private Image mainMenuBg;
+    private Image rankingBg;
     private ImageView playButton;
+    private ImageView rankingButton;
+    private ImageView settingsButton;
     private ImageView exitButton;
     private Image gameBg;
     private ImageView topBar;
@@ -48,12 +52,14 @@ public class View implements Observer {
 
     /**
      * @param mainMenuPane sets the main menu pane
+     * @param rankingPane sets the ranking pane
      * @param gamePane sets the game pane
      * @param data sets the game data
      * @param player sets the player
      */
-    public View(Pane mainMenuPane, Pane gamePane, GameData data, Player player) {
+    public View(Pane mainMenuPane, Pane rankingPane, Pane gamePane, GameData data, Player player) {
         this.mainMenuPane = mainMenuPane;
+        this.rankingPane = rankingPane;
         this.gamePane = gamePane;
         this.data = data;
         this.player = player;
@@ -89,17 +95,36 @@ public class View implements Observer {
 
         //draw buttons
         playButton = new ImageView("images/play-button.png");
-        playButton.relocate(184, 260);
+        playButton.relocate(184, 215);
         playButton.fitWidthProperty().setValue(250);
         playButton.fitHeightProperty().setValue(80);
+        rankingButton = new ImageView("images/ranking-button.png");
+        rankingButton.relocate(184, 310);
+        rankingButton.fitWidthProperty().setValue(250);
+        rankingButton.fitHeightProperty().setValue(80);
         exitButton = new ImageView("images/exit-button.png");
-        exitButton.relocate(184, 370);
+        exitButton.relocate(184, 405);
         exitButton.fitWidthProperty().setValue(250);
         exitButton.fitHeightProperty().setValue(80);
 
         //add components to main menu
         mainMenuPane.getChildren().add(playButton);
+        mainMenuPane.getChildren().add(rankingButton);
         mainMenuPane.getChildren().add(exitButton);
+    }
+
+    /**
+     * draws up the rankings screen.
+     */
+    public void drawRankings() {
+        //draw background
+        rankingBg = new Image("images/main-menu-bg.png");
+        rankingPane.setBackground(new Background(
+                new BackgroundImage(mainMenuBg, BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                        BackgroundSize.DEFAULT)));
+
+        //add components to main menu
     }
 
     /**
@@ -430,6 +455,20 @@ public class View implements Observer {
      */
     public ImageView getExitButton() {
         return exitButton;
+    }
+
+    /**
+     * @return ranking button.
+     */
+    public ImageView getRankingButton() {
+        return rankingButton;
+    }
+
+    /**
+     * @return settings button.
+     */
+    public ImageView getSettingsButton() {
+        return settingsButton;
     }
 
     /**

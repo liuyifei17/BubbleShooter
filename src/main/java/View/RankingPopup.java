@@ -84,6 +84,12 @@ public class RankingPopup extends Popup {
         getPopup().getChildren().add(closeButton);
     }
 
+    /**
+     * @param string the string of text to display
+     * @param x the x of the text element on te screen
+     * @param y the y coordinate of the text on the screen
+     * @return the newly created text element
+     */
     private Text createScoreText(String string, int x, int y) {
         Text text = new Text(string);
         text.setFont(Font.font("Arial", 20));
@@ -92,6 +98,13 @@ public class RankingPopup extends Popup {
         text.setTextAlignment(TextAlignment.LEFT);
         text.relocate(x, y);
         return text;
+    }
+
+    /**
+     * @return the close button.
+     */
+    public ImageView getCloseButton() {
+        return closeButton;
     }
 
 }
