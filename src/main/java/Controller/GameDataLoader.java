@@ -36,7 +36,8 @@ public class GameDataLoader {
         ArrayList<Cell> emptyCells = new ArrayList<Cell>();
         emptyCells.add(data.getGrid().getCenterCell());
         int index = 0;
-        while (emptyCells.size() < data.getInitialBallAmount() + 1) {
+        while ((emptyCells.size() < data.getInitialBallAmount() + 1)
+                && (index < emptyCells.size())) {
             for (Cell c : emptyCells.get(index).getAdjacentCells()) {
                 if (!emptyCells.contains(c)) {
                     emptyCells.add(c);
@@ -45,7 +46,7 @@ public class GameDataLoader {
             index++;
         }
         emptyCells.remove(data.getGrid().getCenterCell());
-        for (int i = 0; i < data.getInitialBallAmount(); i++) {
+        for (int i = 0; i < emptyCells.size(); i++) {
             Cell c = emptyCells.get(i);
             String color = GameConfiguration.colors.get(Util.randomBetween(0,
                     GameConfiguration.colors.size() - 1));

@@ -6,8 +6,6 @@ import nl.tu.delft.defpro.api.IDefProAPI;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Controller.GUIConfiguration.isApi;
-
 /**
  * GameConfiguration class loads all the pre-determinded attributes.
  */

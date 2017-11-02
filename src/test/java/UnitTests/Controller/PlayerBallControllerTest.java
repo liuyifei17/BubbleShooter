@@ -23,8 +23,8 @@ public class PlayerBallControllerTest {
 
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         playerBallFactory = PlayerBallFactory.getInstance();
         gameController = new GameController(null);
         dataLoader = new GameDataLoader();
