@@ -1,5 +1,6 @@
 package UnitTests.Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Model.NormalBall;
 import Model.Player;
@@ -16,8 +17,8 @@ public class PlayerTest {
 
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
 
         player = new Player();
     }
@@ -56,6 +57,18 @@ public class PlayerTest {
     void testMissCounter() {
         player.setMissCounter(2);
         assertThat(player.getMissCounter()).isEqualTo(2);
+    }
+
+    @Test
+    void testNextBall2() {
+        NormalBall playerBall = (NormalBall) player.getPlayerBall();
+        PlayerBall nextBall = player.getNextBall();
+        GameConfiguration.specialBalls = false;
+        player.nextBall();
+
+        assertThat(player.getPlayerBall()).isNotEqualTo(playerBall);
+        assertThat(player.getPlayerBall().getColor()).isEqualTo(nextBall.getColor());
+        assertThat(player.getNextBall()).isNotEqualTo(nextBall);
     }
 
 }

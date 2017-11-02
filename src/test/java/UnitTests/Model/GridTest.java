@@ -22,8 +22,8 @@ class GridTest {
 
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         grid = new Grid(GUIConfiguration.stageWidth / 2,
                 (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2);
 

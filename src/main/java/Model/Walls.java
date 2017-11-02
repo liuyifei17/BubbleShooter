@@ -100,8 +100,8 @@ public class Walls {
         double xLeft = x - GUIConfiguration.wallWidth;
         double xRight = x + GUIConfiguration.wallWidth;
         double yUp = y + GUIConfiguration.wallHeight;
-        double xHalfLeft = x - GUIConfiguration.wallWidth / 2;
-        double xHalfRight = x + GUIConfiguration.wallWidth / 2;
+        double xHalfLeft = x - (double) GUIConfiguration.wallWidth / 2;
+        double xHalfRight = x + (double) GUIConfiguration.wallWidth / 2;
 
         double[] topLeft = Util.calculateRotatedCoordinates(xLeft, yUp, x, y, rotation);
         double[] topLeftHalf = Util.calculateRotatedCoordinates(xHalfLeft, yUp, x, y, rotation);
@@ -128,8 +128,8 @@ public class Walls {
         double xLeft = x - GUIConfiguration.wallWidth;
         double xRight = x + GUIConfiguration.wallWidth;
         double yDown = y - GUIConfiguration.wallHeight;
-        double xHalfLeft = x - GUIConfiguration.wallWidth / 2;
-        double xHalfRight = x + GUIConfiguration.wallWidth / 2;
+        double xHalfLeft = x - (double) GUIConfiguration.wallWidth / 2;
+        double xHalfRight = x + (double) GUIConfiguration.wallWidth / 2;
 
         double[] bottomLeft = Util.calculateRotatedCoordinates(xLeft, yDown, x,  y, rotation);
         double[] bottomLeftHalf = Util.calculateRotatedCoordinates(xHalfLeft, yDown, x,

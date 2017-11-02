@@ -32,9 +32,9 @@ class RainBowBallTest {
      */
     @BeforeEach
     void setUp() {
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         playerBallFactory = PlayerBallFactory.getInstance();
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
         rainbowBall = playerBallFactory.createBall("Rainbow Ball",
                 GUIConfiguration.ballRadius, GUIConfiguration.stageWidth / 2);
     }
@@ -62,8 +62,5 @@ class RainBowBallTest {
     void constructorTest() {
         rainbowBall = new RainbowBall("Black");
     }
-
-
-
 
 }

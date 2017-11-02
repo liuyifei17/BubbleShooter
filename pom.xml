@@ -72,9 +72,7 @@
                     </check>
                     <instrumentation>
                         <excludes>
-                            <exclude>View/View.class</exclude>
-                            <exclude>View/BallImageView.class</exclude>
-                            <exclude>View/RemovePlusOneIcon.class</exclude>
+                            <exclude>View/*</exclude>
                             <exclude>Controller/GameController.class</exclude>
                             <exclude>Main.class</exclude>
                         </excludes>
@@ -170,6 +168,7 @@
             <configuration>
                 <xmlOutput>true</xmlOutput>
                 <includeTests>true</includeTests>
+                <includeFilterFile>filter.xml</includeFilterFile>
             </configuration>
         </plugin>
             <plugin>

@@ -1,7 +1,5 @@
 package Controller;
 
-import nl.tu.delft.defpro.exception.NotExistingVariableException;
-
 import static Controller.GameConfiguration.api;
 
 /**
@@ -38,12 +36,15 @@ public class GUIConfiguration {
         setPopupHeight(-1);
         setPopupX(-1);
         setPopupY(-1);
+        setWallWidth(-1);
+        setWallHeight(-1);
         setBallRadius(-1);
         setWallRadius(-1);
     }
 
     /**
      * Startup all variables.
+     *
      * @throws Exception an exception coming from the broken api
      */
     public static void isApi() throws Exception {
@@ -235,6 +236,7 @@ public class GUIConfiguration {
 
     /**
      * setter wall height.
+     *
      * @param wallHeight wall height.
      */
     public static void setWallHeight(int wallHeight) {
@@ -247,6 +249,7 @@ public class GUIConfiguration {
 
     /**
      * setter wall width.
+     *
      * @param wallWidth wall width.
      */
     public static void setWallWidth(int wallWidth) {

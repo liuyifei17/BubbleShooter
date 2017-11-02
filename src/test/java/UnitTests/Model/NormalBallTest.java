@@ -2,10 +2,7 @@ package UnitTests.Model;
 
 import Controller.GameConfiguration;
 import Controller.GUIConfiguration;
-import Model.Cell;
-import Model.Grid;
-import Model.PlayerBall;
-import Model.PlayerBallFactory;
+import Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,6 +10,9 @@ import org.mockito.Mockito;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -21,17 +21,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class NormalBallTest {
 
     private PlayerBallFactory playerBallFactory;
-
+    private String normalBall;
     @BeforeEach
     void setUp() {
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
+
+        normalBall ="Normal Ball";
         playerBallFactory = PlayerBallFactory.getInstance();
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
     }
 
     @Test
     void testNormalBallConstructor() {
-        PlayerBall pb = playerBallFactory.createBall("Normal Ball",
+        PlayerBall pb = playerBallFactory.createBall(normalBall,
                 GUIConfiguration.ballRadius, GUIConfiguration.stageWidth / 2);
 
         assertThat(pb.getCounter()).isEqualTo(0);
@@ -40,7 +42,7 @@ public class NormalBallTest {
 
     @Test
     void testSetCoordinates() {
-        PlayerBall pb = playerBallFactory.createBall("Normal Ball",
+        PlayerBall pb = playerBallFactory.createBall(normalBall,
                 GUIConfiguration.ballRadius, GUIConfiguration.stageWidth / 2);
 
         pb.setX(5);
@@ -52,7 +54,7 @@ public class NormalBallTest {
 
     @Test
     void hasCollidedWithWallTest_false() {
-        PlayerBall pb = playerBallFactory.createBall("Normal Ball",
+        PlayerBall pb = playerBallFactory.createBall(normalBall,
                 GUIConfiguration.ballRadius + 1,
                 GUIConfiguration.stageHeight / 2);
 
@@ -61,7 +63,7 @@ public class NormalBallTest {
 
     @Test
     void hasCollidedWithWallTest_true() {
-        PlayerBall pb = playerBallFactory.createBall("Normal Ball",
+        PlayerBall pb = playerBallFactory.createBall(normalBall,
                 GUIConfiguration.stageWidth, 0);
 
         assertThat(pb.hasCollidedWithWall()).isTrue();
@@ -70,7 +72,7 @@ public class NormalBallTest {
     @Test
     void getCollisionTest_close() {
         Grid grid = Mockito.mock(Grid.class);
-        PlayerBall pb = playerBallFactory.createBall("Normal Ball", 200, 200);
+        PlayerBall pb = playerBallFactory.createBall(normalBall, 200, 200);
         Cell fullCell = new Cell(210, 210);
         Cell emptyCell = new Cell(205, 205);
 
@@ -84,7 +86,7 @@ public class NormalBallTest {
     @Test
     void getCollisionTest_far() {
         Grid grid = Mockito.mock(Grid.class);
-        PlayerBall pb = playerBallFactory.createBall("Normal Ball", 200, 200);
+        PlayerBall pb = playerBallFactory.createBall(normalBall, 200, 200);
         Cell fullCell = new Cell(250, 250);
         Cell emptyCell = new Cell(300, 300);
 
@@ -99,7 +101,7 @@ public class NormalBallTest {
     @Test
     void getCollisionTest_forced() {
         Grid grid = Mockito.mock(Grid.class);
-        PlayerBall pb = playerBallFactory.createBall("Normal Ball", 200, 200);
+        PlayerBall pb = playerBallFactory.createBall(normalBall, 200, 200);
         Cell fullCell = new Cell(200, 211);
         Cell emptyCell = new Cell(300, 300);
 
@@ -109,5 +111,13 @@ public class NormalBallTest {
         Mockito.when(grid.closestEmptyCellToLocation(pb.getX(), pb.getY())).thenReturn(emptyCell);
 
         assertThat(pb.getCellCollision(grid, 1, 1)).isEqualTo(emptyCell);
+    }
+
+    @Test
+    void hasCollidedRandomWallTrue() {
+        Walls wall = mock(Walls.class);
+        PlayerBall pb = playerBallFactory.createBall("Normal Ball", 200, 200);
+        pb.hasCollidedWithRandomWall(wall);
+        verify(wall, times(4)).getX();
     }
 }
