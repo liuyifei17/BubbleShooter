@@ -307,6 +307,19 @@ public class GameController {
                 }
             }
         });
+
+        //pause the game
+        gameScreen.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.T) {
+                if (!gamePaused) {
+                    view.getGameOverPopup().showPopup();
+                    pauseGame();
+                } else {
+                    view.getGameOverPopup().closePopup();
+                    resumeGame();
+                }
+            }
+        });
     }
 
     private void pauseGame() {

@@ -107,21 +107,24 @@ public class View implements Observer {
                         BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                         BackgroundSize.DEFAULT)));
 
-        //draw buttons
+        ImageView logo = new ImageView("images/logo.png");
+        logo.fitWidthProperty().setValue(580);
+        logo.relocate(10, 100);
         playButton = new ImageView("images/play-button.png");
-        playButton.relocate(184, 215);
+        playButton.relocate(184, 240);
         playButton.fitWidthProperty().setValue(250);
         playButton.fitHeightProperty().setValue(80);
         rankingButton = new ImageView("images/ranking-button.png");
-        rankingButton.relocate(184, 310);
+        rankingButton.relocate(184, 335);
         rankingButton.fitWidthProperty().setValue(250);
         rankingButton.fitHeightProperty().setValue(80);
         exitButton = new ImageView("images/exit-button.png");
-        exitButton.relocate(184, 405);
+        exitButton.relocate(184, 430);
         exitButton.fitWidthProperty().setValue(250);
         exitButton.fitHeightProperty().setValue(80);
 
         //add components to main menu
+        mainMenuPane.getChildren().add(logo);
         mainMenuPane.getChildren().add(playButton);
         mainMenuPane.getChildren().add(rankingButton);
         mainMenuPane.getChildren().add(exitButton);
@@ -132,10 +135,10 @@ public class View implements Observer {
      */
     public void drawRankings() {
         //draw background
-        rankingBg = new Image("images/background4.png");
+        rankingBg = new Image("images/background2.png");
         rankingPane.setBackground(new Background(
                 new BackgroundImage(rankingBg, BackgroundRepeat.NO_REPEAT,
-                        BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                        BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                         BackgroundSize.DEFAULT)));
 
         ImageView rankingMessage = new ImageView("images/ranking-text.png");
