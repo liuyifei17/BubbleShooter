@@ -19,7 +19,6 @@ public class BallCollisionHandlerTest {
     private GameController gameController;
     private PlayerBallController pbc;
     private PlayerBall playerBall;
-    private PlayerBallFactory playerBallFactory;
     private GameDataLoader dataLoader;
     private GameData gameData;
     private GridController gridController;
@@ -29,7 +28,6 @@ public class BallCollisionHandlerTest {
     void setUp() {
         GameConfiguration.setApi();
         GameConfiguration.isApi();
-        playerBallFactory = PlayerBallFactory.getInstance();
         gameController = new GameController(null);
         view = Mockito.mock(View.class);
         GameController.setView(view);
