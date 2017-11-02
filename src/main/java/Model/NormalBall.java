@@ -1,6 +1,6 @@
 package Model;
 
-import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,7 +15,7 @@ public class NormalBall extends PlayerBall {
      * @param color the random selected color of the ball;
      */
     public NormalBall(String color) {
-        super(color, GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight, 0);
+        super(color, GUIConfiguration.stageWidth / 2, GUIConfiguration.topBarHeight, 0);
     }
 
     /**
