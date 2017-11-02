@@ -4,16 +4,13 @@ import Controller.GameConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
- * Created by Henks Laptop on 29/10/2017.
+ * This class provides tests cases for the MultiplierBallTest
  */
 class MultiplierBallTest {
     private PlayerBallFactory playerBallFactory;

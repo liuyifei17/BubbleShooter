@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Utility.Util;
@@ -31,10 +32,10 @@ public class Grid {
         occupiedCells = new ArrayList<>();
         centerX = x;
         centerY = y;
-        edgeToDistance = GameConfiguration.edgeToDistance;
-        topBarHeight = GameConfiguration.topBarHeight;
-        stageWidth = GameConfiguration.stageWidth;
-        stageHeight = GameConfiguration.stageHeight;
+        edgeToDistance = GUIConfiguration.edgeToDistance;
+        topBarHeight = GUIConfiguration.topBarHeight;
+        stageWidth = GUIConfiguration.stageWidth;
+        stageHeight = GUIConfiguration.stageHeight;
         initializeCells(x, y);
     }
 
@@ -204,7 +205,7 @@ public class Grid {
                 canBeUsed = true;
                 for (Cell k : cells) {
                     if ((Util.getDistance(i.getCurrentX(), i.getCurrentY(),
-                            k.getCurrentX(), k.getCurrentY()) <= GameConfiguration.wallRadius)
+                            k.getCurrentX(), k.getCurrentY()) <= GUIConfiguration.wallRadius)
                             && (k.getBall() != null)) {
                         canBeUsed = false;
                         break;
@@ -238,15 +239,15 @@ public class Grid {
      * @return true if cell is potential location.
      */
     private boolean availableWallLocation(Cell cell) {
-        return ((cell.getCurrentX() + GameConfiguration.wallWidth < GameConfiguration.stageWidth)
-                && (cell.getCurrentX() - GameConfiguration.wallWidth > 0)
-                && (cell.getCurrentY() + GameConfiguration.wallWidth
-                < GameConfiguration.stageHeight)
-                && (cell.getCurrentY() - GameConfiguration.wallWidth
-                > GameConfiguration.scoreBarHeight)
+        return ((cell.getCurrentX() + GUIConfiguration.wallWidth < GUIConfiguration.stageWidth)
+                && (cell.getCurrentX() - GUIConfiguration.wallWidth > 0)
+                && (cell.getCurrentY() + GUIConfiguration.wallWidth
+                < GUIConfiguration.stageHeight)
+                && (cell.getCurrentY() - GUIConfiguration.wallWidth
+                > GUIConfiguration.scoreBarHeight)
                 && Util.getDistance(cell.getCurrentX(), cell.getCurrentY(),
-                  GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight)
-                > GameConfiguration.wallRadius);
+                  GUIConfiguration.stageWidth / 2, GUIConfiguration.topBarHeight)
+                > GUIConfiguration.wallRadius);
     }
 
     /**

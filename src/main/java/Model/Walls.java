@@ -1,6 +1,6 @@
 package Model;
 
-import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 import Utility.Util;
 
 /**
@@ -48,7 +48,7 @@ public class Walls {
         int degreeInt = (int) degree;
         rotation = degreeInt;
 
-        if (x > GameConfiguration.stageWidth / 2) {
+        if (x > GUIConfiguration.stageWidth / 2) {
             rotation = degreeInt;
         }
         else {
@@ -97,11 +97,11 @@ public class Walls {
      * @return the distances between the ball and the top surface of the wall.
      */
     public double[] topDistancesToBall(PlayerBall ball) {
-        double xLeft = x - GameConfiguration.wallWidth;
-        double xRight = x + GameConfiguration.wallWidth;
-        double yUp = y + GameConfiguration.wallHeight;
-        double xHalfLeft = x - GameConfiguration.wallWidth / 2;
-        double xHalfRight = x + GameConfiguration.wallWidth / 2;
+        double xLeft = x - GUIConfiguration.wallWidth;
+        double xRight = x + GUIConfiguration.wallWidth;
+        double yUp = y + GUIConfiguration.wallHeight;
+        double xHalfLeft = x - GUIConfiguration.wallWidth / 2;
+        double xHalfRight = x + GUIConfiguration.wallWidth / 2;
 
         double[] topLeft = Util.calculateRotatedCoordinates(xLeft, yUp, x, y, rotation);
         double[] topLeftHalf = Util.calculateRotatedCoordinates(xHalfLeft, yUp, x, y, rotation);
@@ -125,11 +125,11 @@ public class Walls {
      * @return the distances between the ball and the bottom surface of the wall.
      */
     public double[] bottomDistancesToBall(PlayerBall ball) {
-        double xLeft = x - GameConfiguration.wallWidth;
-        double xRight = x + GameConfiguration.wallWidth;
-        double yDown = y - GameConfiguration.wallHeight;
-        double xHalfLeft = x - GameConfiguration.wallWidth / 2;
-        double xHalfRight = x + GameConfiguration.wallWidth / 2;
+        double xLeft = x - GUIConfiguration.wallWidth;
+        double xRight = x + GUIConfiguration.wallWidth;
+        double yDown = y - GUIConfiguration.wallHeight;
+        double xHalfLeft = x - GUIConfiguration.wallWidth / 2;
+        double xHalfRight = x + GUIConfiguration.wallWidth / 2;
 
         double[] bottomLeft = Util.calculateRotatedCoordinates(xLeft, yDown, x,  y, rotation);
         double[] bottomLeftHalf = Util.calculateRotatedCoordinates(xHalfLeft, yDown, x,
@@ -159,9 +159,9 @@ public class Walls {
      * @return the distances between the ball and the right surface of the wall.
      */
     public double rightDistanceToBall(PlayerBall ball) {
-        double yUp = y + GameConfiguration.wallHeight;
-        double yDown = y - GameConfiguration.wallHeight;
-        double xRight = x + GameConfiguration.wallWidth;
+        double yUp = y + GUIConfiguration.wallHeight;
+        double yDown = y - GUIConfiguration.wallHeight;
+        double xRight = x + GUIConfiguration.wallWidth;
 
         double[] topRight = Util.calculateRotatedCoordinates(xRight, yUp, x, y, rotation);
         double[] bottomRight = Util.calculateRotatedCoordinates(xRight, yDown, x, y, rotation);
@@ -176,9 +176,9 @@ public class Walls {
      * @return the distances between the ball and the left surface of the wall.
      */
     public double leftDistanceToBall(PlayerBall ball) {
-        double yUp = y + GameConfiguration.wallHeight;
-        double yDown = y - GameConfiguration.wallHeight;
-        double xLeft = x - GameConfiguration.wallWidth;
+        double yUp = y + GUIConfiguration.wallHeight;
+        double yDown = y - GUIConfiguration.wallHeight;
+        double xLeft = x - GUIConfiguration.wallWidth;
 
         double[] topLeft = Util.calculateRotatedCoordinates(xLeft, yUp, x, y, rotation);
         double[] bottomLeft = Util.calculateRotatedCoordinates(xLeft, yDown, x, y, rotation);
