@@ -6,10 +6,9 @@ import Controller.GridController;
 import Model.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * GridControllerTest.
@@ -17,7 +16,7 @@ import static org.mockito.Mockito.*;
 class GridControllerTest {
 
     private GameController gameController = mock(GameController.class);
-    private Grid grid = Mockito.mock(Grid.class);
+    private Grid grid = mock(Grid.class);
 
     private GridController gridController;
 
