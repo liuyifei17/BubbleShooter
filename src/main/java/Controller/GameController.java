@@ -331,6 +331,7 @@ public class GameController {
      */
     public void gameOver() {
         pauseGame();
+        data.placeScore();
         view.getGameOverPopup().showPopup();
     }
 

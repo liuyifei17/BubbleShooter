@@ -11,6 +11,7 @@ public class GameData {
     private int initialBallAmount;
     private Player player;
     private ArrayList<Walls> randomWalls;
+    private ArrayList<Score> scores;
 
     /**
      * This is the constructor.
@@ -23,6 +24,28 @@ public class GameData {
         this.player = player;
         this.initialBallAmount = initialBallAmount;
         randomWalls = new ArrayList<>();
+        scores = new ArrayList<>();
+    }
+
+    /**
+     * Places the scores in the current top 10.
+     */
+    public void placeScore() {
+        Score score = new Score(player.getScore());
+        if (scores.size() == 0) {
+            scores.add(score);
+        }
+
+        for (int i = 0; i < scores.size(); i++) {
+            if (scores.get(i).getScore() <= score.getScore()) {
+                scores.add(i, score);
+                break;
+            }
+        }
+
+        if (scores.size() >  10) {
+            scores.remove(scores.size());
+        }
     }
 
     /**
@@ -72,5 +95,12 @@ public class GameData {
      */
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    /**
+     * @return the list of scores.
+     */
+    public ArrayList<Score> getScores() {
+        return scores;
     }
 }
