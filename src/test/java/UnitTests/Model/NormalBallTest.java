@@ -27,7 +27,7 @@ public class NormalBallTest {
         GUIConfiguration.isApiDefault();
         GameConfiguration.isApiDefault();
 
-        normalBall ="Normal Ball";
+        normalBall = "Normal Ball";
         playerBallFactory = PlayerBallFactory.getInstance();
     }
 
