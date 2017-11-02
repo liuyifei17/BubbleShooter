@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Utility.Util;
 
@@ -83,7 +84,7 @@ public abstract class PlayerBall {
         Cell c = grid.closestFullCellToLocation(x, y);
         Cell c2 = grid.closestEmptyCellToLocation(c.getCurrentX(), c.getCurrentY());
         if (Util.getDistance(x, y, c2.getCurrentX(), c2.getCurrentY())
-                <= GameConfiguration.edgeToDistance / 1.3) {
+                <= GUIConfiguration.edgeToDistance / 1.3) {
             return c2;
         }
         for (int i = 1; i < 3; i++) {
@@ -91,7 +92,7 @@ public abstract class PlayerBall {
             double ny = this.getY() + deltaY * i;
 
             if (Util.getDistance(nx, ny, c.getCurrentX(), c.getCurrentY())
-                    <= GameConfiguration.edgeToDistance) {
+                    <= GUIConfiguration.edgeToDistance) {
                 return grid.closestEmptyCellToLocation(this.x, this.y);
             }
         }
@@ -106,10 +107,10 @@ public abstract class PlayerBall {
      * @return true if it hit the wall and false if it didn't.
      */
     public boolean hasCollidedWithWall() {
-        if ((x < GameConfiguration.ballRadius)
-                || (x >= GameConfiguration.stageWidth)
-                || (y < GameConfiguration.topBarHeight)
-                || (y >= GameConfiguration.stageHeight)) {
+        if ((x < GUIConfiguration.ballRadius)
+                || (x >= GUIConfiguration.stageWidth)
+                || (y < GUIConfiguration.topBarHeight)
+                || (y >= GUIConfiguration.stageHeight)) {
             counter++;
             return true;
         }
@@ -124,15 +125,15 @@ public abstract class PlayerBall {
      */
     public boolean hasCollidedWithRandomWall(Walls wall) {
         double[] leftCoordinates = Util.calculateRotatedCoordinates(
-                wall.getX() - GameConfiguration.wallHeight, wall.getY(), wall.getX(),
+                wall.getX() - GUIConfiguration.wallHeight, wall.getY(), wall.getX(),
                 wall.getY(), wall.getRotation());
         double[] rightCoordinates = Util.calculateRotatedCoordinates(
-                wall.getX() + GameConfiguration.wallHeight, wall.getY(), wall.getX(),
+                wall.getX() + GUIConfiguration.wallHeight, wall.getY(), wall.getX(),
                 wall.getY(), wall.getRotation());
         if ((Util.getDistance(x, y, leftCoordinates[0], leftCoordinates[1])
-                <= GameConfiguration.wallHeight * 2.1)
+                <= GUIConfiguration.wallHeight * 2.1)
                 || (Util.getDistance(x, y, rightCoordinates[0],
-                rightCoordinates[1]) <= GameConfiguration.wallHeight * 2.1)) {
+                rightCoordinates[1]) <= GUIConfiguration.wallHeight * 2.1)) {
             return true;
         }
 

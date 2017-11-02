@@ -1,5 +1,6 @@
 package View;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,11 +37,11 @@ public class SettingsPopup extends Popup {
     @Override
     public void createPopup() {
         //create popup container
-        getPopup().setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
-        getPopup().relocate(GameConfiguration.popupX, GameConfiguration.popupY);
+        getPopup().setPrefSize(GUIConfiguration.popupWidth, GUIConfiguration.popupHeight);
+        getPopup().relocate(GUIConfiguration.popupX, GUIConfiguration.popupY);
         getPopup().setBackground(new Background(new BackgroundImage(
-                new Image("images/popupBackground.png", GameConfiguration.popupWidth,
-                        GameConfiguration.popupHeight, false, true),
+                new Image("images/popupBackground.png", GUIConfiguration.popupWidth,
+                        GUIConfiguration.popupHeight, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 
@@ -50,19 +51,19 @@ public class SettingsPopup extends Popup {
         audioText = new Text("Sounds on/off: ");
         audioText.setFont(Font.font("Arial", 22));
         audioText.setFill(Color.YELLOW);
-        audioText.setWrappingWidth(GameConfiguration.popupWidth);
+        audioText.setWrappingWidth(GUIConfiguration.popupWidth);
         audioText.setTextAlignment(TextAlignment.LEFT);
         audioText.relocate(10, 80);
         specialText = new Text("Special balls on/off: ");
         specialText.setFont(Font.font("Arial", 22));
         specialText.setFill(Color.YELLOW);
-        specialText.setWrappingWidth(GameConfiguration.popupWidth);
+        specialText.setWrappingWidth(GUIConfiguration.popupWidth);
         specialText.setTextAlignment(TextAlignment.LEFT);
         specialText.relocate(10, 110);
         wallText = new Text("Asteroids on/off: ");
         wallText.setFont(Font.font("Arial", 22));
         wallText.setFill(Color.YELLOW);
-        wallText.setWrappingWidth(GameConfiguration.popupWidth);
+        wallText.setWrappingWidth(GUIConfiguration.popupWidth);
         wallText.setTextAlignment(TextAlignment.LEFT);
         wallText.relocate(10, 140);
         audioToggle = new ImageView("images/toggleOff.png");

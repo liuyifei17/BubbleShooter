@@ -1,15 +1,13 @@
 package Model;
 
-import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 import Utility.Util;
-import javafx.scene.image.ImageView;
 
 /**
  * Random walls that will be spawned.
  */
 public class Walls {
 
-    private ImageView walls;
     private double x;
     private double y;
     private int rotation;
@@ -50,7 +48,7 @@ public class Walls {
         int degreeInt = (int) degree;
         rotation = degreeInt;
 
-        if (x > GameConfiguration.stageWidth / 2) {
+        if (x > GUIConfiguration.stageWidth / 2) {
             rotation = degreeInt;
         }
         else {
@@ -99,11 +97,11 @@ public class Walls {
      * @return the distances between the ball and the top surface of the wall.
      */
     public double[] topDistancesToBall(PlayerBall ball) {
-        double xLeft = x - GameConfiguration.wallWidth;
-        double xRight = x + GameConfiguration.wallWidth;
-        double yUp = y + GameConfiguration.wallHeight;
-        double xHalfLeft = x - GameConfiguration.wallWidth / 2;
-        double xHalfRight = x + GameConfiguration.wallWidth / 2;
+        double xLeft = x - GUIConfiguration.wallWidth;
+        double xRight = x + GUIConfiguration.wallWidth;
+        double yUp = y + GUIConfiguration.wallHeight;
+        double xHalfLeft = x - GUIConfiguration.wallWidth / 2;
+        double xHalfRight = x + GUIConfiguration.wallWidth / 2;
 
         double[] topLeft = Util.calculateRotatedCoordinates(xLeft, yUp, x, y, rotation);
         double[] topLeftHalf = Util.calculateRotatedCoordinates(xHalfLeft, yUp, x, y, rotation);
@@ -127,11 +125,11 @@ public class Walls {
      * @return the distances between the ball and the bottom surface of the wall.
      */
     public double[] bottomDistancesToBall(PlayerBall ball) {
-        double xLeft = x - GameConfiguration.wallWidth;
-        double xRight = x + GameConfiguration.wallWidth;
-        double yDown = y - GameConfiguration.wallHeight;
-        double xHalfLeft = x - GameConfiguration.wallWidth / 2;
-        double xHalfRight = x + GameConfiguration.wallWidth / 2;
+        double xLeft = x - GUIConfiguration.wallWidth;
+        double xRight = x + GUIConfiguration.wallWidth;
+        double yDown = y - GUIConfiguration.wallHeight;
+        double xHalfLeft = x - GUIConfiguration.wallWidth / 2;
+        double xHalfRight = x + GUIConfiguration.wallWidth / 2;
 
         double[] bottomLeft = Util.calculateRotatedCoordinates(xLeft, yDown, x,  y, rotation);
         double[] bottomLeftHalf = Util.calculateRotatedCoordinates(xHalfLeft, yDown, x,
@@ -161,9 +159,9 @@ public class Walls {
      * @return the distances between the ball and the right surface of the wall.
      */
     public double rightDistanceToBall(PlayerBall ball) {
-        double yUp = y + GameConfiguration.wallHeight;
-        double yDown = y - GameConfiguration.wallHeight;
-        double xRight = x + GameConfiguration.wallWidth;
+        double yUp = y + GUIConfiguration.wallHeight;
+        double yDown = y - GUIConfiguration.wallHeight;
+        double xRight = x + GUIConfiguration.wallWidth;
 
         double[] topRight = Util.calculateRotatedCoordinates(xRight, yUp, x, y, rotation);
         double[] bottomRight = Util.calculateRotatedCoordinates(xRight, yDown, x, y, rotation);
@@ -178,9 +176,9 @@ public class Walls {
      * @return the distances between the ball and the left surface of the wall.
      */
     public double leftDistanceToBall(PlayerBall ball) {
-        double yUp = y + GameConfiguration.wallHeight;
-        double yDown = y - GameConfiguration.wallHeight;
-        double xLeft = x - GameConfiguration.wallWidth;
+        double yUp = y + GUIConfiguration.wallHeight;
+        double yDown = y - GUIConfiguration.wallHeight;
+        double xLeft = x - GUIConfiguration.wallWidth;
 
         double[] topLeft = Util.calculateRotatedCoordinates(xLeft, yUp, x, y, rotation);
         double[] bottomLeft = Util.calculateRotatedCoordinates(xLeft, yDown, x, y, rotation);
@@ -189,6 +187,82 @@ public class Walls {
                 ball.getX(), ball.getY()) + Util.getDistance(bottomLeft[0], bottomLeft[1],
                 ball.getX(), ball.getY());
     }
+
+    /**
+     * @param distanceToTop the top distance to the surface.
+     * @param distanceToBottom the bottom distance to the surface.
+     * @param distanceToTopHalfLeft the top left distance to surface.
+     * @param distanceToRight the right distance to surface.
+     * @param distanceToTopHalfRight the top right distance to surface.
+     * @param distanceToLeft the left distance to surface.
+     * @return whether the top surface is the closest surface to the ball.
+     */
+    public boolean hasCollidedTop(double distanceToTop, double distanceToBottom,
+                                  double distanceToTopHalfLeft, double distanceToRight,
+                                  double distanceToTopHalfRight, double distanceToLeft) {
+        return ((distanceToTop > distanceToBottom)
+                || (distanceToTopHalfLeft > distanceToBottom)
+                || (distanceToTopHalfRight > distanceToBottom))
+                && ((distanceToTop > distanceToRight)
+                || (distanceToTopHalfLeft > distanceToRight)
+                || (distanceToTopHalfRight > distanceToRight))
+                && ((distanceToTop > distanceToLeft)
+                || (distanceToTopHalfLeft > distanceToLeft)
+                || (distanceToTopHalfRight > distanceToLeft));
+    }
+
+    /**
+     * @param distanceToTop the top distance to the surface
+     * @param distanceToBottom the bottom distance to the surface.
+     * @param distanceToBottomHalfLeft the bottom left distance to the surface.
+     * @param distanceToRight the right distance to the surface.
+     * @param distanceToBottomHalfRight the bottom right distance to the surface.
+     * @param distanceToLeft the left distance to the surface.
+     * @return whether the bottom surface is the closest surface to the ball.
+     */
+    public boolean hasCollidedBottom(double distanceToTop, double distanceToBottom,
+                                     double distanceToBottomHalfLeft, double distanceToRight,
+                                     double distanceToBottomHalfRight, double distanceToLeft) {
+        return ((distanceToBottom > distanceToTop)
+                || (distanceToBottomHalfLeft > distanceToTop)
+                || (distanceToBottomHalfRight > distanceToTop))
+                && ((distanceToBottom > distanceToLeft)
+                || (distanceToBottomHalfLeft > distanceToLeft)
+                || (distanceToBottomHalfRight > distanceToLeft))
+                && ((distanceToBottom > distanceToRight)
+                || (distanceToBottomHalfLeft > distanceToRight)
+                || (distanceToBottomHalfRight > distanceToRight));
+    }
+
+    /**
+     * @param distanceToRight the right distance to surface.
+     * @param distanceToBottomHalfRight the bottom right distance to surface.
+     * @param distanceToLeft the left distance to surface.
+     * @param distanceToTopHalfRight the top right distance to surface.
+     * @return whether the right surface is the closest surface to the ball.
+     */
+    public boolean hasCollidedRight(double distanceToRight, double distanceToBottomHalfRight,
+                                    double distanceToLeft, double distanceToTopHalfRight) {
+        return ((distanceToRight > distanceToBottomHalfRight)
+                && (distanceToRight > distanceToLeft)
+                && (distanceToRight > distanceToTopHalfRight));
+    }
+
+    /**
+     * @param distanceToLeft the left distance to surface.
+     * @param distanceToTopHalfLeft the top left distance to surface.
+     * @param distanceToRight the right distance to surface.
+     * @param distanceToBottomHalfLeft the bottom left distance to surface.
+     * @return whether the left surface is the closest surface to the ball.
+     */
+    public boolean hasColllidedLeft(double distanceToLeft, double distanceToTopHalfLeft,
+                                    double distanceToRight, double distanceToBottomHalfLeft) {
+        return ((distanceToLeft > distanceToTopHalfLeft)
+                && (distanceToLeft > distanceToRight)
+                && (distanceToLeft > distanceToBottomHalfLeft));
+    }
+
+
     /**
      * @return x coordinate.
      */

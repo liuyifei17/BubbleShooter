@@ -1,6 +1,7 @@
 package UnitTests.Model;
 
 import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 import Model.Cell;
 import Model.Grid;
 import Model.PlayerBall;
@@ -31,7 +32,7 @@ public class NormalBallTest {
     @Test
     void testNormalBallConstructor() {
         PlayerBall pb = playerBallFactory.createBall("Normal Ball",
-                GameConfiguration.ballRadius, GameConfiguration.stageWidth / 2);
+                GUIConfiguration.ballRadius, GUIConfiguration.stageWidth / 2);
 
         assertThat(pb.getCounter()).isEqualTo(0);
         assertTrue(GameConfiguration.colors.contains(pb.getColor()));
@@ -40,7 +41,7 @@ public class NormalBallTest {
     @Test
     void testSetCoordinates() {
         PlayerBall pb = playerBallFactory.createBall("Normal Ball",
-                GameConfiguration.ballRadius, GameConfiguration.stageWidth / 2);
+                GUIConfiguration.ballRadius, GUIConfiguration.stageWidth / 2);
 
         pb.setX(5);
         pb.setY(8);
@@ -52,8 +53,8 @@ public class NormalBallTest {
     @Test
     void hasCollidedWithWallTest_false() {
         PlayerBall pb = playerBallFactory.createBall("Normal Ball",
-                GameConfiguration.ballRadius + 1,
-                GameConfiguration.stageHeight / 2);
+                GUIConfiguration.ballRadius + 1,
+                GUIConfiguration.stageHeight / 2);
 
         assertThat(pb.hasCollidedWithWall()).isFalse();
     }
@@ -61,7 +62,7 @@ public class NormalBallTest {
     @Test
     void hasCollidedWithWallTest_true() {
         PlayerBall pb = playerBallFactory.createBall("Normal Ball",
-                GameConfiguration.stageWidth, 0);
+                GUIConfiguration.stageWidth, 0);
 
         assertThat(pb.hasCollidedWithWall()).isTrue();
     }
