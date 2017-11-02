@@ -1,5 +1,6 @@
 package UnitTests.Controller;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Controller.GridController;
@@ -22,8 +23,8 @@ class GridControllerTest {
 
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         gridController = new GridController(gameController, grid);
     }
 

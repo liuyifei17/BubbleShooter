@@ -20,8 +20,8 @@ class WallsTest {
 
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         cell = mock(Cell.class);
         ball = mock(PlayerBall.class);
         grid = new Grid(GUIConfiguration.stageWidth, GUIConfiguration.stageHeight);

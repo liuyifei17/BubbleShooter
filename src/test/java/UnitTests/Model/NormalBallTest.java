@@ -24,8 +24,8 @@ public class NormalBallTest {
     private String normalBall;
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
 
         normalBall ="Normal Ball";
         playerBallFactory = PlayerBallFactory.getInstance();

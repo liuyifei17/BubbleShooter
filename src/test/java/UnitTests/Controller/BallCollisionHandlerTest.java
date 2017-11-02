@@ -27,8 +27,8 @@ public class BallCollisionHandlerTest {
 
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         blue = "blue";
         gameController = new GameController(null);
         view = mock(View.class);

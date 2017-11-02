@@ -20,8 +20,8 @@ class CellTest {
 
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         cell = new Cell(initialX, initialY);
     }
 

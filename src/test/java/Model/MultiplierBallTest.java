@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import static org.mockito.Mockito.mock;
  * This class provides tests cases for the MultiplierBallTest
  */
 class MultiplierBallTest {
-    private PlayerBallFactory playerBallFactory;
     PlayerBall multiplierBall;
 
 
@@ -22,9 +22,8 @@ class MultiplierBallTest {
      */
     @BeforeEach
     void setUp() {
-        playerBallFactory = PlayerBallFactory.getInstance();
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         multiplierBall = new MultiplierBall("Multiplier Ball");
     }
     @Test

@@ -27,8 +27,8 @@ class WallControllerTest {
     @BeforeEach
     void setUp() {
         view = mock(View.class);
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
         grid = new Grid(GUIConfiguration.stageWidth, GUIConfiguration.stageHeight);
         GameController.setView(view);
         GameConfiguration.amountOfWalls = 2;
