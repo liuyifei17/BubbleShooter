@@ -151,7 +151,6 @@ public class GameController {
     private void setMouseControllers() {
         clickDelay = System.currentTimeMillis();
 
-        // ball firing event
         gameScreen.setOnMouseReleased(event -> {
             if (!gamePaused && !(event.getSceneY() < GameConfiguration.topBarHeight + 20)
                     && (clickDelay + 800) < System.currentTimeMillis()) {
@@ -162,7 +161,6 @@ public class GameController {
             }
         });
 
-        // play button event
         view.getPlayButton().setOnMouseReleased(event -> {
             if (gamePaused) {
                 resumeGame();
@@ -170,17 +168,27 @@ public class GameController {
             primaryStage.setScene(gameScreen);
         });
 
-        // play button event
         view.getRankingButton().setOnMouseReleased(event -> {
             primaryStage.setScene(rankings);
         });
 
-        //exit button event
         view.getExitButton().setOnMouseReleased(event -> {
             primaryStage.close();
             System.exit(0);
         });
 
+        view.getHomeButton().setOnMouseReleased(event -> {
+            primaryStage.setScene(mainMenu);
+        });
+
+        setMouseControllers_GameOverPopup();
+        setMouseControllers_PausePopup();
+        setMouseControllers_SettingsPopup();
+        setMouseControllers_ScorePopup();
+
+    }
+
+    private void setMouseControllers_GameOverPopup() {
         //popup home button event
         view.getGameOverPopup().getHomeButton().setOnMouseReleased(event -> {
             resetGame();
@@ -191,12 +199,6 @@ public class GameController {
         view.getGameOverPopup().getRestartButton().setOnMouseReleased(event -> {
             resetGame();
         });
-
-
-        setMouseControllers_PausePopup();
-        setMouseControllers_SettingsPopup();
-        setMouseControllers_ScorePopup();
-
     }
 
     private void setMouseControllers_PausePopup() {
