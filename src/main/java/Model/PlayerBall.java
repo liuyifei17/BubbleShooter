@@ -1,6 +1,9 @@
 package Model;
 
 import Controller.GUIConfiguration;
+import Model.Cell;
+import Model.Grid;
+import Model.Walls;
 import Utility.Util;
 
 import java.util.ArrayList;

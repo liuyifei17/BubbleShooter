@@ -42,7 +42,7 @@ public final class PlayerBallFactory {
             case "Normal Ball":
                 return new NormalBall(colors.get(Util.randomBetween(0, colors.size() - 1)));
             case "Explosive Ball":
-                return new  ExplosiveBall("explosive");
+                return new ExplosiveBall("explosive");
             case "Rainbow Ball":
                 return new RainbowBall("rainbow");
             case "Multiplier Ball":

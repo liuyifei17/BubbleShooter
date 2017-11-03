@@ -87,8 +87,6 @@ public class GridController {
         return this.rotationDifference;
     }
 
-
-
     /**
      *
      * @return grid

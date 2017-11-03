@@ -3,6 +3,7 @@ package UnitTests.Model;
 import Controller.GameConfiguration;
 import Controller.GUIConfiguration;
 import Model.*;
+import Model.PlayerBall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -27,7 +28,7 @@ public class NormalBallTest {
         GUIConfiguration.isApiDefault();
         GameConfiguration.isApiDefault();
 
-        normalBall ="Normal Ball";
+        normalBall = "Normal Ball";
         playerBallFactory = PlayerBallFactory.getInstance();
     }
 

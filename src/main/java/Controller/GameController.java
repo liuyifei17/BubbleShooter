@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This class is responsible for setup of the game.
@@ -26,11 +27,14 @@ public class GameController {
     private GridController gridController;
     private PlayerBallController playerBallController;
     private WallController wallController;
+    private IOController ioController;
 
     private Stage primaryStage;
     private Scene mainMenu;
+    private Scene rankings;
     private Scene gameScreen;
     private Pane gamePane;
+    private Pane rankingPane;
     private Pane mainMenuPane;
 
     private Media backgroundMusic;
@@ -83,6 +87,10 @@ public class GameController {
         gridController = new GridController(this, data.getGrid());
         playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
                 gridController);
+        ioController = new IOController(data.getScores(),
+                "src/main/resources/configuration/scores.json");
+        ioController.readFromFile(data);
+
 
         // set up the sound
         // if the route is not correct start the game without sound
@@ -121,16 +129,19 @@ public class GameController {
     private void setupView() {
         //Create the panes to hold game elements
         mainMenuPane = new Pane();
+        rankingPane = new Pane();
         gamePane = new Pane();
 
         //Draw elements on pane
-        view = new View(mainMenuPane, gamePane, data, data.getPlayer());
+        view = new View(mainMenuPane, rankingPane, gamePane, data, data.getPlayer());
         data.getPlayer().addObserver(view);
-        view.drawMainMenu();
-        view.drawGame();
+        data.addObserver(view);
+        view.createMenus();
 
         // Create scenes containing the panes
         mainMenu = new Scene(mainMenuPane, GUIConfiguration.stageWidth,
+                GUIConfiguration.stageHeight);
+        rankings = new Scene(rankingPane, GUIConfiguration.stageWidth,
                 GUIConfiguration.stageHeight);
         gameScreen = new Scene(gamePane, GUIConfiguration.stageWidth,
                 GUIConfiguration.stageHeight);
@@ -146,7 +157,6 @@ public class GameController {
     private void setMouseControllers() {
         clickDelay = System.currentTimeMillis();
 
-        // ball firing event
         gameScreen.setOnMouseReleased(event -> {
             if (!gamePaused && !(event.getSceneY() < GUIConfiguration.topBarHeight + 20)
                     && (clickDelay + 800) < System.currentTimeMillis()) {
@@ -157,20 +167,40 @@ public class GameController {
             }
         });
 
-        // play button event
-        view.getPlayButton().setOnMouseReleased(event -> {
+        view.getMainMenu().getPlayButton().setOnMouseReleased(event -> {
             if (gamePaused) {
                 resumeGame();
             }
             primaryStage.setScene(gameScreen);
         });
 
-        //exit button event
-        view.getExitButton().setOnMouseReleased(event -> {
+        view.getMainMenu().getRankingButton().setOnMouseReleased(event -> {
+            primaryStage.setScene(rankings);
+        });
+
+        view.getMainMenu().getExitButton().setOnMouseReleased(event -> {
             primaryStage.close();
             System.exit(0);
         });
 
+        view.getRankingMenu().getHomeButton().setOnMouseReleased(event -> {
+            primaryStage.setScene(mainMenu);
+        });
+
+        view.getRankingMenu().getResetButton().setOnMouseReleased(event -> {
+            ioController.setScores(new ArrayList<>());
+            ioController.clearFile();
+            data.setScores(new ArrayList<>());
+        });
+
+        setMouseControllers_GameOverPopup();
+        setMouseControllers_PausePopup();
+        setMouseControllers_SettingsPopup();
+        setMouseControllers_ScorePopup();
+
+    }
+
+    private void setMouseControllers_GameOverPopup() {
         //popup home button event
         view.getGameOverPopup().getHomeButton().setOnMouseReleased(event -> {
             resetGame();
@@ -181,15 +211,10 @@ public class GameController {
         view.getGameOverPopup().getRestartButton().setOnMouseReleased(event -> {
             resetGame();
         });
-
-
-        setMouseControllers_PausePopup();
-        setMouseControllers_SettingsPopup();
-
     }
 
     private void setMouseControllers_PausePopup() {
-        view.getGamePauseIcon().setOnMouseReleased(event -> {
+        view.getGameMenu().getPauseIcon().setOnMouseReleased(event -> {
             if (!gamePaused) {
                 view.getPausePopup().showPopup();
                 pauseGame();
@@ -222,7 +247,7 @@ public class GameController {
     }
 
     private void setMouseControllers_SettingsPopup() {
-        view.getGameSettingsIcon().setOnMouseReleased(event -> {
+        view.getGameMenu().getSettingsIcon().setOnMouseReleased(event -> {
             if (!gamePaused) {
                 view.getSettingsPopup().showPopup();
                 pauseGame();
@@ -251,6 +276,21 @@ public class GameController {
         });
     }
 
+    private void setMouseControllers_ScorePopup() {
+        view.getGameMenu().getRankingIcon().setOnMouseReleased(event -> {
+            if (!gamePaused) {
+                view.getRankingPopup().showPopup();
+                pauseGame();
+            }
+        });
+
+        view.getRankingPopup().getCloseButton().setOnMouseReleased(event -> {
+            clickDelay = System.currentTimeMillis();
+            view.getRankingPopup().closePopup();
+            resumeGame();
+        });
+    }
+
     private void handleMusicButtonClick() {
         if (mediaPlayer == null) {
             return;
@@ -274,8 +314,16 @@ public class GameController {
                 } else {
                     view.getSettingsPopup().closePopup();
                     view.getPausePopup().closePopup();
+                    view.getRankingPopup().closePopup();
                     resumeGame();
                 }
+            }
+        });
+
+        //pause the game
+        gameScreen.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.T) {
+                gameOver();
             }
         });
     }
@@ -292,7 +340,7 @@ public class GameController {
 
     private void resetGame() {
         //close the game over popup
-        view.getGameOverPopup().createPopup();
+        view.getGameOverPopup().closePopup();
 
         //reset data
         data = new GameData(new Grid(GUIConfiguration.stageWidth / 2,
@@ -309,10 +357,14 @@ public class GameController {
         //reset view
         gamePane = new Pane();
         view.setData(data);
+        view.getGameMenu().setData(data);
         view.setPlayer(data.getPlayer());
         data.getPlayer().addObserver(view);
+        data.addObserver(view);
+        data.setScores(ioController.getScores());
         view.setGamePane(gamePane);
-        view.drawGame();
+        view.getGameMenu().setMenuPane(gamePane);
+        view.getGameMenu().drawMenu();
         gameScreen = new Scene(gamePane, GUIConfiguration.stageWidth,
                 GUIConfiguration.stageHeight);
         primaryStage.setScene(gameScreen);
@@ -333,6 +385,8 @@ public class GameController {
      */
     public void gameOver() {
         pauseGame();
+        data.placeScore();
+        ioController.writeToFile();
         view.getGameOverPopup().showPopup();
     }
 

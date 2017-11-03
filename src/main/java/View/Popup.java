@@ -1,5 +1,6 @@
 package View;
 
+import View.View;
 import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 

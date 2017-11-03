@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import Utility.Util;
+import View.GameMenu;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -18,7 +19,8 @@ public class BallCollisionHandler {
 
     /**
      * This is the constructor.
-     * @param grid the grid of cells
+     *
+     * @param grid   the grid of cells
      * @param player the player
      */
     public BallCollisionHandler(Grid grid, Player player) {
@@ -30,10 +32,13 @@ public class BallCollisionHandler {
     // to the score
     private void removeBalls(ArrayList<Cell> toRemove, int multiplier) {
         for (Cell cell : toRemove) {
-            GameController.getView().removeBall(cell);
-            GameController.getView().displayPlusIcon(cell, multiplier);
-            grid.getOccupiedCells().remove(cell);
-            cell.setBall(null);
+            GameMenu gameMenu = GameController.getView().getGameMenu();
+            if (gameMenu != null) {
+                gameMenu.removeBall(cell);
+                gameMenu.displayPlusIcon(cell, multiplier);
+                grid.getOccupiedCells().remove(cell);
+                cell.setBall(null);
+            }
         }
     }
 
@@ -84,11 +89,15 @@ public class BallCollisionHandler {
         } else if (player.getPlayerBall() instanceof MultiplierBall) {
             collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
         }
-
-        GameController.getView().display(collidedCell);
+        GameMenu gameMenu = GameController.getView().getGameMenu();
+        if (gameMenu != null) {
+            GameController.getView().getGameMenu().display(collidedCell);
+        }
     }
 
-    /** This method takes care of the situation in which the shot ball hits the hexagon.
+    /**
+     * This method takes care of the situation in which the shot ball hits the hexagon.
+     *
      * @param collidedCell the cell from the hexagon that the ball collided with
      */
     public void handleCollision(Cell collidedCell) {

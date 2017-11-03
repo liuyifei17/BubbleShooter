@@ -4,6 +4,7 @@ import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Utility.Util;
+import View.GameMenu;
 
 import java.util.ArrayList;
 
@@ -186,7 +187,11 @@ public class Grid {
                             GameConfiguration.colors.size() - 1));
                     occupiedCells.add(c);
                     c.setBall(new Ball(color, c, 1));
-                    GameController.getView().display(c);
+                    GameMenu gameMenu = GameController.getView().getGameMenu();
+                    if (gameMenu != null) {
+                        gameMenu.display(c);
+                    }
+
                     randomIndexes.add(randomIndex);
                     break;
                 }
