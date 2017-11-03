@@ -1,6 +1,6 @@
 package Model;
 
-import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class MultiplierBall extends PlayerBall {
      * @param color the color of the ball
      */
     public MultiplierBall(String color) {
-        super(color, GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight, 0);
+        super(color, GUIConfiguration.stageWidth / 2, GUIConfiguration.topBarHeight, 0);
     }
 
     @Override

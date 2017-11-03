@@ -1,5 +1,6 @@
 package UnitTests.Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Model.Ball;
 import Model.Cell;
@@ -16,8 +17,8 @@ public class BallTest {
 
     @BeforeEach
     void setUp() {
-        GameConfiguration.setApi();
-        GameConfiguration.isApi();
+        GUIConfiguration.isApiDefault();
+        GameConfiguration.isApiDefault();
 
         ball = new Ball("blue", null, 1);
     }

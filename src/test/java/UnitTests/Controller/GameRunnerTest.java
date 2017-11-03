@@ -39,7 +39,7 @@ class GameRunnerTest {
 
     @Test
     void continueGame() {
-        gameRunner.runGame();
+        gameRunner.continueGame();
         verify(timer).start();
     }
 

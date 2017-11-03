@@ -54,7 +54,11 @@
         <artifactId>jdk8</artifactId>
         <version>2.1.10</version>
     </dependency>
-
+    <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.8.0</version>
+    </dependency>
 </dependencies>
 
     <build>
@@ -68,9 +72,7 @@
                     </check>
                     <instrumentation>
                         <excludes>
-                            <exclude>View/View.class</exclude>
-                            <exclude>View/BallImageView.class</exclude>
-                            <exclude>View/RemovePlusOneIcon.class</exclude>
+                            <exclude>View/*</exclude>
                             <exclude>Controller/GameController.class</exclude>
                             <exclude>Main.class</exclude>
                         </excludes>
@@ -166,6 +168,7 @@
             <configuration>
                 <xmlOutput>true</xmlOutput>
                 <includeTests>true</includeTests>
+                <includeFilterFile>filter.xml</includeFilterFile>
             </configuration>
         </plugin>
             <plugin>

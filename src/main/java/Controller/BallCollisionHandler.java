@@ -66,10 +66,10 @@ public class BallCollisionHandler {
         return notConnected;
     }
 
-    /** This method takes care of the situation in which the shot ball hits the hexagon.
-     * @param collidedCell the cell from the hexagon that the ball collided with
+    /**
+     * This method puts the playerball to the hexagon after collision.
      */
-    public void handleCollision(Cell collidedCell) {
+    private void setBallInHexagon(Cell collidedCell) {
         // display the ball that has collided with the hexagon
         grid.getOccupiedCells().add(collidedCell);
 
@@ -86,6 +86,14 @@ public class BallCollisionHandler {
         }
 
         GameController.getView().display(collidedCell);
+    }
+
+    /** This method takes care of the situation in which the shot ball hits the hexagon.
+     * @param collidedCell the cell from the hexagon that the ball collided with
+     */
+    public void handleCollision(Cell collidedCell) {
+
+        setBallInHexagon(collidedCell);
 
         // check whether the shot ball has hit at least 2 other balls of the same color
 
@@ -119,19 +127,5 @@ public class BallCollisionHandler {
             player.setMissCounter(0);
             grid.appendAdditionalBalls(Util.randomBetween(5, 15));
         }
-    }
-
-    /**
-     *
-     * @param cells cells that should be removed
-     * @return a boolean if there is a multiplier
-     */
-    private boolean hasMultiplier(ArrayList<Cell> cells) {
-        for (Cell cell : cells) {
-            if (cell.getBall().isMultiplierBall()) {
-                return true;
-            }
-        }
-        return false;
     }
 }

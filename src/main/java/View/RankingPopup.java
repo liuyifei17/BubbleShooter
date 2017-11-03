@@ -1,5 +1,6 @@
 package View;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,11 +42,11 @@ public class RankingPopup extends Popup {
     @Override
     public void createPopup() {
         //create popup container
-        getPopup().setPrefSize(GameConfiguration.popupWidth, GameConfiguration.popupHeight);
-        getPopup().relocate(GameConfiguration.popupX, GameConfiguration.popupY);
+        getPopup().setPrefSize(GUIConfiguration.popupWidth, GUIConfiguration.popupHeight);
+        getPopup().relocate(GUIConfiguration.popupX, GUIConfiguration.popupY);
         getPopup().setBackground(new Background(new BackgroundImage(
-                new Image("images/popupBackground.png", GameConfiguration.popupWidth,
-                        GameConfiguration.popupHeight, false, true),
+                new Image("images/popupBackground.png", GUIConfiguration.popupWidth,
+                        GUIConfiguration.popupHeight, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 
@@ -94,7 +95,7 @@ public class RankingPopup extends Popup {
         Text text = new Text(string);
         text.setFont(Font.font("Arial", 20));
         text.setFill(Color.YELLOW);
-        text.setWrappingWidth(GameConfiguration.popupWidth);
+        text.setWrappingWidth(GUIConfiguration.popupWidth);
         text.setTextAlignment(TextAlignment.LEFT);
         text.relocate(x, y);
         return text;
