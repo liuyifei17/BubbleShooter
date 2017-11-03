@@ -1,6 +1,8 @@
 package Model;
 
 
+import Model.Cell;
+
 /**
  * This class represents the ball entity.
  */

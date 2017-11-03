@@ -30,8 +30,8 @@ public class BallCollisionHandler {
     // to the score
     private void removeBalls(ArrayList<Cell> toRemove, int multiplier) {
         for (Cell cell : toRemove) {
-            GameController.getView().removeBall(cell);
-            GameController.getView().displayPlusIcon(cell, multiplier);
+            GameController.getView().getGameMenu().removeBall(cell);
+            GameController.getView().getGameMenu().displayPlusIcon(cell, multiplier);
             grid.getOccupiedCells().remove(cell);
             cell.setBall(null);
         }
@@ -85,7 +85,7 @@ public class BallCollisionHandler {
             collidedCell.setBall(new Ball(player.getPlayerBall().getColor(), collidedCell, 1));
         }
 
-        GameController.getView().display(collidedCell);
+        GameController.getView().getGameMenu().display(collidedCell);
     }
 
     /** This method takes care of the situation in which the shot ball hits the hexagon.

@@ -186,7 +186,7 @@ public class Grid {
                             GameConfiguration.colors.size() - 1));
                     occupiedCells.add(c);
                     c.setBall(new Ball(color, c, 1));
-                    GameController.getView().display(c);
+                    GameController.getView().getGameMenu().display(c);
                     randomIndexes.add(randomIndex);
                     break;
                 }

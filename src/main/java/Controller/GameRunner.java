@@ -23,7 +23,7 @@ public class GameRunner {
                 ballController.launchBall();
                 if (graphicsDelay == 6) {
                     gridController.process();
-                    GameController.getView().redraw();
+                    GameController.getView().getGameMenu().redraw();
                     graphicsDelay = 0;
                 }
             }

@@ -2,6 +2,7 @@ package UnitTests.Controller;
 
 import Controller.*;
 import Model.*;
+import Model.PlayerBall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
