@@ -79,7 +79,7 @@ public class BallCollisionHandlerTest {
 
         pbc.launchBall();
 
-        assertThat(grid.getOccupiedCells()).hasSize(1);
+        assertThat(grid.getOccupiedCells()).hasSize(8);
         assertThat(player.getScore()).isEqualTo(7);
     }
 
@@ -117,7 +117,7 @@ public class BallCollisionHandlerTest {
 
         pbc.launchBall();
 
-        assertThat(grid.getOccupiedCells()).hasSize(1);
+        assertThat(grid.getOccupiedCells()).hasSize(8);
     }
     @Test
     void handleCollisionExplosive() {
@@ -134,7 +134,7 @@ public class BallCollisionHandlerTest {
 
         pbc.launchBall();
 
-        assertThat(grid.getOccupiedCells()).hasSize(6);
+        assertThat(grid.getOccupiedCells()).hasSize(8);
     }
 
     @Test
