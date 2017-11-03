@@ -3,7 +3,6 @@ package Controller;
 import Model.GameData;
 import Model.Score;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
@@ -34,7 +33,7 @@ public class IOController {
         clearFile();
         Type array = new TypeToken<ArrayList<Score>>() { } .getType();
         try (FileWriter fileWriter = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().create();
+            Gson gson = new Gson();
             gson.toJson(scores, array, fileWriter);
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,9 +48,9 @@ public class IOController {
         try (FileReader fileReader = new FileReader(fileName)) {
 
             Gson gson = new Gson();
-            if (gson.fromJson(fileReader, array) == null) {
-                return;
-            }
+//            if (gson.fromJson(fileReader, array) == null) {
+//                return;
+//            }
             scores = gson.fromJson(fileReader, array);
 
         } catch (FileNotFoundException e) {
@@ -60,6 +59,9 @@ public class IOController {
             e.printStackTrace();
         }
 
+        if (scores == null) {
+            scores = data.getScores();
+        }
         data.setScores(scores);
     }
 
@@ -74,6 +76,20 @@ public class IOController {
             e.printStackTrace();
         }
         pw.close();
+    }
+
+    /**
+     * @return the scores array list.
+     */
+    public ArrayList<Score> getScores() {
+        return scores;
+    }
+
+    /**
+     * @param scores new score list.
+     */
+    public void setScores(ArrayList<Score> scores) {
+        this.scores = scores;
     }
 
 }

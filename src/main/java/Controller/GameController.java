@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This class is responsible for setup of the game.
@@ -134,9 +135,8 @@ public class GameController {
         //Draw elements on pane
         view = new View(mainMenuPane, rankingPane, gamePane, data, data.getPlayer());
         data.getPlayer().addObserver(view);
-        view.drawMainMenu();
-        view.drawRankings();
-        view.drawGame();
+        data.addObserver(view);
+        view.createMenus();
 
         // Create scenes containing the panes
         mainMenu = new Scene(mainMenuPane, GUIConfiguration.stageWidth,
@@ -167,24 +167,30 @@ public class GameController {
             }
         });
 
-        view.getPlayButton().setOnMouseReleased(event -> {
+        view.getMainMenu().getPlayButton().setOnMouseReleased(event -> {
             if (gamePaused) {
                 resumeGame();
             }
             primaryStage.setScene(gameScreen);
         });
 
-        view.getRankingButton().setOnMouseReleased(event -> {
+        view.getMainMenu().getRankingButton().setOnMouseReleased(event -> {
             primaryStage.setScene(rankings);
         });
 
-        view.getExitButton().setOnMouseReleased(event -> {
+        view.getMainMenu().getExitButton().setOnMouseReleased(event -> {
             primaryStage.close();
             System.exit(0);
         });
 
-        view.getHomeButton().setOnMouseReleased(event -> {
+        view.getRankingMenu().getHomeButton().setOnMouseReleased(event -> {
             primaryStage.setScene(mainMenu);
+        });
+
+        view.getRankingMenu().getResetButton().setOnMouseReleased(event -> {
+            ioController.setScores(new ArrayList<>());
+            ioController.clearFile();
+            data.setScores(new ArrayList<>());
         });
 
         setMouseControllers_GameOverPopup();
@@ -208,7 +214,7 @@ public class GameController {
     }
 
     private void setMouseControllers_PausePopup() {
-        view.getGamePauseIcon().setOnMouseReleased(event -> {
+        view.getGameMenu().getPauseIcon().setOnMouseReleased(event -> {
             if (!gamePaused) {
                 view.getPausePopup().showPopup();
                 pauseGame();
@@ -241,7 +247,7 @@ public class GameController {
     }
 
     private void setMouseControllers_SettingsPopup() {
-        view.getGameSettingsIcon().setOnMouseReleased(event -> {
+        view.getGameMenu().getSettingsIcon().setOnMouseReleased(event -> {
             if (!gamePaused) {
                 view.getSettingsPopup().showPopup();
                 pauseGame();
@@ -271,7 +277,7 @@ public class GameController {
     }
 
     private void setMouseControllers_ScorePopup() {
-        view.getGameRankingIcon().setOnMouseReleased(event -> {
+        view.getGameMenu().getRankingIcon().setOnMouseReleased(event -> {
             if (!gamePaused) {
                 view.getRankingPopup().showPopup();
                 pauseGame();
@@ -317,13 +323,7 @@ public class GameController {
         //pause the game
         gameScreen.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.T) {
-                if (!gamePaused) {
-                    view.getGameOverPopup().showPopup();
-                    pauseGame();
-                } else {
-                    view.getGameOverPopup().closePopup();
-                    resumeGame();
-                }
+                gameOver();
             }
         });
     }
@@ -340,7 +340,7 @@ public class GameController {
 
     private void resetGame() {
         //close the game over popup
-        view.getGameOverPopup().createPopup();
+        view.getGameOverPopup().closePopup();
 
         //reset data
         data = new GameData(new Grid(GUIConfiguration.stageWidth / 2,
@@ -353,17 +353,18 @@ public class GameController {
         gridController = new GridController(this, data.getGrid());
         playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
                 gridController);
-        ioController = new IOController(data.getScores(),
-                "src/main/resources/configuration/scores.json");
-        ioController.readFromFile(data);
 
         //reset view
         gamePane = new Pane();
         view.setData(data);
+        view.getGameMenu().setData(data);
         view.setPlayer(data.getPlayer());
         data.getPlayer().addObserver(view);
+        data.addObserver(view);
+        data.setScores(ioController.getScores());
         view.setGamePane(gamePane);
-        view.drawGame();
+        view.getGameMenu().setMenuPane(gamePane);
+        view.getGameMenu().drawMenu();
         gameScreen = new Scene(gamePane, GUIConfiguration.stageWidth,
                 GUIConfiguration.stageHeight);
         primaryStage.setScene(gameScreen);

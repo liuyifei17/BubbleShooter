@@ -31,4 +31,5 @@ public class Score {
     public Date getDate() {
         return date;
     }
+
 }

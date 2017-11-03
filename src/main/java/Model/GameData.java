@@ -1,11 +1,12 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Class containing all game data.
  */
-public class GameData {
+public class GameData extends Observable {
 
     private Grid grid;
     private int initialBallAmount;
@@ -34,19 +35,25 @@ public class GameData {
         Score score = new Score(player.getScore());
         if (scores.size() == 0) {
             scores.add(score);
-            return;
         }
-
-        for (int i = 0; i < scores.size(); i++) {
-            if (scores.get(i).getScore() <= score.getScore()) {
-                scores.add(i, score);
-                break;
+        else {
+            boolean found = false;
+            for (int i = 0; i < scores.size(); i++) {
+                if (score.getScore() > scores.get(i).getScore()) {
+                    scores.add(i, score);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                scores.add(score);
+            }
+            if (scores.size() > 10) {
+                scores.remove(scores.size() - 1);
             }
         }
-
-        if (scores.size() >  10) {
-            scores.remove(scores.size() - 1);
-        }
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -106,9 +113,11 @@ public class GameData {
     }
 
     /**
-     * @param scores new scorelist.
+     * @param scores new score list.
      */
     public void setScores(ArrayList<Score> scores) {
         this.scores = scores;
+        setChanged();
+        notifyObservers();
     }
 }

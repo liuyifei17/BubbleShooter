@@ -1,7 +1,7 @@
 package View;
 
 import Controller.GUIConfiguration;
-import Controller.GameConfiguration;
+import Model.Score;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -10,11 +10,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.util.ArrayList;
+
 /**
  * The game over popup class.
  */
 public class RankingPopup extends Popup {
 
+    private ArrayList<Text> ranks;
     private Text rankOne;
     private Text rankTwo;
     private Text rankThree;
@@ -64,6 +67,17 @@ public class RankingPopup extends Popup {
         rankEight = createScoreTextPopup("8.", xText, 266);
         rankNine = createScoreTextPopup("9.", xText, 294);
         rankTen = createScoreTextPopup("10.", xText, 322);
+        ranks = new ArrayList<Text>();
+        ranks.add(rankOne);
+        ranks.add(rankTwo);
+        ranks.add(rankThree);
+        ranks.add(rankFour);
+        ranks.add(rankFive);
+        ranks.add(rankSix);
+        ranks.add(rankSeven);
+        ranks.add(rankEight);
+        ranks.add(rankNine);
+        ranks.add(rankTen);
 
         closeButton = new ImageView("images/close-button.png");
         getView().createHover(closeButton, new Image("images/close-button.png"),
@@ -72,16 +86,9 @@ public class RankingPopup extends Popup {
 
         //add graphical elements to popup container
         getPopup().getChildren().add(rankingMessage);
-        getPopup().getChildren().add(rankOne);
-        getPopup().getChildren().add(rankTwo);
-        getPopup().getChildren().add(rankThree);
-        getPopup().getChildren().add(rankFour);
-        getPopup().getChildren().add(rankFive);
-        getPopup().getChildren().add(rankSix);
-        getPopup().getChildren().add(rankSeven);
-        getPopup().getChildren().add(rankEight);
-        getPopup().getChildren().add(rankNine);
-        getPopup().getChildren().add(rankTen);
+        for (Text t: ranks) {
+            getPopup().getChildren().add(t);
+        }
         getPopup().getChildren().add(closeButton);
     }
 
@@ -106,6 +113,13 @@ public class RankingPopup extends Popup {
      */
     public ImageView getCloseButton() {
         return closeButton;
+    }
+
+    /**
+     * @return the rank elements
+     */
+    public ArrayList<Text> getRanks() {
+        return ranks;
     }
 
 }

@@ -3,6 +3,9 @@ package UnitTests.Model;
 import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Model.*;
+import Model.Ball;
+import Model.ExplosiveBall;
+import Model.PlayerBall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

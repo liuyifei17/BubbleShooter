@@ -3,11 +3,13 @@ package UnitTests.Model;
 import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Model.*;
+import Model.ExplosiveBall;
+import Model.NormalBall;
+import Model.RainbowBall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for PlayerBallFactory class.

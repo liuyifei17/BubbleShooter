@@ -5,6 +5,7 @@ import Controller.GameConfiguration;
 import Controller.GameController;
 import Controller.GridController;
 import Model.*;
+import Model.Ball;
 import View.View;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
