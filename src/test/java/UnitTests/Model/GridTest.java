@@ -4,9 +4,11 @@ import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Controller.GridController;
-import Model.*;
 import Model.Ball;
+import Model.Cell;
+import Model.Grid;
 import View.View;
+import View.GameMenu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,6 +22,8 @@ class GridTest {
     private Grid grid;
     private View view;
     private GridController gridController;
+    private GameMenu gameMenu;
+
 
     @BeforeEach
     void setUp() {
@@ -30,6 +34,7 @@ class GridTest {
 
         gridController = new GridController(null, grid);
         view = Mockito.mock(View.class);
+        gameMenu = Mockito.mock(GameMenu.class);
         GameController.setView(view);
     }
 
@@ -68,7 +73,7 @@ class GridTest {
     void appendAdditionalBallsTest() {
         grid.getCenterCell().setBall(new Ball("center", grid.getCenterCell(), 1));
         grid.getOccupiedCells().add(grid.getCenterCell());
-
+        view.setGameMenu(gameMenu);
         grid.appendAdditionalBalls(5);
 
         assertThat(grid.getOccupiedCells().size()).isEqualTo(6);
