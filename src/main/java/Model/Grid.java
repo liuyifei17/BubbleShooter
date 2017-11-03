@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.GUIConfiguration;
 import Controller.GameConfiguration;
 import Controller.GameController;
 import Utility.Util;
@@ -14,41 +15,35 @@ public class Grid {
     private ArrayList<Cell> cells;
     private ArrayList<Cell> occupiedCells;
     private Cell centerCell;
-    private int rotation; //the current rotation in degrees
-    private int rotationDifference; //the change in rotation for a given ball impact
-    private int rotationSpeed; //turning speed in degrees per frame
     private double centerX;
     private double centerY;
     private double edgeToDistance;
     private double topBarHeight;
     private double stageWidth;
     private double stageHeight;
-    private boolean doneRotating;
 
     /**
      * Creates a grid based on the center values of the grid and initializes all grid cells.
+     *
      * @param x the x coord of the center of the grid.
      * @param y the y coord of the center of the grid.
      */
     public Grid(double x, double y) {
         cells = new ArrayList<>();
         occupiedCells = new ArrayList<>();
-        rotation = 180;
-        rotationDifference = 0;
-        rotationSpeed = 5;
         centerX = x;
         centerY = y;
-        edgeToDistance = GameConfiguration.edgeToDistance;
-        topBarHeight = GameConfiguration.topBarHeight;
-        stageWidth = GameConfiguration.stageWidth;
-        stageHeight = GameConfiguration.stageHeight;
-        doneRotating = false;
+        edgeToDistance = GUIConfiguration.edgeToDistance;
+        topBarHeight = GUIConfiguration.topBarHeight;
+        stageWidth = GUIConfiguration.stageWidth;
+        stageHeight = GUIConfiguration.stageHeight;
         initializeCells(x, y);
     }
 
     /**
      * Calculates the cell locations on the entire screen based on the center cell.
      * It initializes all cells based on these calculations.
+     *
      * @param x the x coord of the center of the grid.
      * @param y the y coord of the center of the grid.
      */
@@ -86,6 +81,7 @@ public class Grid {
 
     /**
      * Sets the cells in the grid for the respective coordinates.
+     *
      * @param cellX    x coord of a cell.
      * @param cellY    y coord of a cell.
      * @param x        the x coord of the center of the grid.
@@ -98,7 +94,7 @@ public class Grid {
                 Cell c = new Cell(cellX, cellY);
                 cells.add(c);
                 cellY += (edgeToDistance * 2);
-                if (cellX == x && cellY == y) {
+                if (Math.abs(cellX - x) < .0001 && Math.abs(cellY - y) < .0001) {
                     cellY += (edgeToDistance * 2);
                 }
             }
@@ -117,21 +113,8 @@ public class Grid {
                 if (Math.abs(c1.getCurrentX()
                         - c2.getCurrentX()) < edgeToDistance * 3
                         && Math.abs(c1.getCurrentY()
-                        - c2.getCurrentY()) < edgeToDistance * 3) {
-                    if (!c1.equals(c2)) {
-                        c1.getAdjacentCells().add(c2);
-                    }
-                }
-            }
-        }
-
-        for (Cell c2 : cells) {
-            if (Math.abs(centerCell.getCurrentX()
-                    - c2.getCurrentX()) < edgeToDistance * 3
-                    && Math.abs(centerCell.getCurrentY()
-                    - c2.getCurrentY()) < edgeToDistance * 3) {
-                if (!centerCell.equals(c2) && !centerCell.getAdjacentCells().contains(c2)) {
-                    centerCell.getAdjacentCells().add(c2);
+                        - c2.getCurrentY()) < edgeToDistance * 3 && !c1.equals(c2)) {
+                    c1.getAdjacentCells().add(c2);
                 }
             }
         }
@@ -139,6 +122,7 @@ public class Grid {
 
     /**
      * finds the closest cell that does not contain an element to a certain location (x, y).
+     *
      * @param locX coord x of location.
      * @param locY coord y of location.
      * @return null if no empty cell found or an empty cell if found.
@@ -149,8 +133,7 @@ public class Grid {
             if (c.getBall() == null) {
                 if (closestCell == null) {
                     closestCell = c;
-                }
-                else if (Util.getDistance(c.getCurrentX(), c.getCurrentY(), locX, locY)
+                } else if (Util.getDistance(c.getCurrentX(), c.getCurrentY(), locX, locY)
                         <= Util.getDistance(closestCell.getCurrentX(),
                         closestCell.getCurrentY(), locX, locY)) {
                     closestCell = c;
@@ -163,6 +146,7 @@ public class Grid {
 
     /**
      * finds the closest cell that does contain an element to a certain location (x, y).
+     *
      * @param locX coord x of location.
      * @param locY coord y of location.
      * @return null if no full cell found else return the cell.
@@ -173,8 +157,7 @@ public class Grid {
             if (c.getBall() != null) {
                 if (closestCell == null) {
                     closestCell = c;
-                }
-                else if (Util.getDistance(c.getCurrentX(), c.getCurrentY(), locX, locY)
+                } else if (Util.getDistance(c.getCurrentX(), c.getCurrentY(), locX, locY)
                         <= Util.getDistance(closestCell.getCurrentX(),
                         closestCell.getCurrentY(), locX, locY)) {
                     closestCell = c;
@@ -188,6 +171,7 @@ public class Grid {
 
     /**
      * This method adds balls to the hexagon every time the player misses more than 6 times.
+     *
      * @param numberBalls the number of balls to add to the hexagon
      */
     public void appendAdditionalBalls(int numberBalls) {
@@ -213,24 +197,18 @@ public class Grid {
     /**
      * Look for all the cells within the wallRadius and if they are null they will be put in array
      * for the potential locations for the walls.
+     *
      * @return array with cell locations for the wall.
      */
     public ArrayList<Cell> emptyWallLocation() {
         ArrayList<Cell> cellLocations = new ArrayList<>();
         for (Cell i : this.getEmptyCells()) {
             boolean canBeUsed = false;
-            if ((i.getCurrentX() + GameConfiguration.wallWidth < GameConfiguration.stageWidth)
-                    && (i.getCurrentX() - GameConfiguration.wallWidth > 0)
-                    && (i.getCurrentY() + GameConfiguration.wallWidth
-                    < GameConfiguration.stageHeight)
-                    && (i.getCurrentY() - GameConfiguration.wallWidth
-                    > GameConfiguration.scoreBarHeight)
-                    && Util.getDistance(i.getCurrentX(), i.getCurrentY(),
-                    GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight) > 100) {
+            if (availableWallLocation(i)) {
                 canBeUsed = true;
                 for (Cell k : cells) {
                     if ((Util.getDistance(i.getCurrentX(), i.getCurrentY(),
-                            k.getCurrentX(), k.getCurrentY()) <= GameConfiguration.wallRadius)
+                            k.getCurrentX(), k.getCurrentY()) <= GUIConfiguration.wallRadius)
                             && (k.getBall() != null)) {
                         canBeUsed = false;
                         break;
@@ -257,6 +235,25 @@ public class Grid {
         return emptyCell;
     }
 
+
+    /**
+     * Checks whether the cell is a possible location for the random walls.
+     *
+     * @param cell The current cell.
+     * @return true if cell is potential location.
+     */
+    private boolean availableWallLocation(Cell cell) {
+        return ((cell.getCurrentX() + GUIConfiguration.wallWidth < GUIConfiguration.stageWidth)
+                && (cell.getCurrentX() - GUIConfiguration.wallWidth > 0)
+                && (cell.getCurrentY() + GUIConfiguration.wallWidth
+                < GUIConfiguration.stageHeight)
+                && (cell.getCurrentY() - GUIConfiguration.wallWidth
+                > GUIConfiguration.scoreBarHeight)
+                && Util.getDistance(cell.getCurrentX(), cell.getCurrentY(),
+                GUIConfiguration.stageWidth / 2, GUIConfiguration.topBarHeight)
+                > GUIConfiguration.wallRadius);
+    }
+
     /**
      * @return cells
      */
@@ -272,42 +269,6 @@ public class Grid {
     }
 
     /**
-     * @return rotation
-     */
-    public int getRotation() {
-        return rotation;
-    }
-
-    /**
-     * @param rotation set rotation
-     */
-    public void setRotation(int rotation) {
-        this.rotation = rotation;
-    }
-
-    /**
-     * @return rotation difference
-     */
-    public int getRotationDifference() {
-        return rotationDifference;
-    }
-
-    /**
-     * @param rotationDifference set the rotation difference
-     */
-    public void setRotationDifference(int rotationDifference) {
-        this.rotationDifference = rotationDifference;
-
-    }
-
-    /**
-     * @return rotation speed
-     */
-    public int getRotationSpeed() {
-        return rotationSpeed;
-    }
-
-    /**
      * @return the occupied cells
      */
     public ArrayList<Cell> getOccupiedCells() {
@@ -315,32 +276,16 @@ public class Grid {
     }
 
     /**
-     * This is the getter for centerX.
-     * @return centerX
+     * @return centerX.
      */
     public double getCenterX() {
         return centerX;
     }
 
     /**
-     * This is the getter for centerY.
-     * @return getter for centerY
+     * @return return centerY.
      */
     public double getCenterY() {
         return centerY;
-    }
-
-    /**
-     * @return rotating boolean
-     */
-    public boolean getStillRotating() {
-        return doneRotating;
-    }
-
-    /**
-     * @param doneRotating set true if it is rotating
-     */
-    public void setStillRotating(boolean doneRotating) {
-        this.doneRotating = doneRotating;
     }
 }

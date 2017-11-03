@@ -1,6 +1,6 @@
 package Model;
 
-import Controller.GameConfiguration;
+import Controller.GUIConfiguration;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,7 +17,7 @@ public class RainbowBall extends PlayerBall {
      * @param color the random selected color of the ball;
      */
     public RainbowBall(String color) {
-        super(color, GameConfiguration.stageWidth / 2, GameConfiguration.topBarHeight, 0);
+        super(color, GUIConfiguration.stageWidth / 2, GUIConfiguration.topBarHeight, 0);
     }
 
     /**
@@ -32,12 +32,7 @@ public class RainbowBall extends PlayerBall {
 
     @Override
     public ArrayList<Cell> checkRemovalBalls(Cell collidedCell) {
-        //initialise an arrayList which will contain all possible removedBalls
-        ArrayList<Cell> removalBalls = new ArrayList<>();
-        removalBalls.add(collidedCell);
         ArrayList<String> colors = checkColors(collidedCell);
-
-
         Map<Integer, ArrayList<Cell>> map = new TreeMap<>();
 
         // create a treeMap of arrayLists, the key is the size of returned cell.

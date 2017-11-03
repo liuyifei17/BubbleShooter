@@ -26,6 +26,7 @@ public class GameController {
     private GridController gridController;
     private PlayerBallController playerBallController;
     private WallController wallController;
+    private IOController ioController;
 
     private Stage primaryStage;
     private Scene mainMenu;
@@ -73,8 +74,8 @@ public class GameController {
         GameConfiguration.isApi();
 
         //Initialize data
-        data = new GameData(new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2),
+        data = new GameData(new Grid(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2),
                 new Player(), 90);
         loader = new GameDataLoader();
         loader.initialize(data);
@@ -83,7 +84,12 @@ public class GameController {
         wallController = new WallController(data);
         wallController.placeWalls();
         gridController = new GridController(this, data.getGrid());
-        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
+        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
+                gridController);
+        ioController = new IOController(data.getScores(),
+                "src/main/resources/configuration/scores.json");
+        ioController.readFromFile(data);
+
 
         // set up the sound
         // if the route is not correct start the game without sound
@@ -133,12 +139,12 @@ public class GameController {
         view.drawGame();
 
         // Create scenes containing the panes
-        mainMenu = new Scene(mainMenuPane, GameConfiguration.stageWidth,
-                GameConfiguration.stageHeight);
-        rankings = new Scene(rankingPane, GameConfiguration.stageWidth,
-                GameConfiguration.stageHeight);
-        gameScreen = new Scene(gamePane, GameConfiguration.stageWidth,
-                GameConfiguration.stageHeight);
+        mainMenu = new Scene(mainMenuPane, GUIConfiguration.stageWidth,
+                GUIConfiguration.stageHeight);
+        rankings = new Scene(rankingPane, GUIConfiguration.stageWidth,
+                GUIConfiguration.stageHeight);
+        gameScreen = new Scene(gamePane, GUIConfiguration.stageWidth,
+                GUIConfiguration.stageHeight);
 
         // Add the scenes to the stage
         primaryStage.setTitle("Bubble Shooter"); // Set the stage title
@@ -152,7 +158,7 @@ public class GameController {
         clickDelay = System.currentTimeMillis();
 
         gameScreen.setOnMouseReleased(event -> {
-            if (!gamePaused && !(event.getSceneY() < GameConfiguration.topBarHeight + 20)
+            if (!gamePaused && !(event.getSceneY() < GUIConfiguration.topBarHeight + 20)
                     && (clickDelay + 800) < System.currentTimeMillis()) {
                 playerBallController.setMouseX(event.getSceneX());
                 playerBallController.setMouseY(event.getSceneY());
@@ -337,15 +343,19 @@ public class GameController {
         view.getGameOverPopup().createPopup();
 
         //reset data
-        data = new GameData(new Grid(GameConfiguration.stageWidth / 2,
-                (GameConfiguration.stageHeight + GameConfiguration.topBarHeight) / 2),
+        data = new GameData(new Grid(GUIConfiguration.stageWidth / 2,
+                (GUIConfiguration.stageHeight + GUIConfiguration.topBarHeight) / 2),
                 new Player(), 90);
         loader = new GameDataLoader();
         loader.initialize(data);
         wallController = new WallController(data);
         wallController.placeWalls();
         gridController = new GridController(this, data.getGrid());
-        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid());
+        playerBallController = new PlayerBallController(this, data.getPlayer(), data.getGrid(),
+                gridController);
+        ioController = new IOController(data.getScores(),
+                "src/main/resources/configuration/scores.json");
+        ioController.readFromFile(data);
 
         //reset view
         gamePane = new Pane();
@@ -354,8 +364,8 @@ public class GameController {
         data.getPlayer().addObserver(view);
         view.setGamePane(gamePane);
         view.drawGame();
-        gameScreen = new Scene(gamePane, GameConfiguration.stageWidth,
-                GameConfiguration.stageHeight);
+        gameScreen = new Scene(gamePane, GUIConfiguration.stageWidth,
+                GUIConfiguration.stageHeight);
         primaryStage.setScene(gameScreen);
 
         //continue playing the game
@@ -374,6 +384,8 @@ public class GameController {
      */
     public void gameOver() {
         pauseGame();
+        data.placeScore();
+        ioController.writeToFile();
         view.getGameOverPopup().showPopup();
     }
 
