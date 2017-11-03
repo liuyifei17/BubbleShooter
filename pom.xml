@@ -74,6 +74,7 @@
                         <excludes>
                             <exclude>View/*</exclude>
                             <exclude>Controller/GameController.class</exclude>
+                            <exclude>Controller/IOController.class</exclude>
                             <exclude>Main.class</exclude>
                         </excludes>
                     </instrumentation>
